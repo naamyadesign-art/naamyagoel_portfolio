@@ -18,16 +18,20 @@ const ImageWithFallback: React.FC<{ src: string; alt: string; className?: string
 };
 
 const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ project, onClose }) => {
+  // Defensive check for category
+  const categoryLabel = typeof project.category === 'string' ? project.category : 'Project';
+  const initial = categoryLabel.charAt(0);
+
   return (
     <div className="fixed inset-0 z-[100] bg-[#050505] flex flex-col animate-in fade-in duration-500 overflow-y-auto custom-scrollbar text-white">
       <div className="flex justify-between items-center p-6 sm:p-10 sticky top-0 bg-[#050505]/95 backdrop-blur-md z-10 border-b border-[#8A1800]/20">
         <div className="flex items-center gap-4">
           <div className="w-8 h-8 sm:w-10 sm:h-10 bg-[#8A1800] rounded-full flex items-center justify-center text-white font-black text-sm sm:text-xl shadow-[0_0_15px_rgba(138,24,0,0.5)]">
-            {project.category.charAt(0)}
+            {initial}
           </div>
           <div>
             <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tighter">{project.title}</h2>
-            <p className="text-[10px] sm:text-xs font-bold text-white/60 tracking-[0.3em] uppercase">{project.category}</p>
+            <p className="text-[10px] sm:text-xs font-bold text-white/60 tracking-[0.3em] uppercase">{categoryLabel}</p>
           </div>
         </div>
         <button onClick={onClose} className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#8A1800]/10 hover:bg-[#8A1800] hover:text-white transition-all text-xl sm:text-2xl font-black">×</button>
@@ -35,7 +39,7 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
 
       <div className="max-w-6xl mx-auto w-full px-6 sm:px-8 py-10 sm:py-16 flex flex-col gap-10 sm:gap-16">
         <div className="w-full aspect-[4/3] sm:aspect-[16/9] bg-neutral-900 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-[#8A1800]/20">
-          <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
+          <ImageWithFallback src={project.image} alt={project.title} className="w-full h-full object-cover" />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-16 items-start pb-24">
@@ -78,11 +82,11 @@ const App: React.FC = () => {
   }, []);
 
   const tiltFactor = isFlipped ? 0 : 12;
-  const cardRotateX = (mousePos.y / window.innerHeight - 0.5) * tiltFactor;
-  const cardRotateY = (mousePos.x / window.innerWidth - 0.5) * -tiltFactor;
+  const cardRotateX = (mousePos.y / (window.innerHeight || 1) - 0.5) * tiltFactor;
+  const cardRotateY = (mousePos.x / (window.innerWidth || 1) - 0.5) * -tiltFactor;
 
-  const glossX = (mousePos.x / window.innerWidth) * 100;
-  const glossY = (mousePos.y / window.innerHeight) * 100;
+  const glossX = (mousePos.x / (window.innerWidth || 1)) * 100;
+  const glossY = (mousePos.y / (window.innerHeight || 1)) * 100;
 
   return (
     <div className="bg-[#050505] text-white overflow-x-hidden game-grid min-h-screen">
@@ -225,7 +229,7 @@ const App: React.FC = () => {
                className="group cursor-pointer space-y-8"
              >
                 <div className="relative aspect-[4/5] sm:aspect-[3/4] bg-neutral-900 rounded-xl sm:rounded-2xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.7)] border-2 border-[#8A1800]/40 transition-all group-hover:border-[#8A1800]">
-                   <img 
+                   <ImageWithFallback 
                     src={project.image} 
                     alt={project.title} 
                     className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-100 group-hover:scale-110" 
@@ -235,7 +239,9 @@ const App: React.FC = () => {
                 <div className="flex justify-between items-start pt-2">
                    <div className="space-y-2">
                       <h3 className="text-3xl sm:text-4xl font-serif-elegant uppercase tracking-tighter text-white group-hover:text-[#8A1800] transition-colors">{project.title}</h3>
-                      <p className="text-[10px] sm:text-xs font-bold text-[#8A1800] tracking-[0.4em] uppercase opacity-60">{project.category}</p>
+                      <p className="text-[10px] sm:text-xs font-bold text-[#8A1800] tracking-[0.4em] uppercase opacity-60">
+                        {typeof project.category === 'string' ? project.category : 'Digital Work'}
+                      </p>
                    </div>
                    <span className="font-serif-elegant italic text-xl sm:text-2xl text-[#8A1800]/40">0{idx + 1}</span>
                 </div>

@@ -1,10 +1,22 @@
 
 import { GoogleGenAI } from "@google/genai";
 
-// Use named parameter for initialization
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Defensive check for the API key to prevent the app from crashing during initialization
+const getApiKey = () => {
+  try {
+    return process.env.API_KEY || "";
+  } catch (e) {
+    console.warn("API_KEY not found in process.env");
+    return "";
+  }
+};
+
+const apiKey = getApiKey();
+const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
 
 export const getGhostResponse = async (userMessage: string) => {
+  if (!ai) return "The digital link to the Oracle is currently offline.";
+  
   try {
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
@@ -14,10 +26,9 @@ export const getGhostResponse = async (userMessage: string) => {
         temperature: 0.9,
       }
     });
-    // Access response.text directly (it is a property, not a method)
     return response.text || "The digital mist is too thick right now. Try again, human!";
   } catch (error) {
     console.error("Gemini Error:", error);
-    return "The connection to the Oracle is glitching... (Check your API Key or try again later!)";
+    return "The connection to the Oracle is glitching... Check your settings!";
   }
 };
