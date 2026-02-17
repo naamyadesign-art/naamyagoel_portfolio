@@ -1,17 +1,15 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Naamya Goel | Portfolio</title>
+  <title>Naamya Goel | Portfolio Archive</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,500;1,700&family=Space+Grotesk:wght@500;700;800&family=Inter:wght@400;900&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-color: #050505;
       --accent-red: #8A1800;
-      --card-red: #8A1800;
     }
     body {
       margin: 0;
@@ -32,10 +30,10 @@
 
     .game-grid {
       background-image: 
-        linear-gradient(rgba(138, 24, 0, 0.2) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(138, 24, 0, 0.2) 1px, transparent 1px),
-        linear-gradient(rgba(138, 24, 0, 0.08) 0.5px, transparent 0.5px),
-        linear-gradient(90deg, rgba(138, 24, 0, 0.08) 0.5px, transparent 0.5px);
+        linear-gradient(rgba(138, 24, 0, 0.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(138, 24, 0, 0.15) 1px, transparent 1px),
+        linear-gradient(rgba(138, 24, 0, 0.05) 0.5px, transparent 0.5px),
+        linear-gradient(90deg, rgba(138, 24, 0, 0.05) 0.5px, transparent 0.5px);
       background-size: 40px 40px, 40px 40px, 10px 10px, 10px 10px;
       background-attachment: fixed;
     }
@@ -46,7 +44,6 @@
     }
 
     .portfolio-text {
-      font-size: clamp(4rem, 15vw, 12rem);
       line-height: 0.8;
       letter-spacing: -0.06em;
       display: flex;
@@ -81,6 +78,14 @@
     .custom-scrollbar::-webkit-scrollbar-thumb {
       background: rgba(138, 24, 0, 0.4);
       border-radius: 10px;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
   </style>
 <script type="importmap">
