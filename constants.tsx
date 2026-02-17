@@ -99,6 +99,22 @@ export const PROJECTS: Project[] = [
     description: "UX/UI design for a music streaming platform that focuses on dark mode aesthetics and fluid motion.",
     image: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=1200",
     tech: ["Figma", "UI/UX", "Motion"]
+  },
+  {
+    title: "Kinetic Motion",
+    category: Section.MOTION,
+    tagline: "Dynamic Storytelling",
+    description: "A series of abstract motion graphics that explore the intersection of geometry and rhythm.",
+    image: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80&w=1200",
+    tech: ["After Effects", "Motion", "Sound Design"]
+  },
+  {
+    title: "Glitched Reality",
+    category: Section.EXPERIMENTAL,
+    tagline: "Digital Distortion",
+    description: "Experimental lab project exploring CSS shaders and interactive noise patterns.",
+    image: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=1200",
+    tech: ["WebGL", "Three.js", "Creative Code"]
   }
 ];
 

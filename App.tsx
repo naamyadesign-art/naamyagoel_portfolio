@@ -207,24 +207,25 @@ const App: React.FC = () => {
 
       {/* Selected Works Section */}
       <section className="max-w-7xl mx-auto px-6 sm:px-10 py-24 sm:py-32 relative overflow-hidden">
-        <header className="mb-20 sm:mb-24 flex flex-col md:flex-row justify-between items-end gap-8 relative z-10">
+        <header className="mb-16 sm:mb-20 flex flex-col md:flex-row justify-between items-end gap-8 relative z-10">
            <div className="space-y-4">
-              <span className="text-white bg-[#8A1800] font-black tracking-[0.6em] uppercase text-xs sm:text-sm px-4 py-1 border border-white/20">Archive_01</span>
-              <h2 className="text-5xl sm:text-8xl font-serif-elegant tracking-tighter text-white uppercase drop-shadow-[0_10px_30px_rgba(0,0,0,0.5)]">Selected Works</h2>
+              <span className="text-white bg-[#8A1800] font-black tracking-[0.6em] uppercase text-[10px] sm:text-xs px-4 py-1 border border-white/20">Archive_01</span>
+              <h2 className="text-4xl sm:text-7xl font-serif-elegant tracking-tighter text-white uppercase drop-shadow-[0_10px_30px_rgba(0,0,0,0.5)]">Selected Works</h2>
            </div>
-           <p className="max-w-xs text-white font-black text-xs sm:text-sm leading-relaxed uppercase tracking-widest opacity-80">
-             A rigorous visual study of form, typography, and human experience.
+           <p className="max-w-xs text-white font-black text-[10px] sm:text-xs leading-relaxed uppercase tracking-widest opacity-80">
+             A rigorous visual study of form, typography, and human experience. Curated selection.
            </p>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 sm:gap-24 relative z-10">
+        {/* Updated Grid: 1 col on mobile, 2 on tablet, 3 on desktop for a smaller look */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 sm:gap-14 relative z-10">
            {PROJECTS.map((project, idx) => (
              <div 
                key={project.title}
                onClick={() => setActiveProject(project)}
-               className="group cursor-pointer space-y-8"
+               className="group cursor-pointer space-y-6"
              >
-                <div className="relative aspect-[4/5] sm:aspect-[3/4] bg-neutral-900 rounded-xl sm:rounded-2xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.7)] border-2 border-[#8A1800]/40 transition-all group-hover:border-[#8A1800]">
+                <div className="relative aspect-[4/5] bg-neutral-900 rounded-lg sm:rounded-xl overflow-hidden shadow-[0_15px_45px_rgba(0,0,0,0.7)] border-2 border-[#8A1800]/40 transition-all group-hover:border-[#8A1800]">
                    <ImageWithFallback 
                     src={project.image} 
                     alt={project.title} 
@@ -232,14 +233,14 @@ const App: React.FC = () => {
                    />
                    <div className="absolute inset-0 bg-black/60 group-hover:bg-[#8A1800]/20 transition-all" />
                 </div>
-                <div className="flex justify-between items-start pt-2">
-                   <div className="space-y-2">
-                      <h3 className="text-3xl sm:text-4xl font-serif-elegant uppercase tracking-tighter text-white group-hover:text-[#8A1800] transition-colors">{project.title}</h3>
-                      <p className="text-[10px] sm:text-xs font-bold text-[#8A1800] tracking-[0.4em] uppercase opacity-60">
+                <div className="flex justify-between items-start pt-1">
+                   <div className="space-y-1.5">
+                      <h3 className="text-2xl sm:text-3xl font-serif-elegant uppercase tracking-tighter text-white group-hover:text-[#8A1800] transition-colors">{project.title}</h3>
+                      <p className="text-[9px] sm:text-[10px] font-bold text-[#8A1800] tracking-[0.3em] uppercase opacity-60">
                         {project.category}
                       </p>
                    </div>
-                   <span className="font-serif-elegant italic text-xl sm:text-2xl text-[#8A1800]/40">0{idx + 1}</span>
+                   <span className="font-serif-elegant italic text-lg sm:text-xl text-[#8A1800]/40">0{idx + 1}</span>
                 </div>
              </div>
            ))}
