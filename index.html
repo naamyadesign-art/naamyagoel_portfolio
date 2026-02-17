@@ -11,6 +11,12 @@
       --bg-color: #050505;
       --accent-red: #8A1800;
     }
+    
+    * {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       padding: 0;
@@ -19,22 +25,23 @@
       font-family: 'Space Grotesk', sans-serif;
       color: #FFFFFF;
       scroll-behavior: smooth;
+      width: 100%;
     }
+
     .font-serif-elegant { font-family: 'Cormorant Garamond', serif; font-weight: 700; }
     .font-inter-black { font-family: 'Inter', sans-serif; font-weight: 900; }
     
     #root {
-      width: 100vw;
-      min-height: 100vh;
+      width: 100%;
+      min-height: 100dvh;
+      overflow-x: hidden;
     }
 
     .game-grid {
       background-image: 
-        linear-gradient(rgba(138, 24, 0, 0.15) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(138, 24, 0, 0.15) 1px, transparent 1px),
-        linear-gradient(rgba(138, 24, 0, 0.05) 0.5px, transparent 0.5px),
-        linear-gradient(90deg, rgba(138, 24, 0, 0.05) 0.5px, transparent 0.5px);
-      background-size: 40px 40px, 40px 40px, 10px 10px, 10px 10px;
+        linear-gradient(rgba(138, 24, 0, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(138, 24, 0, 0.08) 1px, transparent 1px);
+      background-size: 40px 40px;
       background-attachment: fixed;
     }
 
@@ -43,40 +50,31 @@
       -webkit-backface-visibility: hidden;
     }
 
-    .portfolio-text {
-      line-height: 0.8;
-      letter-spacing: -0.06em;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
-
     .f-italic {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
       font-weight: 500;
       display: inline-block;
-      transform: translateX(-0.18em);
-      margin-right: -0.15em;
+      transform: translateX(-0.12em);
+      margin-right: -0.1em;
     }
 
     @keyframes bounce-hand {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(15px); }
+      50% { transform: translateY(8px); }
     }
     .animate-hand {
       animation: bounce-hand 1.5s ease-in-out infinite;
     }
 
     .custom-scrollbar::-webkit-scrollbar {
-      width: 6px;
+      width: 4px;
     }
     .custom-scrollbar::-webkit-scrollbar-track {
-      background: rgba(138, 24, 0, 0.05);
+      background: transparent;
     }
     .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: rgba(138, 24, 0, 0.4);
+      background: var(--accent-red);
       border-radius: 10px;
     }
 
@@ -86,6 +84,17 @@
     .no-scrollbar {
       -ms-overflow-style: none;
       scrollbar-width: none;
+    }
+
+    @keyframes scan {
+      0% { transform: translateY(-100%); opacity: 0; }
+      10% { opacity: 0.8; }
+      90% { opacity: 0.8; }
+      100% { transform: translateY(300%); opacity: 0; }
+    }
+
+    .scan-line {
+      animation: scan 4s linear infinite;
     }
   </style>
 <script type="importmap">
