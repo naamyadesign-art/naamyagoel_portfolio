@@ -1,12 +1,13 @@
 
 import React, { useState } from 'react';
-import { Project, Section } from '../types';
+import { Project, Section, SectionType } from '../types';
 import { PROJECTS } from '../constants';
 import { getGhostResponse } from '../services/geminiService';
 
 interface ModalProps {
   onClose: () => void;
-  section?: Section;
+  // Fixed: Use SectionType instead of Section (value) to resolve TypeScript error
+  section?: SectionType;
 }
 
 const ImageWithFallback: React.FC<{ src: string; alt: string; className?: string }> = ({ src, alt, className }) => {
@@ -107,7 +108,8 @@ export const BioModal: React.FC<ModalProps> = ({ onClose }) => (
   </ModalWrapper>
 );
 
-export const ProjectsModal: React.FC<ModalProps & { category: Section }> = ({ onClose, category }) => {
+// Fixed: Use SectionType instead of Section (value) to resolve TypeScript error
+export const ProjectsModal: React.FC<ModalProps & { category: SectionType }> = ({ onClose, category }) => {
   const filtered = PROJECTS.filter(p => p.category === category);
 
   return (

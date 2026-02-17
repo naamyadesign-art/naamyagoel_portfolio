@@ -18,8 +18,7 @@ const ImageWithFallback: React.FC<{ src: string; alt: string; className?: string
 };
 
 const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ project, onClose }) => {
-  // Defensive check for category
-  const categoryLabel = typeof project.category === 'string' ? project.category : 'Project';
+  const categoryLabel = project.category || 'Work';
   const initial = categoryLabel.charAt(0);
 
   return (
@@ -95,7 +94,7 @@ const App: React.FC = () => {
       <section className="relative w-full h-screen flex items-center justify-center overflow-hidden p-6">
         
         {/* Decorative HUD Accents - Visible only when flipped */}
-        <div className={`absolute inset-0 z-0 pointer-events-none transition-all duration-700 ease-in-out ${isFlipped ? 'opacity-100' : 'opacity-0 scale-110'}`}>
+        <div className={`absolute inset-0 z-0 pointer-events-none transition-all duration-700 ease-in-out ${isFlipped ? 'opacity-100 scale-100' : 'opacity-0 scale-110'}`}>
           <div className="absolute top-10 left-10 w-24 h-24 border-t-2 border-l-2 border-[#8A1800]" />
           <div className="absolute top-10 right-10 w-24 h-24 border-t-2 border-r-2 border-[#8A1800]" />
           <div className="absolute bottom-10 left-10 w-24 h-24 border-b-2 border-l-2 border-[#8A1800]" />
@@ -110,25 +109,22 @@ const App: React.FC = () => {
 
         {/* 3D Flipping Card Container */}
         <div 
-          className="relative z-20 w-full max-w-4xl h-[70vh] cursor-pointer group"
+          className="relative z-20 w-full max-w-4xl h-[70vh] cursor-pointer"
           style={{ perspective: '2000px' }}
           onClick={() => setIsFlipped(!isFlipped)}
         >
           <div 
-            className={`relative w-full h-full transition-transform duration-1000 ease-out shadow-[0_50px_100px_rgba(0,0,0,0.9)]`}
+            className="relative w-full h-full transition-transform duration-1000 ease-out shadow-[0_50px_100px_rgba(0,0,0,0.9)]"
             style={{ 
               transformStyle: 'preserve-3d',
               transform: `rotateX(${cardRotateX}deg) rotateY(${cardRotateY + (isFlipped ? 180 : 0)}deg)`
             }}
           >
-            {/* FRONT SIDE - SMOOTH SATIN RED */}
+            {/* FRONT SIDE */}
             <div className="absolute inset-0 backface-hidden bg-[#8A1800] text-white p-8 sm:p-16 rounded overflow-hidden border-2 border-white/20 flex flex-col justify-between">
-              {/* Subtle Material Sheen */}
               <div 
-                className="absolute inset-0 pointer-events-none opacity-20 transition-opacity duration-300 group-hover:opacity-30"
-                style={{
-                  background: `radial-gradient(circle at ${glossX}% ${glossY}%, rgba(255,255,255,0.4) 0%, transparent 70%)`
-                }}
+                className="absolute inset-0 pointer-events-none opacity-20"
+                style={{ background: `radial-gradient(circle at ${glossX}% ${glossY}%, rgba(255,255,255,0.4) 0%, transparent 70%)` }}
               />
               
               <div className="relative z-10 flex flex-wrap gap-4 text-[8px] sm:text-[10px] font-black uppercase tracking-widest">
@@ -159,18 +155,18 @@ const App: React.FC = () => {
               </div>
             </div>
 
-            {/* BACK SIDE - SMOOTH MATTE BLACK */}
+            {/* BACK SIDE */}
             <div 
               className="absolute inset-0 backface-hidden bg-[#0A0A0A] text-white p-6 sm:p-12 rounded overflow-hidden border-2 border-[#8A1800] flex items-center justify-center"
               style={{ transform: 'rotateY(180deg)' }}
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 items-center w-full max-w-3xl z-10">
-                 <div className="relative group/pic order-1 flex justify-center">
+                 <div className="relative order-1 flex justify-center">
                     <div className="aspect-[3/4] w-full max-w-[280px] overflow-hidden border-2 border-[#8A1800] rounded-lg shadow-[0_0_40px_rgba(138,24,0,0.4)] bg-neutral-900 relative">
                        <ImageWithFallback 
                           src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=800" 
                           alt="Naamya Goel" 
-                          className="w-full h-full object-cover grayscale brightness-90 group-hover/pic:grayscale-0 transition-all duration-700"
+                          className="w-full h-full object-cover grayscale brightness-90 transition-all duration-700 hover:grayscale-0"
                        />
                        <div className="absolute top-0 left-0 w-full h-1 bg-[#8A1800] shadow-[0_0_15px_#8A1800] animate-[scan_3s_linear_infinite] pointer-events-none" />
                     </div>
@@ -240,7 +236,7 @@ const App: React.FC = () => {
                    <div className="space-y-2">
                       <h3 className="text-3xl sm:text-4xl font-serif-elegant uppercase tracking-tighter text-white group-hover:text-[#8A1800] transition-colors">{project.title}</h3>
                       <p className="text-[10px] sm:text-xs font-bold text-[#8A1800] tracking-[0.4em] uppercase opacity-60">
-                        {typeof project.category === 'string' ? project.category : 'Digital Work'}
+                        {project.category}
                       </p>
                    </div>
                    <span className="font-serif-elegant italic text-xl sm:text-2xl text-[#8A1800]/40">0{idx + 1}</span>

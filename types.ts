@@ -4,23 +4,24 @@ export type Position = {
   y: number;
 };
 
-export enum Section {
-  NONE = 'NONE',
-  ABOUT = 'ABOUT',
-  BRANDING = 'BRANDING',
-  MOTION = 'MOTION',
-  ILLUSTRATION = 'ILLUSTRATION',
-  TYPOGRAPHY = 'TYPOGRAPHY',
-  WEB = 'WEB',
-  EXPERIMENTAL = 'EXPERIMENTAL',
-  GHOST = 'GHOST'
-}
+export const Section = {
+  NONE: 'NONE',
+  ABOUT: 'ABOUT',
+  BRANDING: 'BRANDING',
+  MOTION: 'MOTION',
+  ILLUSTRATION: 'ILLUSTRATION',
+  TYPOGRAPHY: 'TYPOGRAPHY',
+  WEB: 'WEB',
+  EXPERIMENTAL: 'EXPERIMENTAL',
+  GHOST: 'GHOST'
+} as const;
 
-// Added 'badge' and 'tag' to StickerShape to fix type errors when these shapes are used or compared.
+export type SectionType = typeof Section[keyof typeof Section];
+
 export type StickerShape = 'star' | 'blob' | 'tape' | 'seal' | 'skew' | 'stamp' | 'bubble' | 'badge' | 'tag';
 
 export interface StickerDef {
-  id: Section;
+  id: SectionType;
   label: string;
   top: string;
   left: string;
@@ -28,12 +29,12 @@ export interface StickerDef {
   color: string;
   textColor: string;
   shapeType: StickerShape;
-  size: string; // Tailwind width class e.g. 'w-48'
+  size: string; 
 }
 
 export interface Project {
   title: string;
-  category: Section;
+  category: SectionType;
   tagline: string;
   description: string;
   image: string;
@@ -41,7 +42,7 @@ export interface Project {
 }
 
 export interface Landmark {
-  id: Section;
+  id: SectionType;
   name: string;
   x: number;
   y: number;
