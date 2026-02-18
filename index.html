@@ -43,9 +43,8 @@
         linear-gradient(90deg, rgba(138, 24, 0, 0.1) 1px, transparent 1px),
         linear-gradient(rgba(138, 24, 0, 0.03) 0.5px, transparent 0.5px),
         linear-gradient(90deg, rgba(138, 24, 0, 0.03) 0.5px, transparent 0.5px);
-      background-size: 20px 20px, 20px 20px, 5px 5px, 5px 5px;
+      background-size: 30px 30px, 30px 30px, 10px 10px, 10px 10px;
       background-attachment: fixed;
-      transition: background-color 1s ease, opacity 1s ease;
     }
 
     .backface-hidden {
@@ -59,13 +58,13 @@
       font-weight: 500;
       display: inline-block;
       /* Adjusted to create a visible gap between 't' and 'f' */
-      transform: translateX(0.02em);
-      margin-right: -0.1em;
+      transform: translateX(0.12em);
+      margin-right: 0.05em;
     }
 
     @keyframes bounce-hand {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(8px); }
+      50% { transform: translateY(12px); }
     }
     .animate-hand {
       animation: bounce-hand 1.5s ease-in-out infinite;
@@ -114,7 +113,7 @@
 }
 </script>
 </head>
-<body>
+<body class="game-grid">
   <div id="root"></div>
   <script type="module" src="./index.tsx"></script>
 </body>

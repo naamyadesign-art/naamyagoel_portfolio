@@ -12,7 +12,7 @@ interface ModalProps {
 
 const ImageWithFallback: React.FC<{ src: string; alt: string; className?: string }> = ({ src, alt, className }) => {
   const [error, setError] = useState(false);
-  const placeholder = "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=800";
+  const placeholder = "https://ibb.co/SwFWc9Dj";
   
   return (
     <img 

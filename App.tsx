@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Section, Project } from './types';
+import { Project } from './types';
 import { PROJECTS } from './constants';
 
 const ImageWithFallback: React.FC<{ src: string; alt: string; className?: string }> = ({ src, alt, className }) => {
   const [error, setError] = useState(false);
-  const placeholder = "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=800";
+  // Using me.jpg as the primary source with a high-quality creative placeholder as fallback
+  const placeholder = "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=800";
   
   return (
     <img 
@@ -89,7 +90,7 @@ const App: React.FC = () => {
   const glossY = (mousePos.y / (window.innerHeight || 1)) * 100;
 
   return (
-    <div className={`game-grid selection:bg-[#8A1800] selection:text-white min-h-[100dvh] w-full overflow-x-hidden transition-colors duration-1000 ${isFlipped ? 'bg-[#0F0505]' : 'bg-[#050505]'}`}>
+    <div className={`selection:bg-[#8A1800] selection:text-white min-h-[100dvh] w-full overflow-x-hidden transition-colors duration-1000 ${isFlipped ? 'bg-[#0F0505]' : 'bg-[#050505]'}`}>
       
       {/* Hero Section */}
       <section className={`relative w-full h-[100dvh] flex items-center justify-center overflow-hidden p-4 sm:p-10 transition-all duration-1000 ${isFlipped ? 'opacity-90' : 'opacity-100'}`}>
@@ -163,7 +164,7 @@ const App: React.FC = () => {
                  <div className="relative shrink-0 w-full max-w-[140px] sm:max-w-[280px]">
                     <div className="aspect-[3/4] w-full overflow-hidden border border-[#8A1800]/50 rounded-lg shadow-[0_0_40px_rgba(138,24,0,0.3)] bg-neutral-900 relative">
                        <ImageWithFallback 
-                          src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=800" 
+                          src="https://i.ibb.co/5hbtkfX0/Whats-App-Image-2026-01-28-at-11-56-33-AM.jpg" 
                           alt="Naamya Goel" 
                           className="w-full h-full object-cover grayscale brightness-75 hover:grayscale-0 hover:brightness-100 transition-all duration-700"
                        />
@@ -192,15 +193,17 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        {/* Scroll Prompt - Hand now pointing DOWN to indicate scroll-to-archive */}
+        {/* Scroll Prompt - Hand pointing DOWN */}
         <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 z-30 pointer-events-none">
-          <div className="animate-hand opacity-60 rotate-180">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8A1800" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="sm:w-8 sm:h-8">
-              <path d="M7 13V6a2 2 0 1 1 4 0v7" />
-              <path d="M11 13V4a2 2 0 1 1 4 0v9" />
-              <path d="M15 13V6a2 2 0 1 1 4 0v7" />
-              <path d="M19 13V11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2.17a2 2 0 0 1-1.42-.59l-4.41-4.41a2 2 0 0 1 2.83-2.83L11 15.17" />
-            </svg>
+          <div className="animate-hand opacity-60">
+            <div className="rotate-180">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8A1800" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="sm:w-8 sm:h-8">
+                <path d="M7 13V6a2 2 0 1 1 4 0v7" />
+                <path d="M11 13V4a2 2 0 1 1 4 0v9" />
+                <path d="M15 13V6a2 2 0 1 1 4 0v7" />
+                <path d="M19 13V11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2.17a2 2 0 0 1-1.42-.59l-4.41-4.41a2 2 0 0 1 2.83-2.83L11 15.17" />
+              </svg>
+            </div>
           </div>
           <span className="text-[6px] sm:text-[10px] font-black uppercase tracking-[0.3em] text-[#8A1800] drop-shadow-sm">Explore Archive</span>
         </div>
