@@ -16,13 +16,44 @@ const ImageWithFallback: React.FC<{ src: string; alt: string; className?: string
   );
 };
 
+const StickyImage: React.FC<{ src: string; alt: string }> = ({ src, alt }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const timeout = useRef<NodeJS.Timeout | null>(null);
+
+  const handleEnter = () => {
+    if (timeout.current) clearTimeout(timeout.current);
+    setIsHovered(true);
+  };
+
+  const handleLeave = () => {
+    timeout.current = setTimeout(() => setIsHovered(false), 2000);
+  };
+
+  return (
+    <div 
+      onMouseEnter={handleEnter} 
+      onMouseLeave={handleLeave}
+      className="relative aspect-[16/10] bg-neutral-900 rounded-xl overflow-hidden border border-white/5 shadow-2xl group cursor-crosshair"
+    >
+      <ImageWithFallback 
+        src={src} 
+        alt={alt} 
+        className={`w-full h-full object-cover transition-all duration-1000 ${isHovered ? 'grayscale-0 scale-105' : 'grayscale brightness-75 scale-100'}`} 
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+      <div className="absolute top-0 left-0 w-full h-[2px] bg-[#8A1800] shadow-[0_0_15px_#8A1800] scan-line pointer-events-none" />
+    </div>
+  );
+};
+
 const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ project, onClose }) => {
   const categoryLabel = project.category || 'Work';
   const initial = categoryLabel.charAt(0);
 
   return (
     <div className="fixed inset-0 z-[100] bg-[#050505] flex flex-col animate-in fade-in duration-500 overflow-y-auto custom-scrollbar text-white">
-      <div className="flex justify-between items-center p-4 sm:p-10 sticky top-0 bg-[#050505]/95 backdrop-blur-md z-10 border-b border-[#8A1800]/20">
+      {/* Header */}
+      <div className="flex justify-between items-center p-4 sm:p-10 sticky top-0 bg-[#050505]/95 backdrop-blur-md z-50 border-b border-[#8A1800]/20">
         <div className="flex items-center gap-3 sm:gap-4">
           <div className="w-8 h-8 sm:w-11 sm:h-11 bg-[#8A1800] rounded-full flex items-center justify-center text-white font-black text-[10px] sm:text-xl shadow-[0_0_15px_rgba(138,24,0,0.5)] shrink-0">
             {initial}
@@ -35,34 +66,50 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
         <button onClick={onClose} className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#8A1800]/10 hover:bg-[#8A1800] hover:text-white transition-all text-lg sm:text-2xl font-black shrink-0">×</button>
       </div>
 
-      <div className="max-w-6xl mx-auto w-full px-5 sm:px-8 py-6 sm:py-16 flex flex-col gap-6 sm:gap-16">
-        <div className="w-full aspect-[4/5] sm:aspect-[16/10] bg-neutral-900 rounded-xl sm:rounded-3xl overflow-hidden shadow-2xl border border-[#8A1800]/20">
-          <ImageWithFallback src={project.image} alt={project.title} className="w-full h-full object-cover" />
+      <div className="max-w-7xl mx-auto w-full px-5 sm:px-12 py-8 sm:py-20 flex flex-col gap-12 sm:gap-24">
+        
+        {/* TOP: Image Archive Grid */}
+        <div className="space-y-12">
+          <div className="flex justify-between items-end">
+            <div>
+              <p className="text-[9px] sm:text-xs font-black text-[#8A1800] tracking-[0.5em] uppercase mb-4">Visual Catalog // Primary & Supplementary</p>
+              <h3 className="text-2xl sm:text-5xl font-serif-elegant italic text-white leading-none">{project.tagline}</h3>
+            </div>
+            <span className="text-[8px] sm:text-[10px] font-black opacity-20 uppercase tracking-[0.2em]">Archive_State: Full</span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
+            <div className="md:col-span-2">
+               <StickyImage src={project.image} alt={project.title} />
+            </div>
+            {project.images?.map((img, i) => (
+              <div key={i} className={i === (project.images?.length || 0) - 1 && (project.images?.length || 0) % 2 !== 0 ? "md:col-span-2" : "md:col-span-1"}>
+                <StickyImage src={img} alt={`${project.title} archive ${i}`} />
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-20 items-start pb-20">
-          <div className="space-y-3 sm:space-y-8">
-            <p className="text-[9px] sm:text-lg font-bold text-[#8A1800] tracking-[0.4em] uppercase">{project.tagline}</p>
-            <p className="text-2xl sm:text-6xl font-inter-black leading-tight uppercase text-white tracking-tighter">{project.description}</p>
-          </div>
-          <div className="space-y-6 sm:space-y-12">
+        {/* BOTTOM: Info & Narrative (Centered and Sidebar-free) */}
+        <div className="border-t border-white/5 pt-12 sm:pt-24 flex justify-start">
+          <div className="max-w-4xl space-y-8 sm:space-y-12">
             <div>
-              <h4 className="text-[8px] sm:text-xs font-black uppercase tracking-widest text-[#8A1800]/60 mb-4">Core Index</h4>
-              <div className="flex flex-wrap gap-2">
-                {project.tech.map(t => (
-                  <span key={t} className="px-3 py-1 sm:px-4 sm:py-2 bg-[#8A1800]/5 border border-[#8A1800]/10 rounded-full text-[7px] sm:text-[10px] font-black uppercase tracking-widest">{t}</span>
-                ))}
-              </div>
+              <p className="text-[9px] sm:text-xs font-black text-[#8A1800] tracking-[0.5em] uppercase mb-6 sm:mb-10">Entry // The Narrative</p>
+              <h4 className="text-2xl sm:text-6xl font-serif-elegant leading-tight text-white/90">
+                {project.longDescription || project.description}
+              </h4>
             </div>
-            <div className="p-5 sm:p-10 border border-[#8A1800]/10 rounded-xl sm:rounded-3xl bg-white/[0.01] relative overflow-hidden">
-               <div className="absolute top-0 left-0 w-1 h-full bg-[#8A1800]/40" />
-              <p className="font-serif-elegant italic text-base sm:text-2xl text-white/70 leading-relaxed">
-                A definitive archival entry focusing on functional elegance and systemic visual logic.
-              </p>
+            
+            <div className="flex items-center gap-4 pt-4 sm:pt-8 opacity-40">
+               <div className="h-[1px] w-12 bg-[#8A1800]" />
+               <span className="text-[8px] sm:text-[10px] font-black uppercase tracking-[0.4em]">End of Log Entry</span>
             </div>
           </div>
         </div>
       </div>
+      
+      {/* Footer padding */}
+      <div className="h-24 sm:h-40" />
     </div>
   );
 };
@@ -90,7 +137,7 @@ const App: React.FC = () => {
   const handleProfileLeave = () => {
     stickyTimeout.current = setTimeout(() => {
       setIsStickyColor(false);
-    }, 2000); // Retain color for 2 seconds
+    }, 2000); 
   };
 
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
@@ -209,7 +256,7 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        {/* Scroll Prompt - Hand pointing DOWN */}
+        {/* Scroll Prompt */}
         <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 z-30 pointer-events-none">
           <div className="animate-hand opacity-60">
             <div className="rotate-180">

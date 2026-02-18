@@ -1,23 +1,12 @@
 
 import { GoogleGenAI } from "@google/genai";
 
-// Defensive check for the API key to prevent the app from crashing during initialization
-const getApiKey = () => {
-  try {
-    return process.env.API_KEY || "";
-  } catch (e) {
-    console.warn("API_KEY not found in process.env");
-    return "";
-  }
-};
-
-const apiKey = getApiKey();
-const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
+// Always use const ai = new GoogleGenAI({apiKey: process.env.API_KEY});
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const getGhostResponse = async (userMessage: string) => {
-  if (!ai) return "The digital link to the Oracle is currently offline.";
-  
   try {
+    // You must use ai.models.generateContent to query GenAI with both the model name and prompt.
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: userMessage,
@@ -26,6 +15,7 @@ export const getGhostResponse = async (userMessage: string) => {
         temperature: 0.9,
       }
     });
+    // Directly returns the string output using the .text property.
     return response.text || "The digital mist is too thick right now. Try again, human!";
   } catch (error) {
     console.error("Gemini Error:", error);

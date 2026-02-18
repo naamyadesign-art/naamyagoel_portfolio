@@ -37,7 +37,9 @@ export interface Project {
   category: SectionType;
   tagline: string;
   description: string;
+  longDescription?: string;
   image: string;
+  images?: string[];
   tech: string[];
 }
 
