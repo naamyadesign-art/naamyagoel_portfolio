@@ -80,7 +80,8 @@ const App: React.FC = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  const tiltFactor = isFlipped ? 0 : 4; 
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const tiltFactor = isFlipped ? 0 : (isMobile ? 1.5 : 4); 
   const cardRotateX = (mousePos.y / (window.innerHeight || 1) - 0.5) * tiltFactor;
   const cardRotateY = (mousePos.x / (window.innerWidth || 1) - 0.5) * -tiltFactor;
 
@@ -88,28 +89,28 @@ const App: React.FC = () => {
   const glossY = (mousePos.y / (window.innerHeight || 1)) * 100;
 
   return (
-    <div className="bg-[#050505] text-white selection:bg-[#8A1800] selection:text-white min-h-[100dvh] w-full overflow-x-hidden">
+    <div className={`game-grid selection:bg-[#8A1800] selection:text-white min-h-[100dvh] w-full overflow-x-hidden transition-colors duration-1000 ${isFlipped ? 'bg-[#0F0505]' : 'bg-[#050505]'}`}>
       
       {/* Hero Section */}
-      <section className="game-grid relative w-full h-[100dvh] flex items-center justify-center overflow-hidden p-4 sm:p-10">
+      <section className={`relative w-full h-[100dvh] flex items-center justify-center overflow-hidden p-4 sm:p-10 transition-all duration-1000 ${isFlipped ? 'opacity-90' : 'opacity-100'}`}>
         
         {/* HUD Elements */}
         <div className={`absolute inset-0 z-0 pointer-events-none transition-all duration-1000 ${isFlipped ? 'opacity-100 scale-100' : 'opacity-0 scale-110'}`}>
-          <div className="absolute top-6 left-6 sm:top-12 sm:left-12 w-12 h-12 sm:w-32 sm:h-32 border-t border-l border-[#8A1800]/30" />
-          <div className="absolute top-6 right-6 sm:top-12 sm:right-12 w-12 h-12 sm:w-32 sm:h-32 border-t border-r border-[#8A1800]/30" />
-          <div className="absolute bottom-6 left-6 sm:bottom-12 sm:left-12 w-12 h-12 sm:w-32 sm:h-32 border-b border-l border-[#8A1800]/30" />
-          <div className="absolute bottom-6 right-6 sm:bottom-12 sm:right-12 w-12 h-12 sm:w-32 sm:h-32 border-b border-r border-[#8A1800]/30" />
+          <div className="absolute top-6 left-6 sm:top-12 sm:left-12 w-12 h-12 sm:w-32 sm:h-32 border-t border-l border-[#8A1800]/50" />
+          <div className="absolute top-6 right-6 sm:top-12 sm:right-12 w-12 h-12 sm:w-32 sm:h-32 border-t border-r border-[#8A1800]/50" />
+          <div className="absolute bottom-6 left-6 sm:bottom-12 sm:left-12 w-12 h-12 sm:w-32 sm:h-32 border-b border-l border-[#8A1800]/50" />
+          <div className="absolute bottom-6 right-6 sm:bottom-12 sm:right-12 w-12 h-12 sm:w-32 sm:h-32 border-b border-r border-[#8A1800]/50" />
         </div>
 
         {/* Header */}
         <div className="absolute top-6 w-full flex justify-between px-6 sm:px-12 text-[7px] sm:text-[10px] font-black uppercase tracking-[0.4em] text-[#8A1800] z-30 pointer-events-none">
-          <span className="border-b border-[#8A1800]/30 pb-1">NAAMYA GOEL</span>
-          <span className="opacity-40">EDITION_2.5</span>
+          <span className="border-b border-[#8A1800]/40 pb-1">NAAMYA GOEL</span>
+          <span className="opacity-60">SYSTEM_v2.5</span>
         </div>
 
         {/* The Card Container */}
         <div 
-          className="relative z-20 w-full max-w-4xl h-[60dvh] sm:h-[75dvh] scale-[0.9] sm:scale-100 transition-transform duration-500"
+          className="relative z-20 w-full max-w-4xl h-[50dvh] sm:h-[75dvh] scale-[0.75] sm:scale-100 transition-transform duration-500 cursor-pointer"
           style={{ perspective: '2000px' }}
           onClick={() => setIsFlipped(!isFlipped)}
         >
@@ -121,9 +122,9 @@ const App: React.FC = () => {
             }}
           >
             {/* FRONT SIDE */}
-            <div className="absolute inset-0 backface-hidden bg-[#8A1800] text-white p-6 sm:p-20 rounded-2xl overflow-hidden border border-white/5 flex flex-col justify-between select-none">
+            <div className="absolute inset-0 backface-hidden bg-[#8A1800] text-white p-6 sm:p-20 rounded-2xl overflow-hidden border border-white/10 flex flex-col justify-between select-none shadow-[inset_0_0_100px_rgba(0,0,0,0.3)]">
               <div 
-                className="absolute inset-0 pointer-events-none opacity-20"
+                className="absolute inset-0 pointer-events-none opacity-30"
                 style={{ background: `radial-gradient(circle at ${glossX}% ${glossY}%, rgba(255,255,255,0.4) 0%, transparent 70%)` }}
               />
               
@@ -134,18 +135,18 @@ const App: React.FC = () => {
               </div>
 
               <div className="relative z-10 flex flex-col items-center justify-center flex-1">
-                <h1 className="font-serif-elegant whitespace-nowrap text-white drop-shadow-[0_8px_20px_rgba(0,0,0,0.4)] flex items-center leading-none" 
-                    style={{ fontSize: 'clamp(3rem, 18vw, 11rem)', letterSpacing: '-0.04em' }}>
+                <h1 className="font-serif-elegant whitespace-nowrap text-white drop-shadow-[0_8px_20px_rgba(0,0,0,0.5)] flex items-center leading-none" 
+                    style={{ fontSize: 'clamp(2.4rem, 14vw, 11rem)', letterSpacing: '-0.02em' }}>
                   port<span className="f-italic">f</span>olio
                 </h1>
               </div>
 
               <div className="relative z-10 flex justify-between items-end gap-6 sm:gap-10">
                 <div className="max-w-[130px] sm:max-w-xs space-y-2">
-                  <p className="text-[6px] sm:text-[10px] leading-relaxed font-black uppercase tracking-widest opacity-70">
+                  <p className="text-[6px] sm:text-[10px] leading-relaxed font-black uppercase tracking-widest opacity-80">
                     A curated archive of creative systems and visual artifacts.
                   </p>
-                  <span className="block font-black text-[#FFD700] uppercase text-[6px] sm:text-[9px] tracking-[0.2em] animate-pulse">Tap to Open</span>
+                  <span className="block font-black text-[#FFD700] uppercase text-[6px] sm:text-[9px] tracking-[0.2em] animate-pulse">Tap to Access</span>
                 </div>
                 <div className="text-2xl sm:text-6xl font-serif-elegant leading-none opacity-20 italic shrink-0">
                   NG
@@ -155,12 +156,12 @@ const App: React.FC = () => {
 
             {/* BACK SIDE */}
             <div 
-              className="absolute inset-0 backface-hidden bg-[#0A0A0A] text-white p-5 sm:p-12 rounded-2xl overflow-hidden border border-[#8A1800]/30 flex items-center justify-center select-none"
+              className="absolute inset-0 backface-hidden bg-[#0A0A0A] text-white p-5 sm:p-12 rounded-2xl overflow-hidden border border-[#8A1800]/50 flex items-center justify-center select-none shadow-[inset_0_0_80px_rgba(138,24,0,0.1)]"
               style={{ transform: 'rotateY(180deg)' }}
             >
               <div className="flex flex-col md:flex-row gap-6 sm:gap-16 items-center w-full max-w-4xl z-10 h-full overflow-y-auto no-scrollbar py-6 md:py-0">
-                 <div className="relative shrink-0 w-full max-w-[160px] sm:max-w-[280px]">
-                    <div className="aspect-[3/4] w-full overflow-hidden border border-[#8A1800]/40 rounded-lg shadow-[0_0_40px_rgba(138,24,0,0.15)] bg-neutral-900 relative">
+                 <div className="relative shrink-0 w-full max-w-[140px] sm:max-w-[280px]">
+                    <div className="aspect-[3/4] w-full overflow-hidden border border-[#8A1800]/50 rounded-lg shadow-[0_0_40px_rgba(138,24,0,0.3)] bg-neutral-900 relative">
                        <ImageWithFallback 
                           src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=800" 
                           alt="Naamya Goel" 
@@ -172,36 +173,36 @@ const App: React.FC = () => {
 
                  <div className="space-y-3 sm:space-y-6 text-center md:text-left">
                     <div className="space-y-1">
-                      <span className="text-[7px] sm:text-[10px] font-black text-[#8A1800] tracking-[0.4em] uppercase opacity-70">Digital_Architect</span>
+                      <span className="text-[7px] sm:text-[10px] font-black text-[#8A1800] tracking-[0.4em] uppercase opacity-80">Digital_Architect</span>
                       <h2 className="text-2xl sm:text-6xl font-serif-elegant uppercase leading-none text-white tracking-tighter">Naamya Goel</h2>
                     </div>
-                    <p className="text-[9px] sm:text-base font-black leading-relaxed opacity-50 uppercase tracking-tight max-w-sm mx-auto md:mx-0">
+                    <p className="text-[9px] sm:text-base font-black leading-relaxed opacity-60 uppercase tracking-tight max-w-sm mx-auto md:mx-0">
                        Melding creative intuition with systemic precision. Crafting digital artifacts that live within high-end visual frameworks.
                     </p>
                     <div className="flex items-center justify-center md:justify-start gap-4 pt-1">
-                       <span className="h-[2px] w-8 sm:w-12 bg-[#8A1800]/30" />
+                       <span className="h-[2px] w-8 sm:w-12 bg-[#8A1800]/50" />
                        <span className="text-[7px] sm:text-[11px] font-black text-[#8A1800] tracking-widest uppercase">Archive 2025</span>
                     </div>
                  </div>
               </div>
 
-              <div className="absolute bottom-4 left-6 text-[5px] sm:text-[8px] font-black tracking-widest opacity-30 uppercase">STATUS // ACTIVE</div>
-              <div className="absolute top-4 right-6 text-[5px] sm:text-[8px] font-black tracking-widest opacity-30 uppercase">CLOSE // CARD</div>
+              <div className="absolute bottom-4 left-6 text-[5px] sm:text-[8px] font-black tracking-widest opacity-40 uppercase">STATUS // ACTIVE</div>
+              <div className="absolute top-4 right-6 text-[5px] sm:text-[8px] font-black tracking-widest opacity-40 uppercase">CLOSE // CARD</div>
             </div>
           </div>
         </div>
 
-        {/* Scroll Prompt */}
+        {/* Scroll Prompt - Hand now pointing DOWN to indicate scroll-to-archive */}
         <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 z-30 pointer-events-none">
-          <div className="animate-hand opacity-40">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A1800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="sm:w-8 sm:h-8">
+          <div className="animate-hand opacity-60 rotate-180">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8A1800" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="sm:w-8 sm:h-8">
               <path d="M7 13V6a2 2 0 1 1 4 0v7" />
               <path d="M11 13V4a2 2 0 1 1 4 0v9" />
               <path d="M15 13V6a2 2 0 1 1 4 0v7" />
               <path d="M19 13V11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2.17a2 2 0 0 1-1.42-.59l-4.41-4.41a2 2 0 0 1 2.83-2.83L11 15.17" />
             </svg>
           </div>
-          <span className="text-[6px] sm:text-[9px] font-black uppercase tracking-[0.3em] text-[#8A1800]/40">Explore Index</span>
+          <span className="text-[6px] sm:text-[10px] font-black uppercase tracking-[0.3em] text-[#8A1800] drop-shadow-sm">Explore Archive</span>
         </div>
       </section>
 
@@ -209,10 +210,10 @@ const App: React.FC = () => {
       <section className="max-w-7xl mx-auto px-6 sm:px-12 py-16 sm:py-32 relative">
         <header className="mb-10 sm:mb-20 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 sm:gap-8 relative z-10">
            <div className="space-y-3">
-              <span className="text-white bg-[#8A1800] font-black tracking-[0.5em] uppercase text-[7px] sm:text-[10px] px-3 py-1 border border-white/5">ARCHIVE_V1</span>
+              <span className="text-white bg-[#8A1800] font-black tracking-[0.5em] uppercase text-[7px] sm:text-[10px] px-3 py-1 border border-white/5 shadow-lg">ARCHIVE_V1</span>
               <h2 className="text-3xl sm:text-8xl font-serif-elegant tracking-tighter text-white uppercase leading-none">Selected Works</h2>
            </div>
-           <p className="max-w-[240px] sm:max-w-md text-white font-black text-[8px] sm:text-sm leading-relaxed uppercase tracking-widest opacity-40 border-l border-[#8A1800]/40 pl-5">
+           <p className="max-w-[240px] sm:max-w-md text-white font-black text-[8px] sm:text-sm leading-relaxed uppercase tracking-widest opacity-60 border-l border-[#8A1800] pl-5">
              A rigorous visual study of form, typography, and functional experience within modern digital systems.
            </p>
         </header>
@@ -224,7 +225,7 @@ const App: React.FC = () => {
                onClick={() => setActiveProject(project)}
                className="group cursor-pointer space-y-4"
              >
-                <div className="relative aspect-[4/5] bg-neutral-900 rounded-lg overflow-hidden shadow-xl border border-[#8A1800]/5 transition-all group-hover:border-[#8A1800]/50 group-hover:shadow-[0_15px_40px_rgba(138,24,0,0.15)]">
+                <div className="relative aspect-[4/5] bg-neutral-900 rounded-lg overflow-hidden shadow-xl border border-[#8A1800]/10 transition-all group-hover:border-[#8A1800] group-hover:shadow-[0_15px_40px_rgba(138,24,0,0.3)]">
                    <ImageWithFallback 
                     src={project.image} 
                     alt={project.title} 
@@ -238,11 +239,11 @@ const App: React.FC = () => {
                 <div className="flex justify-between items-start px-1">
                    <div className="space-y-0.5">
                       <h3 className="text-lg sm:text-2xl font-serif-elegant uppercase tracking-tighter text-white group-hover:text-[#8A1800] transition-colors leading-none">{project.title}</h3>
-                      <p className="text-[7px] sm:text-[9px] font-bold text-[#8A1800] tracking-[0.1em] uppercase opacity-40 mt-1.5">
+                      <p className="text-[7px] sm:text-[9px] font-bold text-[#8A1800] tracking-[0.1em] uppercase opacity-50 mt-1.5">
                         {project.category}
                       </p>
                    </div>
-                   <span className="font-serif-elegant italic text-base sm:text-xl text-[#8A1800]/20 group-hover:text-[#8A1800] transition-colors leading-none">0{idx + 1}</span>
+                   <span className="font-serif-elegant italic text-base sm:text-xl text-[#8A1800]/40 group-hover:text-[#8A1800] transition-colors leading-none">0{idx + 1}</span>
                 </div>
              </div>
            ))}
@@ -250,16 +251,16 @@ const App: React.FC = () => {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-[#8A1800]/10 py-16 sm:py-32 px-6 sm:px-12 text-center bg-[#030303] relative overflow-hidden">
+      <footer className="border-t border-[#8A1800]/20 py-16 sm:py-32 px-6 sm:px-12 text-center bg-[#030303] relative overflow-hidden">
          <div className="max-w-4xl mx-auto space-y-8 sm:space-y-16 relative z-10">
             <h4 className="text-2xl sm:text-6xl font-serif-elegant tracking-tighter text-white uppercase leading-none">Initiate Dialogue</h4>
             <div className="flex flex-wrap justify-center gap-6 sm:gap-16 font-black uppercase tracking-[0.3em] text-[8px] sm:text-xs text-[#8A1800]">
-               <a href="#" className="hover:text-white transition-all underline underline-offset-[10px] decoration-[#8A1800]/40 decoration-1">Email</a>
-               <a href="#" className="hover:text-white transition-all underline underline-offset-[10px] decoration-[#8A1800]/40 decoration-1">Instagram</a>
-               <a href="#" className="hover:text-white transition-all underline underline-offset-[10px] decoration-[#8A1800]/40 decoration-1">LinkedIn</a>
+               <a href="#" className="hover:text-white transition-all underline underline-offset-[10px] decoration-[#8A1800] decoration-1">Email</a>
+               <a href="#" className="hover:text-white transition-all underline underline-offset-[10px] decoration-[#8A1800] decoration-1">Instagram</a>
+               <a href="#" className="hover:text-white transition-all underline underline-offset-[10px] decoration-[#8A1800] decoration-1">LinkedIn</a>
             </div>
             <div className="pt-10">
-              <p className="text-[6px] sm:text-[10px] text-[#8A1800] uppercase tracking-[0.4em] opacity-20 font-black">Archive Protected // 2025 © Naamya Goel</p>
+              <p className="text-[6px] sm:text-[10px] text-[#8A1800] uppercase tracking-[0.4em] opacity-30 font-black">Archive Protected // 2025 © Naamya Goel</p>
             </div>
          </div>
          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] aspect-square bg-[#8A1800]/5 rounded-full blur-[100px] pointer-events-none" />

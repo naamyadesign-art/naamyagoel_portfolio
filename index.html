@@ -39,10 +39,13 @@
 
     .game-grid {
       background-image: 
-        linear-gradient(rgba(138, 24, 0, 0.08) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(138, 24, 0, 0.08) 1px, transparent 1px);
-      background-size: 40px 40px;
+        linear-gradient(rgba(138, 24, 0, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(138, 24, 0, 0.1) 1px, transparent 1px),
+        linear-gradient(rgba(138, 24, 0, 0.03) 0.5px, transparent 0.5px),
+        linear-gradient(90deg, rgba(138, 24, 0, 0.03) 0.5px, transparent 0.5px);
+      background-size: 20px 20px, 20px 20px, 5px 5px, 5px 5px;
       background-attachment: fixed;
+      transition: background-color 1s ease, opacity 1s ease;
     }
 
     .backface-hidden {
@@ -55,7 +58,8 @@
       font-style: italic;
       font-weight: 500;
       display: inline-block;
-      transform: translateX(-0.12em);
+      /* Adjusted to create a visible gap between 't' and 'f' */
+      transform: translateX(0.02em);
       margin-right: -0.1em;
     }
 
