@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Project } from './types';
 import { PROJECTS } from './constants';
 
 const ImageWithFallback: React.FC<{ src: string; alt: string; className?: string }> = ({ src, alt, className }) => {
   const [error, setError] = useState(false);
-  // Using me.jpg as the primary source with a high-quality creative placeholder as fallback
   const placeholder = "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=800";
   
   return (
@@ -72,6 +71,8 @@ const App: React.FC = () => {
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [isFlipped, setIsFlipped] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isStickyColor, setIsStickyColor] = useState(false);
+  const stickyTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -80,6 +81,17 @@ const App: React.FC = () => {
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
+
+  const handleProfileEnter = () => {
+    if (stickyTimeout.current) clearTimeout(stickyTimeout.current);
+    setIsStickyColor(true);
+  };
+
+  const handleProfileLeave = () => {
+    stickyTimeout.current = setTimeout(() => {
+      setIsStickyColor(false);
+    }, 2000); // Retain color for 2 seconds
+  };
 
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
   const tiltFactor = isFlipped ? 0 : (isMobile ? 1.5 : 4); 
@@ -162,11 +174,15 @@ const App: React.FC = () => {
             >
               <div className="flex flex-col md:flex-row gap-6 sm:gap-16 items-center w-full max-w-4xl z-10 h-full overflow-y-auto no-scrollbar py-6 md:py-0">
                  <div className="relative shrink-0 w-full max-w-[140px] sm:max-w-[280px]">
-                    <div className="aspect-[3/4] w-full overflow-hidden border border-[#8A1800]/50 rounded-lg shadow-[0_0_40px_rgba(138,24,0,0.3)] bg-neutral-900 relative">
+                    <div 
+                      onMouseEnter={handleProfileEnter}
+                      onMouseLeave={handleProfileLeave}
+                      className="aspect-[3/4] w-full overflow-hidden border border-[#8A1800]/50 rounded-lg shadow-[0_0_40px_rgba(138,24,0,0.3)] bg-neutral-900 relative cursor-crosshair"
+                    >
                        <ImageWithFallback 
                           src="https://i.ibb.co/5hbtkfX0/Whats-App-Image-2026-01-28-at-11-56-33-AM.jpg" 
                           alt="Naamya Goel" 
-                          className="w-full h-full object-cover grayscale brightness-75 hover:grayscale-0 hover:brightness-100 transition-all duration-700"
+                          className={`w-full h-full object-cover transition-all duration-1000 ${isStickyColor ? 'grayscale-0 brightness-110 scale-105' : 'grayscale brightness-90 scale-100'}`}
                        />
                        <div className="absolute top-0 left-0 w-full h-[2px] bg-[#8A1800] shadow-[0_0_15px_#8A1800] scan-line pointer-events-none" />
                     </div>
