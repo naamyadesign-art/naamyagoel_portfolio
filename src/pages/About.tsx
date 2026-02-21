@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Mail, Instagram, Linkedin, MapPin, Cpu, Palette, Figma, Code2, Layers, Zap, Box, GitBranch } from 'lucide-react';
+import { Mail, Instagram, Linkedin, MapPin, Cpu, Figma, Palette, Globe, Terminal } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { TOOLS } from '../../constants';
 
@@ -90,7 +90,7 @@ const About: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[#8A1800]/10 border border-[#8A1800]/10">
             {TOOLS.map((tool, idx) => {
-              const Icon = [Palette, Figma, Code2, Code2, Layers, Zap, Box, GitBranch][idx % 8];
+              const Icon = [Figma, Palette, Globe, Terminal][idx % 4];
               return (
                 <div key={tool.name} className="bg-[#050505]/80 backdrop-blur-sm p-8 group hover:bg-[#8A1800]/5 transition-all duration-500 relative overflow-hidden">
                   <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#8A1800]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />

@@ -32,6 +32,13 @@ export interface StickerDef {
   size: string; 
 }
 
+export interface Variation {
+  title: string;
+  description: string;
+  images: string[];
+  layoutType?: 'default' | 'a3-a4';
+}
+
 export interface Project {
   title: string;
   category: SectionType;
@@ -41,6 +48,8 @@ export interface Project {
   image: string;
   images?: string[];
   tech: string[];
+  link?: string;
+  variations?: Variation[];
 }
 
 export interface Landmark {

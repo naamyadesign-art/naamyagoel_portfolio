@@ -18,7 +18,7 @@ const ImageWithFallback: React.FC<{ src: string; alt: string; className?: string
   );
 };
 
-const StickyImage: React.FC<{ src: string; alt: string }> = ({ src, alt }) => {
+const StickyImage: React.FC<{ src: string; alt: string; aspectRatio?: string }> = ({ src, alt, aspectRatio = "aspect-[16/10]" }) => {
   const [isHovered, setIsHovered] = useState(false);
   const timeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -35,7 +35,7 @@ const StickyImage: React.FC<{ src: string; alt: string }> = ({ src, alt }) => {
     <div 
       onMouseEnter={handleEnter} 
       onMouseLeave={handleLeave}
-      className="relative aspect-[16/10] bg-neutral-900 rounded-xl overflow-hidden border border-white/5 shadow-2xl group cursor-crosshair"
+      className={`relative ${aspectRatio} bg-neutral-900 rounded-xl overflow-hidden border border-white/5 shadow-2xl group cursor-crosshair`}
     >
       <ImageWithFallback 
         src={src} 
@@ -82,7 +82,16 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
             <div className="md:col-span-2">
-               <StickyImage src={project.image} alt={project.title} />
+               {project.link ? (
+                 <a href={project.link} target="_blank" rel="noopener noreferrer" className="block group/link relative">
+                   <StickyImage src={project.image} alt={project.title} />
+                   <div className="absolute top-4 right-4 z-20 opacity-0 group-hover/link:opacity-100 transition-opacity bg-[#8A1800] text-white px-3 py-1 rounded text-[8px] font-black uppercase tracking-widest flex items-center gap-2">
+                     Visit Site <span className="text-xs">↗</span>
+                   </div>
+                 </a>
+               ) : (
+                 <StickyImage src={project.image} alt={project.title} />
+               )}
             </div>
             {project.images?.map((img, i) => (
               <div key={i} className={i === (project.images?.length || 0) - 1 && (project.images?.length || 0) % 2 !== 0 ? "md:col-span-2" : "md:col-span-1"}>
@@ -93,7 +102,7 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
         </div>
 
         {/* BOTTOM: Info & Narrative (Centered and Sidebar-free) */}
-        <div className="border-t border-white/5 pt-12 sm:pt-24 flex justify-start">
+        <div className="border-t border-white/5 pt-12 sm:pt-24 flex flex-col gap-16 sm:gap-32">
           <div className="max-w-4xl space-y-8 sm:space-y-12">
             <div>
               <p className="text-[9px] sm:text-xs font-black text-[#8A1800] tracking-[0.5em] uppercase mb-6 sm:mb-10">Entry // The Narrative</p>
@@ -101,11 +110,43 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
                 {project.longDescription || project.description}
               </h4>
             </div>
-            
-            <div className="flex items-center gap-4 pt-4 sm:pt-8 opacity-40">
-               <div className="h-[1px] w-12 bg-[#8A1800]" />
-               <span className="text-[8px] sm:text-[10px] font-black uppercase tracking-[0.4em]">End of Log Entry</span>
+          </div>
+
+          {project.variations && (
+            <div className="space-y-24 sm:space-y-40">
+              {project.variations.map((variation, vIdx) => (
+                <div key={vIdx} className="space-y-10 sm:space-y-16">
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+                    <div className="space-y-4">
+                      <span className="text-[8px] sm:text-[10px] font-black text-[#8A1800] tracking-[0.4em] uppercase">Variation_0{vIdx + 1}</span>
+                      <h5 className="text-2xl sm:text-5xl font-serif-elegant italic text-white">{variation.title}</h5>
+                    </div>
+                    <p className="max-w-md text-xs sm:text-sm font-sans text-white/60 leading-relaxed">
+                      {variation.description}
+                    </p>
+                  </div>
+                  <div className={`grid grid-cols-1 ${variation.layoutType === 'a3-a4' ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-6 sm:gap-10`}>
+                    {variation.images.map((img, iIdx) => (
+                      <div key={iIdx} className={`space-y-4 ${variation.layoutType === 'a3-a4' ? (iIdx === 0 ? 'md:col-span-2' : 'md:col-span-1') : ''}`}>
+                        <StickyImage 
+                          src={img} 
+                          alt={`${variation.title} - ${iIdx === 0 ? 'Mockup' : 'Illustration'}`} 
+                          aspectRatio={variation.layoutType === 'a3-a4' ? (iIdx === 0 ? 'aspect-[1.414/1]' : 'aspect-[1/1.414]') : 'aspect-[16/10]'}
+                        />
+                        <p className="text-[7px] sm:text-[9px] font-black uppercase tracking-[0.2em] opacity-30">
+                          {iIdx === 0 ? 'Physical_Mockup' : 'Digital_Illustration'} // Archive_Ref: {vIdx}-{iIdx}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
+          )}
+          
+          <div className="flex items-center gap-4 pt-4 sm:pt-8 opacity-40">
+             <div className="h-[1px] w-12 bg-[#8A1800]" />
+             <span className="text-[8px] sm:text-[10px] font-black uppercase tracking-[0.4em]">End of Log Entry</span>
           </div>
         </div>
       </div>
@@ -326,7 +367,7 @@ const Home: React.FC = () => {
                onClick={() => setActiveProject(project)}
                className="group cursor-pointer space-y-4"
              >
-                <div className="relative aspect-[4/5] bg-neutral-900 rounded-lg overflow-hidden shadow-xl border border-[#8A1800]/10 transition-all group-hover:border-[#8A1800] group-hover:shadow-[0_15px_40px_rgba(138,24,0,0.3)]">
+                <div className="relative aspect-square bg-neutral-900 rounded-lg overflow-hidden shadow-xl border border-[#8A1800]/10 transition-all group-hover:border-[#8A1800] group-hover:shadow-[0_15px_40px_rgba(138,24,0,0.3)]">
                    <ImageWithFallback 
                     src={project.image} 
                     alt={project.title} 
