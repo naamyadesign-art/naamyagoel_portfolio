@@ -97,7 +97,7 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
           <div className="max-w-4xl space-y-8 sm:space-y-12">
             <div>
               <p className="text-[9px] sm:text-xs font-black text-[#8A1800] tracking-[0.5em] uppercase mb-6 sm:mb-10">Entry // The Narrative</p>
-              <h4 className="text-2xl sm:text-6xl font-serif-elegant leading-tight text-white/90">
+              <h4 className="text-sm sm:text-lg font-sans leading-relaxed text-white/80 max-w-2xl">
                 {project.longDescription || project.description}
               </h4>
             </div>

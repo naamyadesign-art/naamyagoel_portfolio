@@ -36,7 +36,7 @@ const About: React.FC = () => {
               </h1>
             </div>
             
-            <p className="text-lg sm:text-2xl font-serif-elegant text-white/70 leading-relaxed max-w-xl italic">
+            <p className="text-sm sm:text-lg font-sans text-white/70 leading-relaxed max-w-xl">
               "A digital architect bridging the gap between raw technical systems and refined visual narratives."
             </p>
 

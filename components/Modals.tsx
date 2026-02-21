@@ -86,7 +86,7 @@ export const BioModal: React.FC<ModalProps> = ({ onClose }) => {
           <p className="text-3xl sm:text-5xl leading-tight font-black text-black">
             Designing the <span className="text-[#8A1800] italic font-serif-elegant">unexpected</span> with technical precision.
           </p>
-          <p className="text-lg text-black/60 leading-relaxed font-medium">
+          <p className="text-base text-black/60 leading-relaxed font-medium">
             I'm a creative technologist focused on building experiences that feel tactile, bold, and human. My work bridges the gap between high-end editorial logic and digital wonder.
           </p>
           
@@ -141,7 +141,7 @@ export const ProjectsModal: React.FC<ModalProps & { category: SectionType }> = (
                  <h3 className="text-4xl sm:text-6xl font-black uppercase">{project.title}</h3>
               </div>
               <p className="text-lg font-bold text-[#8A1800] tracking-widest uppercase italic">{project.tagline}</p>
-              <p className="text-black/60 text-xl leading-relaxed font-medium max-w-3xl">{project.description}</p>
+              <p className="text-black/60 text-base leading-relaxed font-medium max-w-3xl">{project.description}</p>
               
               <div className="flex flex-wrap gap-4 pt-4">
                 {project.tech.map(t => (

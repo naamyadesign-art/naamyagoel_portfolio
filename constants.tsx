@@ -6,31 +6,30 @@ export const WORLD_HEIGHT = 3000;
 
 export const PROJECTS: Project[] = [
   {
-    title: "Eco Branding 2024",
+    title: "Photobooth Website 2025",
+    category: Section.WEB,
+    tagline: "Interactive Digital Experience",
+    description: "A high-end interactive platform for a modern photobooth service.",
+    longDescription: "Vintage Photobooth Web Experience is an interactive web design project that explores nostalgia, immersion, and playful storytelling through a digital interface. Inspired by classic carnival photobooths and old cinema aesthetics, the website transforms a simple camera interaction into a full experiential journey. Users step into a virtual booth, choose from multiple photostrip presets — including cinematic film rolls, retro strips, ticket frames, and postcard-inspired layouts — capture photos through a guided booth flow, and download stylized outputs. The project combines UI/UX design, visual identity, and creative coding to recreate the emotional charm of analog photobooths within a contemporary web environment. Through warm textures, grain overlays, and theatrical visuals, the goal was to design an experience that feels tactile, nostalgic, and memorable rather than purely functional.",
+    image: "https://i.ibb.co/JjbnNJTL/photoboothbynaamya-vercel-app.png",
+    images: [
+      "https://i.ibb.co/qFkpzkfL/photoboothbynaamya-vercel-app-1.png",
+      "https://i.ibb.co/LDF0KHWj/photoboothbynaamya-vercel-app-2.png"
+    ],
+    tech: ["React", "WebGL", "UI/UX Design"]
+  },
+  {
+    title: "Clive Road No. 3 Packaging 2025",
     category: Section.BRANDING,
-    tagline: "Sustainable Identity",
-    description: "A complete visual identity project for a renewable energy startup.",
-    longDescription: "This project explores the intersection of organic forms and industrial precision. We developed a custom modular typeface and a color system derived from satellite imagery of protected biomes. The goal was to move away from typical 'green' tropes toward a high-end, architectural interpretation of sustainability.",
+    tagline: "Luxury Goods Packaging",
+    description: "Bespoke packaging design for an artisanal product line.",
+    longDescription: "Clive Road No. 3 is a study in material honesty and typographic elegance. The packaging uses a combination of debossed textures and metallic foils to create a multi-sensory experience. The layout is strictly grid-based, referencing classical pharmaceutical labels but updated with a contemporary, minimalist aesthetic.",
     image: "https://images.unsplash.com/photo-1586717791821-3f44a563eb4c?auto=format&fit=crop&q=80&w=1200",
     images: [
       "https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1634942537034-2531766767d1?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&q=80&w=800"
+      "https://images.unsplash.com/photo-1634942537034-2531766767d1?auto=format&fit=crop&q=80&w=800"
     ],
-    tech: ["Illustrator", "Branding", "Concept Strategy"]
-  },
-  {
-    title: "Cyberpunk Type",
-    category: Section.TYPOGRAPHY,
-    tagline: "Variable Font Experiments",
-    description: "An exploration of variable fonts in a futuristic context.",
-    longDescription: "A study in fluid legibility. Using OpenType variable features, we created a typeface that reacts to UI states. As the user scrolls or interacts, the weight and slant of the characters shift to mirror the physical friction of a digital interface.",
-    image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=1200",
-    images: [
-      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?auto=format&fit=crop&q=80&w=800"
-    ],
-    tech: ["Glyphs App", "CSS Variable Fonts", "Motion Design"]
+    tech: ["Packaging Design", "Typography", "Print Production"]
   },
   {
     title: "Neon Interface",
