@@ -24,17 +24,26 @@ export const PROJECTS: Project[] = [
     category: Section.BRANDING,
     tagline: "Clive Road No. 3",
     description: "Bespoke packaging design for an artisanal product line.",
-    longDescription: "Clive Road No. 3 is a study in material honesty and typographic elegance. The project features three distinct visual narratives—Nature Retreat, Monsoon, and Baazar and Buzz—each exploring a different facet of the artisanal experience through custom illustrations and tactile packaging mockups.",
+    longDescription: "This project focuses on developing a cohesive packaging system for No.3 Clive Road tea blends through the use of contemporary surface illustrations. Drawing inspiration from Indian decorative motifs and bazaar culture, I created repeat patterns that balance heritage aesthetics with a modern retail presence. Each blend was treated as part of a larger visual family, ensuring consistency in layout, hierarchy, and brand recognition while allowing individual identities to emerge through colour and pattern.",
     image: "https://images.unsplash.com/photo-1586717791821-3f44a563eb4c?auto=format&fit=crop&q=80&w=1200",
-    tech: ["Packaging Design", "Typography", "Print Production"],
+    tech: ["Packaging Design", "Illustration", "Brand Study"],
     variations: [
+      {
+        title: "Baazar and Buzz",
+        layoutType: 'a3-a4',
+        description: "A vibrant, high-energy narrative inspired by the bustling markets of India. The illustration features warm, spicy tones and a dense, rhythmic composition that mirrors the chaotic charm of a bazaar.",
+        images: [
+          "https://i.ibb.co/dsq4sJq2/baazar-an-buxx.png" ,
+          "https://i.ibb.co/v4VQdHqh/band-b-page-0001.jpg" 
+        ]
+      },
       {
         title: "Nature Retreat",
         layoutType: 'a3-a4',
         description: "A serene, organic visual language inspired by the quietude of protected biomes. The illustration uses layered green hues and geometric leaf forms to create a sense of calm and natural purity.",
         images: [
-          "https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=800",
-          "https://images.unsplash.com/photo-1634942537034-2531766767d1?auto=format&fit=crop&q=80&w=800"
+         "https://i.ibb.co/Vc5NgWfq/naamya-goel-illustrations-ansd-mockups-page-0001.jpg" ,
+         "https://i.ibb.co/hRF8Rx4T/naamya-goel-illustrations-ansd-mockups-page-0006.jpg" 
         ]
       },
       {
@@ -42,19 +51,11 @@ export const PROJECTS: Project[] = [
         layoutType: 'a3-a4',
         description: "Capturing the atmospheric depth of the rainy season. This variation uses deep blues and warm ambers to evoke the feeling of a cozy interior against a stormy, rain-slicked exterior.",
         images: [
-          "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?auto=format&fit=crop&q=80&w=800",
-          "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800"
+          "https://i.ibb.co/NnyhtC2x/naamya-goel-illustrations-ansd-mockups-page-0004.jpg" ,
+          "https://i.ibb.co/4RYGNzbQ/naamya-goel-illustrations-ansd-mockups-page-0002.jpg" 
         ]
       },
-      {
-        title: "Baazar and Buzz",
-        layoutType: 'a3-a4',
-        description: "A vibrant, high-energy narrative inspired by the bustling markets of India. The illustration features warm, spicy tones and a dense, rhythmic composition that mirrors the chaotic charm of a bazaar.",
-        images: [
-          "https://images.unsplash.com/photo-1551033406-611cf9a28f67?auto=format&fit=crop&q=80&w=800",
-          "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&q=80&w=800"
-        ]
-      }
+      
     ]
   },
   {
