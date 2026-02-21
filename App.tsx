@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import { Project } from './types';
 import { PROJECTS } from './constants';
+import About from './src/pages/About';
 
 const ImageWithFallback: React.FC<{ src: string; alt: string; className?: string }> = ({ src, alt, className }) => {
   const [error, setError] = useState(false);
@@ -114,7 +116,8 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
   );
 };
 
-const App: React.FC = () => {
+const Home: React.FC = () => {
+  const navigate = useNavigate();
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [isFlipped, setIsFlipped] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -154,7 +157,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className={`selection:bg-[#8A1800] selection:text-white min-h-[100dvh] w-full overflow-x-hidden transition-colors duration-1000 ${isFlipped ? 'bg-[#0F0505]' : 'bg-[#050505]'}`}>
+    <div className={`selection:bg-[#8A1800] selection:text-white min-h-[100dvh] w-full overflow-x-hidden transition-colors duration-1000 game-grid ${isFlipped ? 'bg-[#0F0505]' : 'bg-[#050505]'}`}>
       
       {/* Hero Section */}
       <section className={`relative w-full h-[100dvh] flex items-center justify-center overflow-hidden p-4 sm:p-10 transition-all duration-1000 ${isFlipped ? 'opacity-90' : 'opacity-100'}`}>
@@ -168,16 +171,24 @@ const App: React.FC = () => {
         </div>
 
         {/* Header */}
-        <div className="absolute top-6 w-full flex justify-between px-6 sm:px-12 text-[7px] sm:text-[10px] font-black uppercase tracking-[0.4em] text-[#8A1800] z-30 pointer-events-none">
-          <span className="border-b border-[#8A1800]/40 pb-1">NAAMYA GOEL</span>
-          <span className="opacity-60">SYSTEM_v2.5</span>
+        <div className="absolute top-6 w-full flex justify-between px-6 sm:px-12 text-[7px] sm:text-[10px] font-black uppercase tracking-[0.4em] text-[#8A1800] z-30">
+          <span className="border-b border-[#8A1800]/40 pb-1 pointer-events-none">NAAMYA GOEL</span>
+          <div className="flex gap-8">
+            <Link to="/about" className="hover:text-white transition-colors pointer-events-auto">ABOUT_ME</Link>
+            <span className="opacity-60 pointer-events-none">SYSTEM_v2.5</span>
+          </div>
         </div>
 
         {/* The Card Container */}
         <div 
           className="relative z-20 w-full max-w-4xl h-[50dvh] sm:h-[75dvh] scale-[0.75] sm:scale-100 transition-transform duration-500 cursor-pointer"
           style={{ perspective: '2000px' }}
-          onClick={() => setIsFlipped(!isFlipped)}
+          onClick={(e) => {
+            // Only flip if clicking the card background, not interactive elements
+            const target = e.target as HTMLElement;
+            if (target.closest('button') || target.closest('a')) return;
+            setIsFlipped(!isFlipped);
+          }}
         >
           <div 
             className="relative w-full h-full transition-transform duration-1000 ease-[cubic-bezier(0.19,1,0.22,1)] shadow-[0_25px_60px_rgba(0,0,0,0.9)]"
@@ -221,11 +232,14 @@ const App: React.FC = () => {
 
             {/* BACK SIDE */}
             <div 
-              className="absolute inset-0 backface-hidden bg-[#0A0A0A] text-white p-5 sm:p-12 rounded-2xl overflow-hidden border border-[#8A1800]/50 flex items-center justify-center select-none shadow-[inset_0_0_80px_rgba(138,24,0,0.1)]"
-              style={{ transform: 'rotateY(180deg)' }}
+              className={`absolute inset-0 backface-hidden bg-[#0A0A0A] text-white p-5 sm:p-12 rounded-2xl border border-[#8A1800]/50 flex items-center justify-center shadow-[inset_0_0_80px_rgba(138,24,0,0.1)] ${isFlipped ? 'pointer-events-auto' : 'pointer-events-none'}`}
+              style={{ transform: 'rotateY(180deg)', transformStyle: 'preserve-3d' }}
             >
-              <div className="flex flex-col md:flex-row gap-6 sm:gap-16 items-center w-full max-w-4xl z-10 h-full overflow-y-auto no-scrollbar py-6 md:py-0">
-                 <div className="relative shrink-0 w-full max-w-[140px] sm:max-w-[280px]">
+              <div 
+                className="flex flex-col md:flex-row gap-6 sm:gap-16 items-center w-full max-w-4xl h-full py-6 md:py-0 relative"
+                style={{ transform: 'translateZ(100px)' }}
+              >
+                 <div className="relative shrink-0 w-full max-w-[100px] sm:max-w-[200px]">
                     <div 
                       onMouseEnter={handleProfileEnter}
                       onMouseLeave={handleProfileLeave}
@@ -251,6 +265,19 @@ const App: React.FC = () => {
                     <div className="flex items-center justify-center md:justify-start gap-4 pt-1">
                        <span className="h-[2px] w-8 sm:w-12 bg-[#8A1800]/50" />
                        <span className="text-[7px] sm:text-[11px] font-black text-[#8A1800] tracking-widest uppercase">Archive 2025</span>
+                    </div>
+                    <div className="pt-4 relative z-50">
+                       <button 
+                         onClick={(e) => {
+                           e.preventDefault();
+                           e.stopPropagation();
+                           console.log('Navigating to about...');
+                           navigate('/about');
+                         }}
+                         className="inline-block px-8 py-3 border border-[#8A1800] text-[#8A1800] text-[9px] sm:text-[11px] font-black uppercase tracking-[0.4em] hover:bg-[#8A1800] hover:text-white transition-all duration-500 rounded-sm shadow-[0_0_20px_rgba(138,24,0,0.1)] hover:shadow-[0_0_30px_rgba(138,24,0,0.4)] cursor-pointer relative z-50"
+                       >
+                         View Full Profile
+                       </button>
                     </div>
                  </div>
               </div>
@@ -344,6 +371,21 @@ const App: React.FC = () => {
         <ProjectDetail project={activeProject} onClose={() => setActiveProject(null)} />
       )}
     </div>
+  );
+};
+
+const App: React.FC = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/about" element={<About />} />
+    </Routes>
   );
 };
 

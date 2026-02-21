@@ -63,3 +63,14 @@ export const PROJECTS: Project[] = [
 
 // Added Landmark import to fix the 'Cannot find name Landmark' error
 export const LANDMARKS: Landmark[] = [];
+
+export const TOOLS = [
+  { name: "Figma", category: "Design", level: 95 },
+  { name: "Adobe Suite", category: "Creative", level: 90 },
+  { name: "React", category: "Development", level: 85 },
+  { name: "TypeScript", category: "Development", level: 80 },
+  { name: "Tailwind CSS", category: "Styling", level: 95 },
+  { name: "Framer Motion", category: "Animation", level: 85 },
+  { name: "Three.js", category: "3D/Web", level: 70 },
+  { name: "Git", category: "System", level: 90 }
+];
