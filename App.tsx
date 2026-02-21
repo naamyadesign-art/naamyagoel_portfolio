@@ -120,6 +120,7 @@ const App: React.FC = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isStickyColor, setIsStickyColor] = useState(false);
   const stickyTimeout = useRef<NodeJS.Timeout | null>(null);
+  const worksSectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -147,6 +148,10 @@ const App: React.FC = () => {
 
   const glossX = (mousePos.x / (window.innerWidth || 1)) * 100;
   const glossY = (mousePos.y / (window.innerHeight || 1)) * 100;
+
+  const scrollToWorks = () => {
+    worksSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <div className={`selection:bg-[#8A1800] selection:text-white min-h-[100dvh] w-full overflow-x-hidden transition-colors duration-1000 ${isFlipped ? 'bg-[#0F0505]' : 'bg-[#050505]'}`}>
@@ -257,8 +262,11 @@ const App: React.FC = () => {
         </div>
 
         {/* Scroll Prompt */}
-        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 z-30 pointer-events-none">
-          <div className="animate-hand opacity-60">
+        <div 
+          onClick={scrollToWorks}
+          className="absolute bottom-5 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 z-30 pointer-events-auto cursor-pointer group/scroll"
+        >
+          <div className="animate-hand opacity-60 group-hover/scroll:opacity-100 transition-opacity">
             <div className="rotate-180">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8A1800" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="sm:w-8 sm:h-8">
                 <path d="M7 13V6a2 2 0 1 1 4 0v7" />
@@ -268,12 +276,12 @@ const App: React.FC = () => {
               </svg>
             </div>
           </div>
-          <span className="text-[6px] sm:text-[10px] font-black uppercase tracking-[0.3em] text-[#8A1800] drop-shadow-sm">Explore Archive</span>
+          <span className="text-[6px] sm:text-[10px] font-black uppercase tracking-[0.3em] text-[#8A1800] drop-shadow-sm group-hover/scroll:text-white transition-colors">Explore Archive</span>
         </div>
       </section>
 
       {/* Grid Section */}
-      <section className="max-w-7xl mx-auto px-6 sm:px-12 py-16 sm:py-32 relative">
+      <section ref={worksSectionRef} className="max-w-7xl mx-auto px-6 sm:px-12 py-16 sm:py-32 relative">
         <header className="mb-10 sm:mb-20 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 sm:gap-8 relative z-10">
            <div className="space-y-3">
               <span className="text-white bg-[#8A1800] font-black tracking-[0.5em] uppercase text-[7px] sm:text-[10px] px-3 py-1 border border-white/5 shadow-lg">ARCHIVE_V1</span>
