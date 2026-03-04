@@ -59,18 +59,21 @@ export const PROJECTS: Project[] = [
     ]
   },
   {
-    title: "Neon Interface",
-    category: Section.WEB,
-    tagline: "Immersive Web Design",
-    description: "UX/UI design for a music streaming platform.",
-    longDescription: "A high-fidelity prototype focused on sensory feedback. The interface uses depth-mapping and glassmorphism to create a tactile sense of space. Every transition is modeled on real-world light refraction to enhance the 'premium' feel of the platform.",
-    image: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=1200",
+    title: "Conceptual Perfume Design 2025",
+    category: Section.BRANDING,
+    tagline: "Olfactory Architecture",
+    description: "A study in glass, light, and liquid form.",
+    longDescription: "This conceptual project explores the intersection of architectural form and olfactory experience. The bottle design utilizes parametric modeling to create a vessel that captures and refracts light in unique ways, mirroring the complexity of the fragrance within. The visual narrative focuses on the tactile quality of glass and the ethereal nature of scent, presented through a series of high-fidelity renders and material studies.",
+    image: "https://i.ibb.co/BVWsyHNr/perfume-bottle-together.png",
     images: [
-      "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&get=80&w=800",
-      "https://images.unsplash.com/photo-1551033406-611cf9a28f67?auto=format&fit=crop&q=80&w=800"
+      "https://www.behance.net/gallery/243469599/Perfume-bottle-design",
+      "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1563170351-be82bc888bb4?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1595425970377-c9703cf48b6d?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1585232351009-aa87416fca90?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1512568433527-037a898bdcee?auto=format&fit=crop&q=80&w=800"
     ],
-    tech: ["Figma", "React", "WebGL Shaders"]
+    tech: ["Parametric Design", "3D Rendering", "Visual Identity"]
   },
   {
     title: "Kinetic Motion",

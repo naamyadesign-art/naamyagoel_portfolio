@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'motion/react';
 import { Project } from './types';
 import { PROJECTS } from './constants';
 import About from './src/pages/About';
@@ -18,7 +19,7 @@ const ImageWithFallback: React.FC<{ src: string; alt: string; className?: string
   );
 };
 
-const StickyImage: React.FC<{ src: string; alt: string; aspectRatio?: string }> = ({ src, alt, aspectRatio = "aspect-[16/10]" }) => {
+const StickyImage: React.FC<{ src: string; alt: string; aspectRatio?: string; onClick?: () => void }> = ({ src, alt, aspectRatio = "aspect-[16/10]", onClick }) => {
   const [isHovered, setIsHovered] = useState(false);
   const timeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -35,7 +36,8 @@ const StickyImage: React.FC<{ src: string; alt: string; aspectRatio?: string }> 
     <div 
       onMouseEnter={handleEnter} 
       onMouseLeave={handleLeave}
-      className={`relative ${aspectRatio} bg-neutral-900 rounded-xl overflow-hidden border border-white/5 shadow-2xl group cursor-crosshair`}
+      onClick={onClick}
+      className={`relative ${aspectRatio} bg-neutral-900 rounded-xl overflow-hidden border border-white/5 shadow-2xl group cursor-crosshair ${onClick ? 'cursor-pointer' : ''}`}
     >
       <ImageWithFallback 
         src={src} 
@@ -49,57 +51,135 @@ const StickyImage: React.FC<{ src: string; alt: string; aspectRatio?: string }> 
 };
 
 const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ project, onClose }) => {
+  const [showScroll, setShowScroll] = useState(false);
+  const [initialImageIndex, setInitialImageIndex] = useState(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const categoryLabel = project.category || 'Work';
   const initial = categoryLabel.charAt(0);
 
+  const allImages = [project.image, ...(project.images || [])];
+
+  const handleOpenScroll = (index: number) => {
+    setInitialImageIndex(index);
+    setShowScroll(true);
+  };
+
+  useEffect(() => {
+    if (showScroll && scrollContainerRef.current) {
+      const target = scrollContainerRef.current.querySelector(`[data-index="${initialImageIndex}"]`);
+      if (target) {
+        target.scrollIntoView({ behavior: 'auto', block: 'start' });
+      }
+    }
+  }, [showScroll, initialImageIndex]);
+
   return (
-    <div className="fixed inset-0 z-[100] bg-[#050505] flex flex-col animate-in fade-in duration-500 overflow-y-auto custom-scrollbar text-white">
-      {/* Header */}
-      <div className="flex justify-between items-center p-4 sm:p-10 sticky top-0 bg-[#050505]/95 backdrop-blur-md z-50 border-b border-[#8A1800]/20">
-        <div className="flex items-center gap-3 sm:gap-4">
-          <div className="w-8 h-8 sm:w-11 sm:h-11 bg-[#8A1800] rounded-full flex items-center justify-center text-white font-black text-[10px] sm:text-xl shadow-[0_0_15px_rgba(138,24,0,0.5)] shrink-0">
-            {initial}
-          </div>
-          <div className="min-w-0">
-            <h2 className="text-sm sm:text-2xl font-black uppercase tracking-tighter truncate leading-none">{project.title}</h2>
-            <p className="text-[7px] sm:text-xs font-bold text-white/40 tracking-[0.2em] uppercase mt-1">{categoryLabel}</p>
-          </div>
-        </div>
-        <button onClick={onClose} className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#8A1800]/10 hover:bg-[#8A1800] hover:text-white transition-all text-lg sm:text-2xl font-black shrink-0">×</button>
-      </div>
-
-      <div className="max-w-7xl mx-auto w-full px-5 sm:px-12 py-8 sm:py-20 flex flex-col gap-12 sm:gap-24">
-        
-        {/* TOP: Image Archive Grid */}
-        <div className="space-y-12">
-          <div className="flex justify-between items-end">
-            <div>
-              <p className="text-[9px] sm:text-xs font-black text-[#8A1800] tracking-[0.5em] uppercase mb-4">Visual Catalog // Primary & Supplementary</p>
-              <h3 className="text-2xl sm:text-5xl font-serif-elegant italic text-white leading-none">{project.tagline}</h3>
-            </div>
-            <span className="text-[8px] sm:text-[10px] font-black opacity-20 uppercase tracking-[0.2em]">Archive_State: Full</span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
-            <div className="md:col-span-2">
-               {project.link ? (
-                 <a href={project.link} target="_blank" rel="noopener noreferrer" className="block group/link relative">
-                   <StickyImage src={project.image} alt={project.title} />
-                   <div className="absolute top-4 right-4 z-20 opacity-0 group-hover/link:opacity-100 transition-opacity bg-[#8A1800] text-white px-3 py-1 rounded text-[8px] font-black uppercase tracking-widest flex items-center gap-2">
-                     Visit Site <span className="text-xs">↗</span>
-                   </div>
-                 </a>
-               ) : (
-                 <StickyImage src={project.image} alt={project.title} />
-               )}
-            </div>
-            {project.images?.map((img, i) => (
-              <div key={i} className={i === (project.images?.length || 0) - 1 && (project.images?.length || 0) % 2 !== 0 ? "md:col-span-2" : "md:col-span-1"}>
-                <StickyImage src={img} alt={`${project.title} archive ${i}`} />
+    <>
+      <AnimatePresence>
+        {showScroll && (
+          <motion.div 
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 100 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed inset-0 z-[200] bg-[#050505] flex flex-col overflow-y-auto custom-scrollbar"
+            ref={scrollContainerRef}
+          >
+            <div className="sticky top-0 z-50 flex justify-between items-center p-4 sm:p-8 bg-black/90 backdrop-blur-2xl border-b border-white/5">
+              <div className="flex items-center gap-4">
+                 <div className="w-8 h-8 sm:w-10 sm:h-10 bg-[#8A1800] rounded-full flex items-center justify-center text-white font-black text-xs sm:text-base">
+                   {initial}
+                 </div>
+                 <div>
+                   <h2 className="text-sm sm:text-xl font-black uppercase tracking-tighter leading-none">{project.title}</h2>
+                   <p className="text-[6px] sm:text-[10px] font-bold text-[#8A1800] tracking-[0.3em] uppercase mt-1">Full Project Narrative</p>
+                 </div>
               </div>
-            ))}
+              <button 
+                onClick={() => setShowScroll(false)}
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/5 hover:bg-[#8A1800] text-white transition-all flex items-center justify-center text-xl sm:text-2xl font-black"
+              >
+                ×
+              </button>
+            </div>
+            
+            <div className="w-full max-w-screen-2xl mx-auto">
+              {allImages.map((img, idx) => (
+                <div 
+                  key={idx} 
+                  data-index={idx}
+                  className="w-full bg-neutral-900 border-b border-white/5"
+                >
+                  <img 
+                    src={img} 
+                    alt={`${project.title} - ${idx}`} 
+                    className="w-full h-auto block"
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
+              ))}
+              
+              <div className="py-32 text-center space-y-8 bg-[#050505]">
+                <div className="space-y-2">
+                  <p className="text-[10px] font-black uppercase tracking-[0.5em] opacity-30">End of Archive Entry</p>
+                  <h3 className="text-2xl sm:text-4xl font-serif-elegant italic opacity-50">{project.title}</h3>
+                </div>
+                <button 
+                  onClick={() => setShowScroll(false)}
+                  className="px-12 py-5 border border-[#8A1800] text-[#8A1800] font-black uppercase text-[10px] tracking-[0.4em] hover:bg-[#8A1800] hover:text-white transition-all rounded-sm shadow-[0_0_30px_rgba(138,24,0,0.1)]"
+                >
+                  Return to Project Overview
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="fixed inset-0 z-[100] bg-[#050505] flex flex-col animate-in fade-in duration-500 overflow-y-auto custom-scrollbar text-white">
+        {/* Header */}
+        <div className="flex justify-between items-center p-4 sm:p-10 sticky top-0 bg-[#050505]/95 backdrop-blur-md z-50 border-b border-[#8A1800]/20">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <div className="w-8 h-8 sm:w-11 sm:h-11 bg-[#8A1800] rounded-full flex items-center justify-center text-white font-black text-[10px] sm:text-xl shadow-[0_0_15px_rgba(138,24,0,0.5)] shrink-0">
+              {initial}
+            </div>
+            <div className="min-w-0">
+              <h2 className="text-sm sm:text-2xl font-black uppercase tracking-tighter truncate leading-none">{project.title}</h2>
+              <p className="text-[7px] sm:text-xs font-bold text-white/40 tracking-[0.2em] uppercase mt-1">{categoryLabel}</p>
+            </div>
           </div>
+          <button onClick={onClose} className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#8A1800]/10 hover:bg-[#8A1800] hover:text-white transition-all text-lg sm:text-2xl font-black shrink-0">×</button>
         </div>
+
+        <div className="max-w-7xl mx-auto w-full px-5 sm:px-12 py-8 sm:py-20 flex flex-col gap-12 sm:gap-24">
+          
+          {/* TOP: Image Archive Grid */}
+          <div className="space-y-12">
+            <div className="flex justify-between items-end">
+              <div>
+                <p className="text-[9px] sm:text-xs font-black text-[#8A1800] tracking-[0.5em] uppercase mb-4">Visual Catalog // Primary & Supplementary</p>
+                <h3 className="text-2xl sm:text-5xl font-serif-elegant italic text-white leading-none">{project.tagline}</h3>
+              </div>
+              <span className="text-[8px] sm:text-[10px] font-black opacity-20 uppercase tracking-[0.2em]">Archive_State: Full</span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
+              <div className="md:col-span-2">
+                 <div className="block group/link relative cursor-pointer" onClick={() => handleOpenScroll(0)}>
+                   <StickyImage src={project.image} alt={project.title} />
+                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-all rounded-xl" />
+                   <div className="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity bg-[#8A1800] text-white px-3 py-1 rounded text-[8px] font-black uppercase tracking-widest flex items-center gap-2">
+                     Expand Narrative <span className="text-xs">↗</span>
+                   </div>
+                 </div>
+              </div>
+              {project.images?.map((img, i) => (
+                <div key={i} className={i === (project.images?.length || 0) - 1 && (project.images?.length || 0) % 2 !== 0 ? "md:col-span-2" : "md:col-span-1"}>
+                  <StickyImage src={img} alt={`${project.title} archive ${i}`} onClick={() => handleOpenScroll(i + 1)} />
+                </div>
+              ))}
+            </div>
+          </div>
 
         {/* BOTTOM: Info & Narrative (Centered and Sidebar-free) */}
         <div className="border-t border-white/5 pt-12 sm:pt-24 flex flex-col gap-16 sm:gap-32">
@@ -154,6 +234,7 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
       {/* Footer padding */}
       <div className="h-24 sm:h-40" />
     </div>
+    </>
   );
 };
 
