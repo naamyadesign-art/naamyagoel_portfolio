@@ -6,7 +6,7 @@ import { TOOLS } from '../../constants';
 
 const About: React.FC = () => {
   return (
-    <div className="min-h-screen text-white selection:bg-[#8A1800] selection:text-white overflow-x-hidden game-grid bg-[#050505]">
+    <div className="min-h-screen text-white selection:bg-[#8A1800] selection:text-white overflow-x-hidden bg-transparent">
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-50 px-6 py-8 sm:px-12 flex justify-between items-center bg-gradient-to-b from-[#050505] to-transparent">
         <Link to="/" className="text-[10px] font-black uppercase tracking-[0.4em] text-[#8A1800] border-b border-[#8A1800]/40 pb-1 hover:text-white transition-colors">

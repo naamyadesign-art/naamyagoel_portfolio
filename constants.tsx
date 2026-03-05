@@ -88,6 +88,23 @@ export const PROJECTS: Project[] = [
       "https://images.unsplash.com/photo-1515462277126-2dd0c162007a?auto=format&fit=crop&q=80&w=800"
     ],
     tech: ["After Effects", "Cinema 4D", "X-Particles"]
+  },
+  {
+    title: "Miscellaneous",
+    category: Section.MISCELLANEOUS,
+    tagline: "Uncategorized Artifacts",
+    description: "A collection of visual experiments and projects that defy singular categorization.",
+    longDescription: "This gallery serves as a living archive for spontaneous experiments, quick visual studies, and projects that exist outside the boundaries of my primary work categories. It is a space for raw creativity, material exploration, and the 'happy accidents' that occur during the creative process.",
+    image: "https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?auto=format&fit=crop&q=80&w=1200",
+    images: [
+      "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1550684847-75bdda21cc95?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1515462277126-2dd0c162007a?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=800"
+    ],
+    tech: ["Mixed Media", "Digital Art", "Experimental"]
   }
 ];
 

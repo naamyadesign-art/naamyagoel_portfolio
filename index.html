@@ -21,7 +21,7 @@
       margin: 0;
       padding: 0;
       overflow-x: hidden;
-      background-color: var(--bg-color);
+      background-color: #050505;
       font-family: 'Space Grotesk', sans-serif;
       color: #FFFFFF;
       scroll-behavior: smooth;
@@ -39,10 +39,10 @@
 
     .game-grid {
       background-image: 
-        linear-gradient(rgba(138, 24, 0, 0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(138, 24, 0, 0.1) 1px, transparent 1px),
-        linear-gradient(rgba(138, 24, 0, 0.03) 0.5px, transparent 0.5px),
-        linear-gradient(90deg, rgba(138, 24, 0, 0.03) 0.5px, transparent 0.5px);
+        linear-gradient(rgba(138, 24, 0, 0.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(138, 24, 0, 0.15) 1px, transparent 1px),
+        linear-gradient(rgba(138, 24, 0, 0.05) 0.5px, transparent 0.5px),
+        linear-gradient(90deg, rgba(138, 24, 0, 0.05) 0.5px, transparent 0.5px);
       background-size: 30px 30px, 30px 30px, 10px 10px, 10px 10px;
       background-attachment: fixed;
     }
@@ -57,7 +57,6 @@
       font-style: italic;
       font-weight: 500;
       display: inline-block;
-      /* Reduced gap between 't' and 'f' */
       transform: translateX(0.04em);
       margin-right: 0.02em;
     }
@@ -100,23 +99,9 @@
       animation: scan 4s linear infinite;
     }
   </style>
-<script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@19.0.0",
-    "react-dom": "https://esm.sh/react-dom@19.0.0",
-    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
-    "@google/genai": "https://esm.sh/@google/genai@1.41.0",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "react/": "https://esm.sh/react@^19.2.4/"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
 </head>
-<body class="game-grid">
+<body class="bg-[#050505] game-grid">
   <div id="root"></div>
-  <script type="module" src="./index.tsx"></script>
-<script type="module" src="/index.tsx"></script>
+  <script type="module" src="/index.tsx"></script>
 </body>
 </html>

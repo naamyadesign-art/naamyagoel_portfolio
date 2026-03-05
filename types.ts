@@ -13,6 +13,7 @@ export const Section = {
   TYPOGRAPHY: 'TYPOGRAPHY',
   WEB: 'WEB',
   EXPERIMENTAL: 'EXPERIMENTAL',
+  MISCELLANEOUS: 'MISCELLANEOUS',
   GHOST: 'GHOST'
 } as const;
 

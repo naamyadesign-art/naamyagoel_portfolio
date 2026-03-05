@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Project } from './types';
 import { PROJECTS } from './constants';
 import About from './src/pages/About';
@@ -84,8 +85,17 @@ const StickyImage: React.FC<{ src: string; alt: string; aspectRatio?: string; on
 };
 
 const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ project, onClose }) => {
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+  const galleryRef = React.useRef<HTMLDivElement>(null);
+  const [viewMode, setViewMode] = useState<'grid' | 'carousel'>('grid');
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
   const categoryLabel = project.category || 'Work';
   const initial = categoryLabel.charAt(0);
+
+  const allImages = [project.image, ...(project.images || [])];
+
+  const nextImage = () => setActiveImageIndex((prev) => (prev + 1) % allImages.length);
+  const prevImage = () => setActiveImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
 
   const handleOpenLink = (url?: string | React.MouseEvent) => {
     let targetUrl = typeof url === 'string' ? url.trim() : project.link?.trim();
@@ -108,108 +118,233 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
     }
   };
 
+  const isMisc = project.category === 'MISCELLANEOUS';
+
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
+  }, [viewMode]);
+
   return (
-    <div className="fixed inset-0 z-[100] bg-[#050505] flex flex-col animate-in fade-in duration-500 overflow-y-auto custom-scrollbar text-white">
+    <div 
+      ref={scrollContainerRef}
+      className="fixed inset-0 z-[100] flex flex-col transition-opacity duration-500 overflow-y-auto custom-scrollbar bg-[#050505] text-white game-grid"
+    >
       {/* Header */}
-      <div className="flex justify-between items-center p-4 sm:p-10 sticky top-0 bg-[#050505]/95 backdrop-blur-md z-50 border-b border-[#8A1800]/20">
+      <div className="flex justify-between items-center p-4 sm:p-8 sticky top-0 z-50 border-b bg-[#050505]/95 border-[#8A1800]/20 text-white backdrop-blur-md">
         <div className="flex items-center gap-3 sm:gap-4">
-          <div className="w-8 h-8 sm:w-11 sm:h-11 bg-[#8A1800] rounded-full flex items-center justify-center text-white font-black text-[10px] sm:text-xl shadow-[0_0_15px_rgba(138,24,0,0.5)] shrink-0">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-black text-[10px] sm:text-lg shrink-0 bg-[#8A1800] text-white shadow-[0_0_15px_rgba(138,24,0,0.5)]">
             {initial}
           </div>
           <div className="min-w-0">
-            <h2 className="text-sm sm:text-2xl font-black uppercase tracking-tighter truncate leading-none">{project.title}</h2>
-            <p className="text-[7px] sm:text-xs font-bold text-white/40 tracking-[0.2em] uppercase mt-1">{categoryLabel}</p>
+            <h2 className="text-xs sm:text-xl font-black uppercase tracking-tighter truncate leading-none">{project.title}</h2>
+            <p className="text-[6px] sm:text-[10px] font-bold tracking-[0.2em] uppercase mt-1 text-white/40">{categoryLabel}</p>
           </div>
         </div>
-        <button onClick={onClose} className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#8A1800]/10 hover:bg-[#8A1800] hover:text-white transition-all text-lg sm:text-2xl font-black shrink-0">×</button>
+        <div className="flex items-center gap-2 sm:gap-4">
+          {isMisc && viewMode === 'carousel' && (
+            <button 
+              onClick={() => setViewMode('grid')}
+              className="text-[8px] sm:text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full bg-white/5 hover:bg-white hover:text-black transition-all"
+            >
+              Back to Grid
+            </button>
+          )}
+          <button onClick={onClose} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full transition-all text-lg sm:text-xl font-black shrink-0 bg-[#8A1800]/10 hover:bg-[#8A1800] hover:text-white">×</button>
+        </div>
       </div>
 
-      <div className="max-w-7xl mx-auto w-full px-5 sm:px-12 py-8 sm:py-20 flex flex-col gap-12 sm:gap-24">
+      <div className="max-w-7xl mx-auto w-full px-5 sm:px-12 py-8 sm:py-16 flex flex-col gap-12 sm:gap-20 relative z-10">
         
-        {/* TOP: Image Archive Grid */}
-        <div className="space-y-12">
-          <div className="flex justify-between items-end">
-            <div>
-              <p className="text-[9px] sm:text-xs font-black text-[#8A1800] tracking-[0.5em] uppercase mb-4">Visual Catalog // Primary & Supplementary</p>
-              <h3 className="text-2xl sm:text-5xl font-serif-elegant italic text-white leading-none">{project.tagline}</h3>
-            </div>
-            <span className="text-[8px] sm:text-[10px] font-black opacity-20 uppercase tracking-[0.2em]">Archive_State: Full</span>
-          </div>
+        {/* Gallery Mode for Miscellaneous */}
+        {isMisc ? (
+          <div className="space-y-12 sm:space-y-24">
+            {viewMode === 'grid' ? (
+              <div className="space-y-8 sm:space-y-12 transition-opacity duration-700">
+                <div className="mb-8 sm:mb-12 text-center sm:text-left">
+                  <h3 className="text-2xl sm:text-5xl font-serif-elegant tracking-tight mb-3">MISCELLANEOUS</h3>
+                  <p className="text-[7px] sm:text-[10px] font-black uppercase tracking-[0.4em] text-[#8A1800] opacity-60">Experimental Archive // Selected Artifacts</p>
+                </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
-            <div className="md:col-span-2">
-               {project.link ? (
-                 <div className="block group/link relative">
-                   <StickyImage 
-                     src={project.image} 
-                     alt={project.title} 
-                     noGrayscale={project.title.toLowerCase().includes('perfume')} 
-                     onClick={() => handleOpenLink()}
-                   />
-                   <div className="absolute top-4 right-4 z-50 opacity-0 group-hover:opacity-100 transition-opacity bg-[#8A1800] text-white px-3 py-1 rounded text-[8px] font-black uppercase tracking-widest flex items-center gap-2 pointer-events-none">
-                     View on Behance <span className="text-xs">↗</span>
-                   </div>
-                 </div>
-               ) : (
-                 <StickyImage src={project.image} alt={project.title} noGrayscale={project.title.toLowerCase().includes('perfume')} />
-               )}
-            </div>
-            {project.images?.map((img, i) => (
-              <div key={i} className={i === (project.images?.length || 0) - 1 && (project.images?.length || 0) % 2 !== 0 ? "md:col-span-2" : "md:col-span-1"}>
-                <StickyImage src={img} alt={`${project.title} archive ${i}`} onClick={() => handleOpenLink(img)} />
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* BOTTOM: Info & Narrative (Centered and Sidebar-free) */}
-        <div className="border-t border-white/5 pt-12 sm:pt-24 flex flex-col gap-16 sm:gap-32">
-          <div className="max-w-4xl space-y-8 sm:space-y-12">
-            <div>
-              <p className="text-[9px] sm:text-xs font-black text-[#8A1800] tracking-[0.5em] uppercase mb-6 sm:mb-10">Entry // The Narrative</p>
-              <h4 className="text-sm sm:text-lg font-sans leading-relaxed text-white/80 max-w-2xl">
-                {project.longDescription || project.description}
-              </h4>
-            </div>
-          </div>
-
-          {project.variations && (
-            <div className="space-y-24 sm:space-y-40">
-              {project.variations.map((variation, vIdx) => (
-                <div key={vIdx} className="space-y-10 sm:space-y-16">
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
-                    <div className="space-y-4">
-                      <span className="text-[8px] sm:text-[10px] font-black text-[#8A1800] tracking-[0.4em] uppercase">Variation_0{vIdx + 1}</span>
-                      <h5 className="text-2xl sm:text-5xl font-serif-elegant italic text-white">{variation.title}</h5>
-                    </div>
-                    <p className="max-w-md text-xs sm:text-sm font-sans text-white/60 leading-relaxed">
-                      {variation.description}
-                    </p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 auto-rows-[100px] sm:auto-rows-[180px]">
+                  <div 
+                    onClick={() => {
+                      setActiveImageIndex(0);
+                      setViewMode('carousel');
+                    }}
+                    className="col-span-2 row-span-2 overflow-hidden rounded-lg sm:rounded-2xl group cursor-pointer bg-neutral-900 border border-white/5"
+                  >
+                    <ImageWithFallback 
+                      src={project.image} 
+                      alt={project.title} 
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                    />
                   </div>
-                  <div className={`grid grid-cols-1 ${variation.layoutType === 'a3-a4' ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-6 sm:gap-10`}>
-                    {variation.images.map((img, iIdx) => (
-                      <div key={iIdx} className={`space-y-4 ${variation.layoutType === 'a3-a4' ? (iIdx === 0 ? 'md:col-span-2' : 'md:col-span-1') : ''}`}>
-                        <StickyImage 
+                  
+                  {project.images?.map((img, i) => {
+                    let span = "col-span-1 row-span-1";
+                    if (i === 0) span = "col-span-2 row-span-1";
+                    if (i === 1) span = "col-span-1 row-span-2";
+                    if (i === 2) span = "col-span-1 row-span-1";
+                    if (i === 3) span = "col-span-2 row-span-1";
+                    
+                    return (
+                      <div 
+                        key={i} 
+                        onClick={() => {
+                          setActiveImageIndex(i + 1);
+                          setViewMode('carousel');
+                        }}
+                        className={`${span} overflow-hidden rounded-lg sm:rounded-2xl group cursor-pointer bg-neutral-900 border border-white/5`}
+                      >
+                        <ImageWithFallback 
                           src={img} 
-                          alt={`${variation.title} - ${iIdx === 0 ? 'Mockup' : 'Illustration'}`} 
-                          aspectRatio={variation.layoutType === 'a3-a4' ? (iIdx === 0 ? 'aspect-[1.414/1]' : 'aspect-[1/1.414]') : 'aspect-[16/10]'}
+                          alt={`${project.title} artifact ${i}`} 
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
                         />
-                        <p className="text-[7px] sm:text-[9px] font-black uppercase tracking-[0.2em] opacity-30">
-                          {iIdx === 0 ? 'Physical_Mockup' : 'Digital_Illustration'} // Archive_Ref: {vIdx}-{iIdx}
-                        </p>
                       </div>
-                    ))}
+                    );
+                  })}
+                </div>
+              </div>
+            ) : (
+              <div className="relative w-full h-[60vh] sm:h-[70vh] flex items-center justify-center group transition-all duration-500">
+                {/* Carousel Controls */}
+                <button 
+                  onClick={prevImage}
+                  className="absolute left-0 sm:-left-12 z-20 w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-white/5 hover:bg-[#8A1800] border border-white/10 flex items-center justify-center transition-all group-hover:translate-x-2 sm:group-hover:translate-x-0"
+                >
+                  <ChevronLeft className="w-6 h-6" />
+                </button>
+                
+                <div className="w-full h-full relative overflow-hidden rounded-xl sm:rounded-3xl border border-white/10 bg-black/40 backdrop-blur-sm">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={activeImageIndex}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ duration: 0.4, ease: "easeOut" }}
+                      className="w-full h-full"
+                    >
+                      <ImageWithFallback 
+                        src={allImages[activeImageIndex]} 
+                        alt={`${project.title} view ${activeImageIndex}`} 
+                        className="w-full h-full object-contain p-4 sm:p-8" 
+                      />
+                    </motion.div>
+                  </AnimatePresence>
+
+                  {/* Counter */}
+                  <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-black/60 backdrop-blur-md border border-white/10 flex items-center gap-4">
+                    <span className="text-[10px] font-black tracking-[0.3em] text-white/40">
+                      {String(activeImageIndex + 1).padStart(2, '0')}
+                    </span>
+                    <div className="w-8 h-[1px] bg-white/20" />
+                    <span className="text-[10px] font-black tracking-[0.3em] text-[#8A1800]">
+                      {String(allImages.length).padStart(2, '0')}
+                    </span>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
-          
-          <div className="flex items-center gap-4 pt-4 sm:pt-8 opacity-40">
-             <div className="h-[1px] w-12 bg-[#8A1800]" />
-             <span className="text-[8px] sm:text-[10px] font-black uppercase tracking-[0.4em]">End of Log Entry</span>
+
+                <button 
+                  onClick={nextImage}
+                  className="absolute right-0 sm:-right-12 z-20 w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-white/5 hover:bg-[#8A1800] border border-white/10 flex items-center justify-center transition-all group-hover:-translate-x-2 sm:group-hover:-translate-x-0"
+                >
+                  <ChevronRight className="w-6 h-6" />
+                </button>
+              </div>
+            )}
           </div>
-        </div>
+        ) : (
+          <>
+            {/* TOP: Image Archive Grid */}
+            <div className="space-y-12">
+              <div className="flex justify-between items-end">
+                <div>
+                  <p className="text-[9px] sm:text-xs font-black text-[#8A1800] tracking-[0.5em] uppercase mb-4">Visual Catalog // Primary & Supplementary</p>
+                  <h3 className="text-2xl sm:text-5xl font-serif-elegant italic text-white leading-none">{project.tagline}</h3>
+                </div>
+                <span className="text-[8px] sm:text-[10px] font-black opacity-20 uppercase tracking-[0.2em]">Archive_State: Full</span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
+                <div className="md:col-span-2">
+                   {project.link ? (
+                     <div className="block group/link relative">
+                       <StickyImage 
+                         src={project.image} 
+                         alt={project.title} 
+                         noGrayscale={project.title.toLowerCase().includes('perfume')} 
+                         onClick={() => handleOpenLink()}
+                       />
+                       <div className="absolute top-4 right-4 z-50 opacity-0 group-hover:opacity-100 transition-opacity bg-[#8A1800] text-white px-3 py-1 rounded text-[8px] font-black uppercase tracking-widest flex items-center gap-2 pointer-events-none">
+                         View on Behance <span className="text-xs">↗</span>
+                       </div>
+                     </div>
+                   ) : (
+                     <StickyImage src={project.image} alt={project.title} noGrayscale={project.title.toLowerCase().includes('perfume')} />
+                   )}
+                </div>
+                {project.images?.map((img, i) => (
+                  <div key={i} className={i === (project.images?.length || 0) - 1 && (project.images?.length || 0) % 2 !== 0 ? "md:col-span-2" : "md:col-span-1"}>
+                    <StickyImage src={img} alt={`${project.title} archive ${i}`} onClick={() => handleOpenLink(img)} />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* BOTTOM: Info & Narrative (Centered and Sidebar-free) */}
+            <div className="border-t border-white/5 pt-12 sm:pt-24 flex flex-col gap-16 sm:gap-32">
+              <div className="max-w-4xl space-y-8 sm:space-y-12">
+                <div>
+                  <p className="text-[9px] sm:text-xs font-black text-[#8A1800] tracking-[0.5em] uppercase mb-6 sm:mb-10">Entry // The Narrative</p>
+                  <h4 className="text-sm sm:text-lg font-sans leading-relaxed text-white/80 max-w-2xl">
+                    {project.longDescription || project.description}
+                  </h4>
+                </div>
+              </div>
+
+              {project.variations && (
+                <div className="space-y-24 sm:space-y-40">
+                  {project.variations.map((variation, vIdx) => (
+                    <div key={vIdx} className="space-y-10 sm:space-y-16">
+                      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+                        <div className="space-y-4">
+                          <span className="text-[8px] sm:text-[10px] font-black text-[#8A1800] tracking-[0.4em] uppercase">Variation_0{vIdx + 1}</span>
+                          <h5 className="text-2xl sm:text-5xl font-serif-elegant italic text-white">{variation.title}</h5>
+                        </div>
+                        <p className="max-w-md text-xs sm:text-sm font-sans text-white/60 leading-relaxed">
+                          {variation.description}
+                        </p>
+                      </div>
+                      <div className={`grid grid-cols-1 ${variation.layoutType === 'a3-a4' ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-6 sm:gap-10`}>
+                        {variation.images.map((img, iIdx) => (
+                          <div key={iIdx} className={`space-y-4 ${variation.layoutType === 'a3-a4' ? (iIdx === 0 ? 'md:col-span-2' : 'md:col-span-1') : ''}`}>
+                            <StickyImage 
+                              src={img} 
+                              alt={`${variation.title} - ${iIdx === 0 ? 'Mockup' : 'Illustration'}`} 
+                              aspectRatio={variation.layoutType === 'a3-a4' ? (iIdx === 0 ? 'aspect-[1.414/1]' : 'aspect-[1/1.414]') : 'aspect-[16/10]'}
+                            />
+                            <p className="text-[7px] sm:text-[9px] font-black uppercase tracking-[0.2em] opacity-30">
+                              {iIdx === 0 ? 'Physical_Mockup' : 'Digital_Illustration'} // Archive_Ref: {vIdx}-{iIdx}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              
+              <div className="flex items-center gap-4 pt-4 sm:pt-8 opacity-40">
+                 <div className="h-[1px] w-12 bg-[#8A1800]" />
+                 <span className="text-[8px] sm:text-[10px] font-black uppercase tracking-[0.4em] text-[#8A1800]">End of Log Entry</span>
+              </div>
+            </div>
+          </>
+        )}
       </div>
       
       {/* Footer padding */}
@@ -258,11 +393,14 @@ const Home: React.FC = () => {
     worksSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const regularProjects = PROJECTS.filter(p => p.category !== 'MISCELLANEOUS');
+  const miscProject = PROJECTS.find(p => p.category === 'MISCELLANEOUS');
+
   return (
-    <div className={`selection:bg-[#8A1800] selection:text-white min-h-[100dvh] w-full overflow-x-hidden transition-colors duration-1000 game-grid ${isFlipped ? 'bg-[#0F0505]' : 'bg-[#050505]'}`}>
+    <div className={`selection:bg-[#8A1800] selection:text-white min-h-[100dvh] w-full overflow-x-hidden transition-colors duration-1000 relative ${isFlipped ? 'bg-[#0F0505]/40' : 'bg-transparent'}`}>
       
       {/* Hero Section */}
-      <section className={`relative w-full h-[100dvh] flex items-center justify-center overflow-hidden p-4 sm:p-10 transition-all duration-1000 ${isFlipped ? 'opacity-90' : 'opacity-100'}`}>
+      <section className={`relative w-full h-[100dvh] flex items-center justify-center overflow-hidden p-4 sm:p-10 transition-all duration-1000 z-10 ${isFlipped ? 'opacity-90' : 'opacity-100'}`}>
         
         {/* HUD Elements */}
         <div className={`absolute inset-0 z-0 pointer-events-none transition-all duration-1000 ${isFlipped ? 'opacity-100 scale-100' : 'opacity-0 scale-110'}`}>
@@ -422,13 +560,13 @@ const Home: React.FC = () => {
         </header>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-12 relative z-10">
-           {PROJECTS.map((project, idx) => (
+           {regularProjects.map((project, idx) => (
              <div 
                key={project.title}
                onClick={() => setActiveProject(project)}
                className="group cursor-pointer space-y-4"
              >
-                <div className="relative aspect-square bg-neutral-900 rounded-lg overflow-hidden shadow-xl border border-[#8A1800]/10 transition-all group-hover:border-[#8A1800] group-hover:shadow-[0_15px_40px_rgba(138,24,0,0.3)]">
+                <div className="relative aspect-square bg-neutral-900 rounded-lg overflow-hidden shadow-xl border border-[#8A1800]/30 transition-all group-hover:border-[#8A1800] group-hover:shadow-[0_15px_40px_rgba(138,24,0,0.3)]">
                    <ImageWithFallback 
                     src={project.image} 
                     alt={project.title} 
@@ -451,6 +589,19 @@ const Home: React.FC = () => {
              </div>
            ))}
         </div>
+
+        {/* Miscellaneous Tab */}
+        {miscProject && (
+          <div className="mt-12 sm:mt-20 flex justify-center relative z-10">
+            <button 
+              onClick={() => setActiveProject(miscProject)}
+              className="group relative px-4 py-1.5 border border-red-100/50 hover:border-red-200 transition-all duration-500 rounded-full bg-red-50/50 hover:bg-red-100/60 flex items-center gap-2.5"
+            >
+              <span className="w-1 h-1 rounded-full bg-red-400 animate-pulse" />
+              <span className="text-[8px] font-black text-red-500/80 tracking-[0.2em] uppercase">Miscellaneous</span>
+            </button>
+          </div>
+        )}
       </section>
 
       {/* Footer */}
