@@ -1,6 +1,20 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Mail, Instagram, Linkedin, MapPin, Cpu, Figma, Palette, Globe, Terminal } from 'lucide-react';
+import { Mail, Linkedin, MapPin, Cpu, Figma, Palette, Globe, Terminal } from 'lucide-react';
+
+const BehanceIcon = ({ className }: { className?: string }) => (
+  <svg 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    className={className}
+  >
+    <path d="M9 12h2"/><path d="M9 16h2"/><path d="M8 20H3a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5a4 4 0 0 1 0 8 4 4 0 0 1 0 8Z"/><path d="M18 20a4 4 0 0 0 4-4 4 4 0 0 0-4-4 4 4 0 0 0-4 4 4 4 0 0 0 4 4Z"/><path d="M15 8h6"/>
+  </svg>
+);
 import { Link } from 'react-router-dom';
 import { TOOLS } from '../../constants';
 
@@ -131,19 +145,19 @@ const About: React.FC = () => {
         <section className="text-center space-y-12">
           <h2 className="text-4xl sm:text-7xl font-serif-elegant tracking-tighter uppercase">Connect_System</h2>
           <div className="flex flex-wrap justify-center gap-8 sm:gap-16">
-            <a href="mailto:hello@naamyagoel.com" className="group flex flex-col items-center gap-4">
+            <a href="mailto:naamya.design@gmail.com?subject=Portfolio Inquiry" className="group flex flex-col items-center gap-4">
               <div className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#8A1800] group-hover:border-[#8A1800] transition-all duration-500">
                 <Mail className="w-6 h-6" />
               </div>
               <span className="text-[10px] font-black uppercase tracking-[0.4em] opacity-40 group-hover:opacity-100 transition-opacity">Email</span>
             </a>
-            <a href="#" className="group flex flex-col items-center gap-4">
+            <a href="https://www.behance.net/naamyagoel1" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-4">
               <div className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#8A1800] group-hover:border-[#8A1800] transition-all duration-500">
-                <Instagram className="w-6 h-6" />
+                <BehanceIcon className="w-6 h-6" />
               </div>
-              <span className="text-[10px] font-black uppercase tracking-[0.4em] opacity-40 group-hover:opacity-100 transition-opacity">Instagram</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.4em] opacity-40 group-hover:opacity-100 transition-opacity">Behance</span>
             </a>
-            <a href="#" className="group flex flex-col items-center gap-4">
+            <a href="https://www.linkedin.com/in/naamya-goel-99a5a9257/" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-4">
               <div className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#8A1800] group-hover:border-[#8A1800] transition-all duration-500">
                 <Linkedin className="w-6 h-6" />
               </div>

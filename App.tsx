@@ -609,9 +609,9 @@ const Home: React.FC = () => {
          <div className="max-w-4xl mx-auto space-y-8 sm:space-y-16 relative z-10">
             <h4 className="text-2xl sm:text-6xl font-serif-elegant tracking-tighter text-white uppercase leading-none">Initiate Dialogue</h4>
             <div className="flex flex-wrap justify-center gap-6 sm:gap-16 font-black uppercase tracking-[0.3em] text-[8px] sm:text-xs text-[#8A1800]">
-               <a href="#" className="hover:text-white transition-all underline underline-offset-[10px] decoration-[#8A1800] decoration-1">Email</a>
-               <a href="#" className="hover:text-white transition-all underline underline-offset-[10px] decoration-[#8A1800] decoration-1">Instagram</a>
-               <a href="#" className="hover:text-white transition-all underline underline-offset-[10px] decoration-[#8A1800] decoration-1">LinkedIn</a>
+               <a href="mailto:naamya.design@gmail.com?subject=Portfolio Inquiry" className="hover:text-white transition-all underline underline-offset-[10px] decoration-[#8A1800] decoration-1">Email</a>
+               <a href="https://www.behance.net/naamyagoel1" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-all underline underline-offset-[10px] decoration-[#8A1800] decoration-1">Behance</a>
+               <a href="https://www.linkedin.com/in/naamya-goel-99a5a9257/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-all underline underline-offset-[10px] decoration-[#8A1800] decoration-1">LinkedIn</a>
             </div>
             <div className="pt-10">
               <p className="text-[6px] sm:text-[10px] text-[#8A1800] uppercase tracking-[0.4em] opacity-30 font-black">Archive Protected // 2025 © Naamya Goel</p>

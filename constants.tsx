@@ -25,7 +25,7 @@ export const PROJECTS: Project[] = [
     tagline: "Clive Road No. 3",
     description: "Bespoke packaging design for an artisanal product line.",
     longDescription: "This project focuses on developing a cohesive packaging system for No.3 Clive Road tea blends through the use of contemporary surface illustrations. Drawing inspiration from Indian decorative motifs and bazaar culture, I created repeat patterns that balance heritage aesthetics with a modern retail presence. Each blend was treated as part of a larger visual family, ensuring consistency in layout, hierarchy, and brand recognition while allowing individual identities to emerge through colour and pattern.",
-    image: "https://images.unsplash.com/photo-1586717791821-3f44a563eb4c?auto=format&fit=crop&q=80&w=1200",
+    image: "https://i.ibb.co/zh862kzc/hero-image.png",
     tech: ["Packaging Design", "Illustration", "Brand Study"],
     variations: [
       {
@@ -77,7 +77,7 @@ export const PROJECTS: Project[] = [
     tech: ["Parametric Design", "3D Rendering", "Visual Identity"]
   },
   {
-    title: "Kinetic Motion",
+    title: "Catalogue Design",
     category: Section.MOTION,
     tagline: "Dynamic Storytelling",
     description: "A series of abstract motion graphics exploring geometry and rhythm.",
