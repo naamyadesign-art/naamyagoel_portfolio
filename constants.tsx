@@ -25,38 +25,10 @@ export const PROJECTS: Project[] = [
     tagline: "Clive Road No. 3",
     description: "Bespoke packaging design for an artisanal product line.",
     longDescription: "This project focuses on developing a cohesive packaging system for No.3 Clive Road tea blends through the use of contemporary surface illustrations. Drawing inspiration from Indian decorative motifs and bazaar culture, I created repeat patterns that balance heritage aesthetics with a modern retail presence. Each blend was treated as part of a larger visual family, ensuring consistency in layout, hierarchy, and brand recognition while allowing individual identities to emerge through colour and pattern.",
-    image: "https://i.ibb.co/zh862kzc/hero-image.png",
+    image: "https://i.ibb.co/zh862kzc/hero-image.png", // This remains the thumbnail/cover
+    scrollImage: "https://i.ibb.co/N6JGDSqQ/clive-road-full.jpg" , // Replace with your 4961x23027px image
+    isFullWidthScroll: true,
     tech: ["Packaging Design", "Illustration", "Brand Study"],
-    variations: [
-      {
-        title: "Baazar and Buzz",
-        layoutType: 'a3-a4',
-        description: "A vibrant, high-energy narrative inspired by the bustling markets of India. The illustration features warm, spicy tones and a dense, rhythmic composition that mirrors the chaotic charm of a bazaar.",
-        images: [
-          "https://i.ibb.co/dsq4sJq2/baazar-an-buxx.png" ,
-          "https://i.ibb.co/v4VQdHqh/band-b-page-0001.jpg" 
-        ]
-      },
-      {
-        title: "Nature Retreat",
-        layoutType: 'a3-a4',
-        description: "A serene, organic visual language inspired by the quietude of protected biomes. The illustration uses layered green hues and geometric leaf forms to create a sense of calm and natural purity.",
-        images: [
-         "https://i.ibb.co/Vc5NgWfq/naamya-goel-illustrations-ansd-mockups-page-0001.jpg" ,
-         "https://i.ibb.co/hRF8Rx4T/naamya-goel-illustrations-ansd-mockups-page-0006.jpg" 
-        ]
-      },
-      {
-        title: "Monsoon",
-        layoutType: 'a3-a4',
-        description: "Capturing the atmospheric depth of the rainy season. This variation uses deep blues and warm ambers to evoke the feeling of a cozy interior against a stormy, rain-slicked exterior.",
-        images: [
-          "https://i.ibb.co/NnyhtC2x/naamya-goel-illustrations-ansd-mockups-page-0004.jpg" ,
-          "https://i.ibb.co/4RYGNzbQ/naamya-goel-illustrations-ansd-mockups-page-0002.jpg" 
-        ]
-      },
-      
-    ]
   },
   {
     title: "Conceptual Perfume Design 2025",
@@ -71,8 +43,7 @@ export const PROJECTS: Project[] = [
       "https://www.behance.net/embed/project/243728099?ilo0=1",
      "https://www.behance.net/embed/project/243761961?ilo0=1" ,
      "https://www.behance.net/embed/project/243751353?ilo0=1",
-      "https://www.behance.net/embed/project/243715405?ilo0=1",
-      "https://images.unsplash.com/photo-1512568433527-037a898bdcee?auto=format&fit=crop&q=80&w=800"
+      "https://www.behance.net/embed/project/243715405?ilo0=1"
     ],
     tech: ["Parametric Design", "3D Rendering", "Visual Identity"]
   },

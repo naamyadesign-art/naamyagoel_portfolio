@@ -145,12 +145,37 @@ const About: React.FC = () => {
         <section className="text-center space-y-12">
           <h2 className="text-4xl sm:text-7xl font-serif-elegant tracking-tighter uppercase">Connect_System</h2>
           <div className="flex flex-wrap justify-center gap-8 sm:gap-16">
-            <a href="mailto:naamya.design@gmail.com?subject=Portfolio Inquiry" className="group flex flex-col items-center gap-4">
-              <div className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#8A1800] group-hover:border-[#8A1800] transition-all duration-500">
+            <div className="group flex flex-col items-center gap-4">
+              <a 
+                href="mailto:naamya.design@gmail.com?subject=Portfolio Inquiry" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  const mailtoUrl = "mailto:naamya.design@gmail.com?subject=Portfolio Inquiry";
+                  const iframe = document.createElement('iframe');
+                  iframe.style.display = 'none';
+                  iframe.src = mailtoUrl;
+                  document.body.appendChild(iframe);
+                  setTimeout(() => {
+                    document.body.removeChild(iframe);
+                  }, 1000);
+                }}
+                className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#8A1800] group-hover:border-[#8A1800] transition-all duration-500"
+              >
                 <Mail className="w-6 h-6" />
+              </a>
+              <div className="flex flex-col items-center gap-1">
+                <span className="text-[10px] font-black uppercase tracking-[0.4em] opacity-40 group-hover:opacity-100 transition-opacity">Email</span>
+                <button 
+                  onClick={() => {
+                    navigator.clipboard.writeText("naamya.design@gmail.com");
+                    alert("Email copied to clipboard: naamya.design@gmail.com");
+                  }}
+                  className="text-[6px] font-black uppercase tracking-widest text-[#8A1800]/60 hover:text-white transition-colors"
+                >
+                  (Copy Address)
+                </button>
               </div>
-              <span className="text-[10px] font-black uppercase tracking-[0.4em] opacity-40 group-hover:opacity-100 transition-opacity">Email</span>
-            </a>
+            </div>
             <a href="https://www.behance.net/naamyagoel1" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-4">
               <div className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#8A1800] group-hover:border-[#8A1800] transition-all duration-500">
                 <BehanceIcon className="w-6 h-6" />

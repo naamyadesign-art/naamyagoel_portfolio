@@ -51,6 +51,8 @@ export interface Project {
   tech: string[];
   link?: string;
   variations?: Variation[];
+  isFullWidthScroll?: boolean;
+  scrollImage?: string;
 }
 
 export interface Landmark {

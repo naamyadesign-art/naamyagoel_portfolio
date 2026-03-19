@@ -129,7 +129,7 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
   return (
     <div 
       ref={scrollContainerRef}
-      className="fixed inset-0 z-[100] flex flex-col transition-opacity duration-500 overflow-y-auto custom-scrollbar bg-[#050505] text-white game-grid"
+      className="fixed inset-0 z-[100] flex flex-col transition-opacity duration-500 overflow-y-auto overflow-x-hidden custom-scrollbar bg-[#050505] text-white game-grid"
     >
       {/* Header */}
       <div className="flex justify-between items-center p-4 sm:p-8 sticky top-0 z-50 border-b bg-[#050505]/95 border-[#8A1800]/20 text-white backdrop-blur-md">
@@ -155,110 +155,173 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto w-full px-5 sm:px-12 py-8 sm:py-16 flex flex-col gap-12 sm:gap-20 relative z-10">
-        
+      <div className="w-full relative z-10">
         {/* Gallery Mode for Miscellaneous */}
         {isMisc ? (
-          <div className="space-y-12 sm:space-y-24">
-            {viewMode === 'grid' ? (
-              <div className="space-y-8 sm:space-y-12 transition-opacity duration-700">
-                <div className="mb-8 sm:mb-12 text-center sm:text-left">
-                  <h3 className="text-2xl sm:text-5xl font-serif-elegant tracking-tight mb-3">MISCELLANEOUS</h3>
-                  <p className="text-[7px] sm:text-[10px] font-black uppercase tracking-[0.4em] text-[#8A1800] opacity-60">Experimental Archive // Selected Artifacts</p>
-                </div>
-
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 auto-rows-[100px] sm:auto-rows-[180px]">
-                  <div 
-                    onClick={() => {
-                      setActiveImageIndex(0);
-                      setViewMode('carousel');
-                    }}
-                    className="col-span-2 row-span-2 overflow-hidden rounded-lg sm:rounded-2xl group cursor-pointer bg-neutral-900 border border-white/5"
-                  >
-                    <ImageWithFallback 
-                      src={project.image} 
-                      alt={project.title} 
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
-                    />
+          <div className="max-w-7xl mx-auto w-full px-5 sm:px-12 py-8 sm:py-16 flex flex-col gap-12 sm:gap-20">
+            <div className="space-y-12 sm:space-y-24">
+              {viewMode === 'grid' ? (
+                <div className="space-y-8 sm:space-y-12 transition-opacity duration-700">
+                  <div className="mb-8 sm:mb-12 text-center sm:text-left">
+                    <h3 className="text-2xl sm:text-5xl font-serif-elegant tracking-tight mb-3">MISCELLANEOUS</h3>
+                    <p className="text-[7px] sm:text-[10px] font-black uppercase tracking-[0.4em] text-[#8A1800] opacity-60">Experimental Archive // Selected Artifacts</p>
                   </div>
-                  
-                  {project.images?.map((img, i) => {
-                    let span = "col-span-1 row-span-1";
-                    if (i === 0) span = "col-span-2 row-span-1";
-                    if (i === 1) span = "col-span-1 row-span-2";
-                    if (i === 2) span = "col-span-1 row-span-1";
-                    if (i === 3) span = "col-span-2 row-span-1";
-                    
-                    return (
-                      <div 
-                        key={i} 
-                        onClick={() => {
-                          setActiveImageIndex(i + 1);
-                          setViewMode('carousel');
-                        }}
-                        className={`${span} overflow-hidden rounded-lg sm:rounded-2xl group cursor-pointer bg-neutral-900 border border-white/5`}
-                      >
-                        <ImageWithFallback 
-                          src={img} 
-                          alt={`${project.title} artifact ${i}`} 
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            ) : (
-              <div className="relative w-full h-[60vh] sm:h-[70vh] flex items-center justify-center group transition-all duration-500">
-                {/* Carousel Controls */}
-                <button 
-                  onClick={prevImage}
-                  className="absolute left-0 sm:-left-12 z-20 w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-white/5 hover:bg-[#8A1800] border border-white/10 flex items-center justify-center transition-all group-hover:translate-x-2 sm:group-hover:translate-x-0"
-                >
-                  <ChevronLeft className="w-6 h-6" />
-                </button>
-                
-                <div className="w-full h-full relative overflow-hidden rounded-xl sm:rounded-3xl border border-white/10 bg-black/40 backdrop-blur-sm">
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={activeImageIndex}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      transition={{ duration: 0.4, ease: "easeOut" }}
-                      className="w-full h-full"
+
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 auto-rows-[100px] sm:auto-rows-[180px]">
+                    <div 
+                      onClick={() => {
+                        setActiveImageIndex(0);
+                        setViewMode('carousel');
+                      }}
+                      className="col-span-2 row-span-2 overflow-hidden rounded-lg sm:rounded-2xl group cursor-pointer bg-neutral-900 border border-white/5"
                     >
                       <ImageWithFallback 
-                        src={allImages[activeImageIndex]} 
-                        alt={`${project.title} view ${activeImageIndex}`} 
-                        className="w-full h-full object-contain p-4 sm:p-8" 
+                        src={project.image} 
+                        alt={project.title} 
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
                       />
-                    </motion.div>
-                  </AnimatePresence>
-
-                  {/* Counter */}
-                  <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-black/60 backdrop-blur-md border border-white/10 flex items-center gap-4">
-                    <span className="text-[10px] font-black tracking-[0.3em] text-white/40">
-                      {String(activeImageIndex + 1).padStart(2, '0')}
-                    </span>
-                    <div className="w-8 h-[1px] bg-white/20" />
-                    <span className="text-[10px] font-black tracking-[0.3em] text-[#8A1800]">
-                      {String(allImages.length).padStart(2, '0')}
-                    </span>
+                    </div>
+                    
+                    {project.images?.map((img, i) => {
+                      let span = "col-span-1 row-span-1";
+                      if (i === 0) span = "col-span-2 row-span-1";
+                      if (i === 1) span = "col-span-1 row-span-2";
+                      if (i === 2) span = "col-span-1 row-span-1";
+                      if (i === 3) span = "col-span-2 row-span-1";
+                      
+                      return (
+                        <div 
+                          key={i} 
+                          onClick={() => {
+                            setActiveImageIndex(i + 1);
+                            setViewMode('carousel');
+                          }}
+                          className={`${span} overflow-hidden rounded-lg sm:rounded-2xl group cursor-pointer bg-neutral-900 border border-white/5`}
+                        >
+                          <ImageWithFallback 
+                            src={img} 
+                            alt={`${project.title} artifact ${i}`} 
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                          />
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
+              ) : (
+                <div className="relative w-full h-[60vh] sm:h-[70vh] flex items-center justify-center group transition-all duration-500">
+                  {/* Carousel Controls */}
+                  <button 
+                    onClick={prevImage}
+                    className="absolute left-0 sm:-left-12 z-20 w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-white/5 hover:bg-[#8A1800] border border-white/10 flex items-center justify-center transition-all group-hover:translate-x-2 sm:group-hover:translate-x-0"
+                  >
+                    <ChevronLeft className="w-6 h-6" />
+                  </button>
+                  
+                  <div className="w-full h-full relative overflow-hidden rounded-xl sm:rounded-3xl border border-white/10 bg-black/40 backdrop-blur-sm">
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={activeImageIndex}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        transition={{ duration: 0.4, ease: "easeOut" }}
+                        className="w-full h-full"
+                      >
+                        <ImageWithFallback 
+                          src={allImages[activeImageIndex]} 
+                          alt={`${project.title} view ${activeImageIndex}`} 
+                          className="w-full h-full object-contain p-4 sm:p-8" 
+                        />
+                      </motion.div>
+                    </AnimatePresence>
 
-                <button 
-                  onClick={nextImage}
-                  className="absolute right-0 sm:-right-12 z-20 w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-white/5 hover:bg-[#8A1800] border border-white/10 flex items-center justify-center transition-all group-hover:-translate-x-2 sm:group-hover:-translate-x-0"
-                >
-                  <ChevronRight className="w-6 h-6" />
-                </button>
+                    {/* Counter */}
+                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-black/60 backdrop-blur-md border border-white/10 flex items-center gap-4">
+                      <span className="text-[10px] font-black tracking-[0.3em] text-white/40">
+                        {String(activeImageIndex + 1).padStart(2, '0')}
+                      </span>
+                      <div className="w-8 h-[1px] bg-white/20" />
+                      <span className="text-[10px] font-black tracking-[0.3em] text-[#8A1800]">
+                        {String(allImages.length).padStart(2, '0')}
+                      </span>
+                    </div>
+                  </div>
+
+                  <button 
+                    onClick={nextImage}
+                    className="absolute right-0 sm:-right-12 z-20 w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-white/5 hover:bg-[#8A1800] border border-white/10 flex items-center justify-center transition-all group-hover:-translate-x-2 sm:group-hover:-translate-x-0"
+                  >
+                    <ChevronRight className="w-6 h-6" />
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        ) : project.isFullWidthScroll ? (
+          <div className="w-full flex flex-col">
+            {/* Hero Image */}
+            <div className="max-w-7xl mx-auto w-full px-5 sm:px-12 pt-8 sm:pt-16">
+               <div className="w-full aspect-[16/10] sm:aspect-[21/9] rounded-xl sm:rounded-3xl overflow-hidden border border-white/10 bg-neutral-900 shadow-2xl">
+                 <ImageWithFallback 
+                   src={project.image} 
+                   alt={project.title} 
+                   className="w-full h-full object-cover" 
+                 />
+               </div>
+            </div>
+
+            {/* Narrative - constrained to max-width */}
+            <div className="max-w-7xl mx-auto w-full px-5 sm:px-12 py-16 sm:py-32">
+              <div className="max-w-4xl">
+                <p className="text-[9px] sm:text-xs font-black text-[#8A1800] tracking-[0.5em] uppercase mb-6 sm:mb-10">Entry // The Narrative</p>
+                <h4 className="text-sm sm:text-lg font-sans leading-relaxed text-white/80 max-w-2xl">
+                  {project.longDescription || project.description}
+                </h4>
               </div>
-            )}
+            </div>
+
+            {/* Full width images scroll - truly edge to edge */}
+            <div className="w-full flex flex-col gap-0">
+              {project.scrollImage && (
+                <img 
+                  src={project.scrollImage} 
+                  alt={`${project.title} scroll`} 
+                  className="w-full h-auto block"
+                  referrerPolicy="no-referrer"
+                />
+              )}
+              {project.images?.map((img, i) => (
+                <img 
+                  key={`img-${i}`}
+                  src={img} 
+                  alt={`${project.title} scroll ${i}`} 
+                  className="w-full h-auto block"
+                  referrerPolicy="no-referrer"
+                />
+              ))}
+              {project.variations?.map((v, vIdx) => (
+                v.images.map((img, iIdx) => (
+                  <img 
+                    key={`var-${vIdx}-${iIdx}`}
+                    src={img} 
+                    alt={`${v.title} scroll ${iIdx}`} 
+                    className="w-full h-auto block"
+                    referrerPolicy="no-referrer"
+                  />
+                ))
+              ))}
+            </div>
+            
+            <div className="max-w-7xl mx-auto w-full px-5 sm:px-12 py-24 sm:py-40">
+              <div className="flex items-center gap-4 opacity-40">
+                 <div className="h-[1px] w-12 bg-[#8A1800]" />
+                 <span className="text-[8px] sm:text-[10px] font-black uppercase tracking-[0.4em] text-[#8A1800]">End of Project Scroll</span>
+              </div>
+            </div>
           </div>
         ) : (
-          <>
+          <div className="max-w-7xl mx-auto w-full px-5 sm:px-12 py-8 sm:py-16 flex flex-col gap-12 sm:gap-20">
             {/* TOP: Image Archive Grid */}
             <div className="space-y-12">
               <div className="flex justify-between items-end">
@@ -269,7 +332,7 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
                 <span className="text-[8px] sm:text-[10px] font-black opacity-20 uppercase tracking-[0.2em]">Archive_State: Full</span>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-16">
                 <div className="md:col-span-2">
                    {project.link ? (
                      <div className="block group/link relative">
@@ -319,7 +382,7 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
                           {variation.description}
                         </p>
                       </div>
-                      <div className={`grid grid-cols-1 ${variation.layoutType === 'a3-a4' ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-6 sm:gap-10`}>
+                      <div className={`grid grid-cols-1 ${variation.layoutType === 'a3-a4' ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-10 sm:gap-16`}>
                         {variation.images.map((img, iIdx) => (
                           <div key={iIdx} className={`space-y-4 ${variation.layoutType === 'a3-a4' ? (iIdx === 0 ? 'md:col-span-2' : 'md:col-span-1') : ''}`}>
                             <StickyImage 
@@ -343,7 +406,7 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
                  <span className="text-[8px] sm:text-[10px] font-black uppercase tracking-[0.4em] text-[#8A1800]">End of Log Entry</span>
               </div>
             </div>
-          </>
+          </div>
         )}
       </div>
       
@@ -559,7 +622,7 @@ const Home: React.FC = () => {
            </p>
         </header>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-12 relative z-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 sm:gap-20 relative z-10">
            {regularProjects.map((project, idx) => (
              <div 
                key={project.title}
@@ -609,7 +672,34 @@ const Home: React.FC = () => {
          <div className="max-w-4xl mx-auto space-y-8 sm:space-y-16 relative z-10">
             <h4 className="text-2xl sm:text-6xl font-serif-elegant tracking-tighter text-white uppercase leading-none">Initiate Dialogue</h4>
             <div className="flex flex-wrap justify-center gap-6 sm:gap-16 font-black uppercase tracking-[0.3em] text-[8px] sm:text-xs text-[#8A1800]">
-               <a href="mailto:naamya.design@gmail.com?subject=Portfolio Inquiry" className="hover:text-white transition-all underline underline-offset-[10px] decoration-[#8A1800] decoration-1">Email</a>
+               <div className="flex flex-col items-center gap-4">
+                 <a 
+                   href="mailto:naamya.design@gmail.com?subject=Portfolio Inquiry" 
+                   onClick={(e) => {
+                     e.preventDefault();
+                     const mailtoUrl = "mailto:naamya.design@gmail.com?subject=Portfolio Inquiry";
+                     const iframe = document.createElement('iframe');
+                     iframe.style.display = 'none';
+                     iframe.src = mailtoUrl;
+                     document.body.appendChild(iframe);
+                     setTimeout(() => {
+                       document.body.removeChild(iframe);
+                     }, 1000);
+                   }}
+                   className="hover:text-white transition-all underline underline-offset-[10px] decoration-[#8A1800] decoration-1"
+                 >
+                   Email
+                 </a>
+                 <button 
+                   onClick={() => {
+                     navigator.clipboard.writeText("naamya.design@gmail.com");
+                     alert("Email copied to clipboard: naamya.design@gmail.com");
+                   }}
+                   className="text-[6px] sm:text-[8px] font-black uppercase tracking-widest text-[#8A1800]/60 hover:text-white transition-colors"
+                 >
+                   (Copy Address)
+                 </button>
+               </div>
                <a href="https://www.behance.net/naamyagoel1" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-all underline underline-offset-[10px] decoration-[#8A1800] decoration-1">Behance</a>
                <a href="https://www.linkedin.com/in/naamya-goel-99a5a9257/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-all underline underline-offset-[10px] decoration-[#8A1800] decoration-1">LinkedIn</a>
             </div>
