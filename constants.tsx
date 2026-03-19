@@ -48,34 +48,28 @@ export const PROJECTS: Project[] = [
     tech: ["Parametric Design", "3D Rendering", "Visual Identity"]
   },
   {
-    title: "Catalogue Design",
-    category: Section.MOTION,
-    tagline: "Dynamic Storytelling",
-    description: "A series of abstract motion graphics exploring geometry and rhythm.",
-    longDescription: "This series serves as a visual playground for physics-based animation. Each piece starts with a simple primitive—a cube, a sphere, a line—and subjects it to complex mathematical forces like Lorenz attractors and Perlin noise.",
-    image: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80&w=1200",
-    images: [
-      "https://images.unsplash.com/photo-1550684847-75bdda21cc95?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1515462277126-2dd0c162007a?auto=format&fit=crop&q=80&w=800"
-    ],
-    tech: ["After Effects", "Cinema 4D", "X-Particles"]
+    title: "Typography",
+    category: Section.TYPOGRAPHY,
+    tagline: "Structural Expression",
+    description: "An exploration of letterforms, hierarchy, and visual rhythm.",
+    longDescription: "This project is a deep dive into the architecture of type. By deconstructing and reassembling letterforms, I explore how typography can function as both a carrier of meaning and a purely aesthetic structural element. The works focus on the tension between legibility and abstraction, utilizing grid systems and experimental layouts to create a cohesive visual language.",
+    image: "https://i.ibb.co/35sfw4mV/ty.png" ,
+    scrollImage: "https://i.ibb.co/KJ5BqY9/POSTER.png", // Placeholder: Replace with your 4923x12856px image URL
+    isFullWidthScroll: true,
+    tech: ["InDesign", "Illustrator", "Layout Design"]
   },
   {
-    title: "Miscellaneous",
+    title: "Fine Arts & Explorations",
     category: Section.MISCELLANEOUS,
-    tagline: "Uncategorized Artifacts",
-    description: "A collection of visual experiments and projects that defy singular categorization.",
-    longDescription: "This gallery serves as a living archive for spontaneous experiments, quick visual studies, and projects that exist outside the boundaries of my primary work categories. It is a space for raw creativity, material exploration, and the 'happy accidents' that occur during the creative process.",
-    image: "https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?auto=format&fit=crop&q=80&w=1200",
+    tagline: "Mediums & Experiments",
+    description: "A collection of fine arts and experimental medium explorations.",
+    longDescription: "This section is a dedicated space for my explorations in fine arts and various creative mediums. It represents my interest in stepping away from digital constraints to play with textures, physical forms, and traditional techniques. From charcoal sketches to mixed-media experiments, these works are about the joy of discovery and the tactile process of creation. It's a playground where I test new design styles and push the boundaries of my visual language.",
+    image: "https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?auto=format&fit=crop&q=80&w=800",
     images: [
-      "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1550684847-75bdda21cc95?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1515462277126-2dd0c162007a?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=800"
+      "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1460661419201-fd4ce18a802f?auto=format&fit=crop&q=80&w=800"
     ],
-    tech: ["Mixed Media", "Digital Art", "Experimental"]
+    tech: ["Fine Arts", "Mixed Media", "Experimental"]
   }
 ];
 

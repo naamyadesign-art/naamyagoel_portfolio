@@ -50,16 +50,18 @@ const About: React.FC = () => {
               </h1>
             </div>
             
-            <p className="text-sm sm:text-lg font-sans text-white/70 leading-relaxed max-w-xl">
-              "A digital architect bridging the gap between raw technical systems and refined visual narratives."
-            </p>
-
-            <div className="space-y-6 text-sm sm:text-base font-black uppercase tracking-tight text-white/50 leading-relaxed max-w-lg">
+            <div className="space-y-6 text-sm sm:text-lg font-sans text-white/70 leading-relaxed max-w-xl">
               <p>
-                Based in the intersection of design and development, I specialize in creating immersive digital experiences that feel as precise as they are expressive.
+                I’m a Visual Communication design student who treats design like a playground — bold ideas, strong visuals, and a little bit of chaos (the good kind). I love building worlds through branding, typography, packaging, and digital experiences that feel intentional but never boring. If it tells a story and looks good doing it, I’m in.
               </p>
               <p>
-                My work is driven by a fascination with systems—how they break, how they scale, and how they can be humanized through thoughtful typography and motion.
+                I work with Adobe Creative Suite, Figma, WordPress, and front-end workflows, but my favorite part is experimenting — mixing styles, breaking layouts, and figuring out how to make something feel just right. I’m especially drawn to clean yet expressive systems, editorial layouts, and anything that lets me play with type and composition.
+              </p>
+              <p>
+                When I’m not designing, I’m usually watching films, getting lost in thriller books, obsessing over visual details like a director, or exploring fine arts and different mediums just to see what sticks. I’d love to explore the film world more seriously in the future and see how storytelling translates beyond design. I love chasing random sparks of inspiration and turning them into full-blown ideas, even if they start as “this could be cool.”
+              </p>
+              <p className="text-[#8A1800] font-black uppercase tracking-widest text-xs pt-4">
+                For me, design is part storytelling, part experimentation, and part “let’s see how cool I can make this.”
               </p>
             </div>
           </motion.div>

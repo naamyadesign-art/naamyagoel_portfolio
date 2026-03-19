@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Project } from './types';
+import { Project, Section } from './types';
 import { PROJECTS } from './constants';
 import About from './src/pages/About';
 
@@ -118,7 +118,7 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
     }
   };
 
-  const isMisc = project.category === 'MISCELLANEOUS';
+  const isMisc = project.category === Section.MISCELLANEOUS || project.category === Section.EXPERIMENTAL || project.category === Section.GHOST;
 
   useEffect(() => {
     if (scrollContainerRef.current) {
@@ -156,131 +156,8 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
       </div>
 
       <div className="w-full relative z-10">
-        {/* Gallery Mode for Miscellaneous */}
-        {isMisc ? (
-          <div className="max-w-7xl mx-auto w-full px-5 sm:px-12 py-8 sm:py-16 flex flex-col gap-12 sm:gap-20">
-            <div className="space-y-12 sm:space-y-24">
-              {viewMode === 'grid' ? (
-                <div className="space-y-8 sm:space-y-12 transition-opacity duration-700">
-                  <div className="mb-8 sm:mb-12 text-center sm:text-left">
-                    <h3 className="text-2xl sm:text-5xl font-serif-elegant tracking-tight mb-3">MISCELLANEOUS</h3>
-                    <p className="text-[7px] sm:text-[10px] font-black uppercase tracking-[0.4em] text-[#8A1800] opacity-60">Experimental Archive // Selected Artifacts</p>
-                  </div>
-
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 auto-rows-[100px] sm:auto-rows-[180px]">
-                    <div 
-                      onClick={() => {
-                        setActiveImageIndex(0);
-                        setViewMode('carousel');
-                      }}
-                      className="col-span-2 row-span-2 overflow-hidden rounded-lg sm:rounded-2xl group cursor-pointer bg-neutral-900 border border-white/5"
-                    >
-                      <ImageWithFallback 
-                        src={project.image} 
-                        alt={project.title} 
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
-                      />
-                    </div>
-                    
-                    {project.images?.map((img, i) => {
-                      let span = "col-span-1 row-span-1";
-                      if (i === 0) span = "col-span-2 row-span-1";
-                      if (i === 1) span = "col-span-1 row-span-2";
-                      if (i === 2) span = "col-span-1 row-span-1";
-                      if (i === 3) span = "col-span-2 row-span-1";
-                      
-                      return (
-                        <div 
-                          key={i} 
-                          onClick={() => {
-                            setActiveImageIndex(i + 1);
-                            setViewMode('carousel');
-                          }}
-                          className={`${span} overflow-hidden rounded-lg sm:rounded-2xl group cursor-pointer bg-neutral-900 border border-white/5`}
-                        >
-                          <ImageWithFallback 
-                            src={img} 
-                            alt={`${project.title} artifact ${i}`} 
-                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
-                          />
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              ) : (
-                <div className="relative w-full h-[60vh] sm:h-[70vh] flex items-center justify-center group transition-all duration-500">
-                  {/* Carousel Controls */}
-                  <button 
-                    onClick={prevImage}
-                    className="absolute left-0 sm:-left-12 z-20 w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-white/5 hover:bg-[#8A1800] border border-white/10 flex items-center justify-center transition-all group-hover:translate-x-2 sm:group-hover:translate-x-0"
-                  >
-                    <ChevronLeft className="w-6 h-6" />
-                  </button>
-                  
-                  <div className="w-full h-full relative overflow-hidden rounded-xl sm:rounded-3xl border border-white/10 bg-black/40 backdrop-blur-sm">
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={activeImageIndex}
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
-                        transition={{ duration: 0.4, ease: "easeOut" }}
-                        className="w-full h-full"
-                      >
-                        <ImageWithFallback 
-                          src={allImages[activeImageIndex]} 
-                          alt={`${project.title} view ${activeImageIndex}`} 
-                          className="w-full h-full object-contain p-4 sm:p-8" 
-                        />
-                      </motion.div>
-                    </AnimatePresence>
-
-                    {/* Counter */}
-                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-black/60 backdrop-blur-md border border-white/10 flex items-center gap-4">
-                      <span className="text-[10px] font-black tracking-[0.3em] text-white/40">
-                        {String(activeImageIndex + 1).padStart(2, '0')}
-                      </span>
-                      <div className="w-8 h-[1px] bg-white/20" />
-                      <span className="text-[10px] font-black tracking-[0.3em] text-[#8A1800]">
-                        {String(allImages.length).padStart(2, '0')}
-                      </span>
-                    </div>
-                  </div>
-
-                  <button 
-                    onClick={nextImage}
-                    className="absolute right-0 sm:-right-12 z-20 w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-white/5 hover:bg-[#8A1800] border border-white/10 flex items-center justify-center transition-all group-hover:-translate-x-2 sm:group-hover:-translate-x-0"
-                  >
-                    <ChevronRight className="w-6 h-6" />
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        ) : project.isFullWidthScroll ? (
+        {project.isFullWidthScroll ? (
           <div className="w-full flex flex-col">
-            {/* Hero Image */}
-            <div className="max-w-7xl mx-auto w-full px-5 sm:px-12 pt-8 sm:pt-16">
-               <div className="w-full aspect-[16/10] sm:aspect-[21/9] rounded-xl sm:rounded-3xl overflow-hidden border border-white/10 bg-neutral-900 shadow-2xl">
-                 <ImageWithFallback 
-                   src={project.image} 
-                   alt={project.title} 
-                   className="w-full h-full object-cover" 
-                 />
-               </div>
-            </div>
-
-            {/* Narrative - constrained to max-width */}
-            <div className="max-w-7xl mx-auto w-full px-5 sm:px-12 py-16 sm:py-32">
-              <div className="max-w-4xl">
-                <p className="text-[9px] sm:text-xs font-black text-[#8A1800] tracking-[0.5em] uppercase mb-6 sm:mb-10">Entry // The Narrative</p>
-                <h4 className="text-sm sm:text-lg font-sans leading-relaxed text-white/80 max-w-2xl">
-                  {project.longDescription || project.description}
-                </h4>
-              </div>
-            </div>
-
             {/* Full width images scroll - truly edge to edge */}
             <div className="w-full flex flex-col gap-0">
               {project.scrollImage && (
@@ -419,6 +296,7 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const [activeProject, setActiveProject] = useState<Project | null>(null);
+  const [activeTab, setActiveTab] = useState<'works' | 'misc'>('works');
   const [isFlipped, setIsFlipped] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isStickyColor, setIsStickyColor] = useState(false);
@@ -456,8 +334,8 @@ const Home: React.FC = () => {
     worksSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const regularProjects = PROJECTS.filter(p => p.category !== 'MISCELLANEOUS');
-  const miscProject = PROJECTS.find(p => p.category === 'MISCELLANEOUS');
+  const regularProjects = PROJECTS.filter(p => p.category !== Section.MISCELLANEOUS);
+  const miscProject = PROJECTS.find(p => p.category === Section.MISCELLANEOUS);
 
   return (
     <div className={`selection:bg-[#8A1800] selection:text-white min-h-[100dvh] w-full overflow-x-hidden transition-colors duration-1000 relative ${isFlipped ? 'bg-[#0F0505]/40' : 'bg-transparent'}`}>
@@ -523,7 +401,7 @@ const Home: React.FC = () => {
               <div className="relative z-10 flex justify-between items-end gap-6 sm:gap-10">
                 <div className="max-w-[130px] sm:max-w-xs space-y-2">
                   <p className="text-[6px] sm:text-[10px] leading-relaxed font-black uppercase tracking-widest opacity-80">
-                    A curated archive of creative systems and visual artifacts.
+                    Bold, story-driven work across branding, typography, and digital experiences.
                   </p>
                   <span className="block font-black text-[#FFD700] uppercase text-[6px] sm:text-[9px] tracking-[0.2em] animate-pulse">Tap to Access</span>
                 </div>
@@ -563,7 +441,7 @@ const Home: React.FC = () => {
                       <h2 className="text-2xl sm:text-6xl font-serif-elegant uppercase leading-none text-white tracking-tighter">Naamya Goel</h2>
                     </div>
                     <p className="text-[9px] sm:text-base font-black leading-relaxed opacity-60 uppercase tracking-tight max-w-sm mx-auto md:mx-0">
-                       Melding creative intuition with systemic precision. Crafting digital artifacts that live within high-end visual frameworks.
+                       Visual Communication design student creating bold, story-driven work across branding, typography, packaging, and digital experiences. I love blending structure with play and storytelling.
                     </p>
                     <div className="flex items-center justify-center md:justify-start gap-4 pt-1">
                        <span className="h-[2px] w-8 sm:w-12 bg-[#8A1800]/50" />
@@ -614,57 +492,98 @@ const Home: React.FC = () => {
       <section ref={worksSectionRef} className="max-w-7xl mx-auto px-6 sm:px-12 py-16 sm:py-32 relative">
         <header className="mb-10 sm:mb-20 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 sm:gap-8 relative z-10">
            <div className="space-y-3">
-              <span className="text-white bg-[#8A1800] font-black tracking-[0.5em] uppercase text-[7px] sm:text-[10px] px-3 py-1 border border-white/5 shadow-lg">ARCHIVE_V1</span>
-              <h2 className="text-3xl sm:text-8xl font-serif-elegant tracking-tighter text-white uppercase leading-none">Selected Works</h2>
+              <div className="flex items-center gap-4">
+                <span className="text-white bg-[#8A1800] font-black tracking-[0.5em] uppercase text-[7px] sm:text-[10px] px-3 py-1 border border-white/5 shadow-lg">ARCHIVE_V1</span>
+                
+                {/* Tab Switcher */}
+                <div className="flex items-center gap-4 ml-2">
+                  <button 
+                    onClick={() => setActiveTab('works')}
+                    className={`text-[8px] sm:text-[10px] font-black uppercase tracking-[0.4em] transition-all relative py-1 ${activeTab === 'works' ? 'text-white' : 'text-white/20 hover:text-white/40'}`}
+                  >
+                    [ 01_WORKS ]
+                    {activeTab === 'works' && (
+                      <motion.div layoutId="tabUnderline" className="absolute -bottom-1 left-0 w-full h-[2px] bg-[#8A1800] shadow-[0_0_10px_#8A1800]" />
+                    )}
+                  </button>
+                  <button 
+                    onClick={() => setActiveTab('misc')}
+                    className={`text-[8px] sm:text-[10px] font-black uppercase tracking-[0.4em] transition-all relative py-1 ${activeTab === 'misc' ? 'text-white' : 'text-white/20 hover:text-white/40'}`}
+                  >
+                    [ 02_MISC ]
+                    {activeTab === 'misc' && (
+                      <motion.div layoutId="tabUnderline" className="absolute -bottom-1 left-0 w-full h-[2px] bg-[#8A1800] shadow-[0_0_10px_#8A1800]" />
+                    )}
+                  </button>
+                </div>
+              </div>
+              <h2 className="text-3xl sm:text-8xl font-serif-elegant tracking-tighter text-white uppercase leading-none">
+                {activeTab === 'works' ? 'Selected Works' : 'Miscellaneous'}
+              </h2>
            </div>
            <p className="max-w-[240px] sm:max-w-md text-white font-black text-[8px] sm:text-sm leading-relaxed uppercase tracking-widest opacity-60 border-l border-[#8A1800] pl-5">
-             A rigorous visual study of form, typography, and functional experience within modern digital systems.
+             {activeTab === 'works' 
+               ? 'A rigorous visual study of form, typography, and functional experience within modern digital systems.'
+               : 'Experiments, fine arts, and various medium explorations that push the boundaries of my visual language.'}
            </p>
         </header>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 sm:gap-20 relative z-10">
-           {regularProjects.map((project, idx) => (
-             <div 
-               key={project.title}
-               onClick={() => setActiveProject(project)}
-               className="group cursor-pointer space-y-4"
-             >
-                <div className="relative aspect-square bg-neutral-900 rounded-lg overflow-hidden shadow-xl border border-[#8A1800]/30 transition-all group-hover:border-[#8A1800] group-hover:shadow-[0_15px_40px_rgba(138,24,0,0.3)]">
-                   <ImageWithFallback 
-                    src={project.image} 
-                    alt={project.title} 
+        <div className="relative z-10">
+          {activeTab === 'works' ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 sm:gap-20">
+               {regularProjects.map((project, idx) => (
+                 <div 
+                   key={project.title}
+                   onClick={() => setActiveProject(project)}
+                   className="group cursor-pointer space-y-4"
+                 >
+                    <div className="relative aspect-square bg-neutral-900 rounded-lg overflow-hidden shadow-xl border border-[#8A1800]/30 transition-all group-hover:border-[#8A1800] group-hover:shadow-[0_15px_40px_rgba(138,24,0,0.3)]">
+                       <ImageWithFallback 
+                        src={project.image} 
+                        alt={project.title} 
+                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-100 group-hover:scale-105" 
+                       />
+                       <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all" />
+                       <div className="absolute inset-x-4 bottom-4 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all">
+                          <div className="w-full py-2 bg-white text-black font-black uppercase text-[7px] tracking-[0.3em] rounded text-center">Open Index</div>
+                       </div>
+                    </div>
+                    <div className="flex justify-between items-start px-1">
+                       <div className="space-y-0.5">
+                          <h3 className="text-lg sm:text-2xl font-serif-elegant uppercase tracking-tighter text-white group-hover:text-[#8A1800] transition-colors leading-none">{project.title}</h3>
+                          <p className="text-[7px] sm:text-[9px] font-bold text-[#8A1800] tracking-[0.1em] uppercase opacity-50 mt-1.5">
+                            {project.category}
+                          </p>
+                       </div>
+                       <span className="font-serif-elegant italic text-base sm:text-xl text-[#8A1800]/40 group-hover:text-[#8A1800] transition-colors leading-none">0{idx + 1}</span>
+                    </div>
+                 </div>
+               ))}
+            </div>
+          ) : (
+            <div className="max-w-5xl mx-auto">
+              {miscProject && (
+                <div 
+                  onClick={() => setActiveProject(miscProject)}
+                  className="group cursor-pointer relative w-full aspect-[21/9] bg-neutral-900 rounded-xl overflow-hidden border border-[#8A1800]/30 hover:border-[#8A1800] transition-all shadow-2xl"
+                >
+                  <ImageWithFallback 
+                    src={miscProject.image} 
+                    alt={miscProject.title} 
                     className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-100 group-hover:scale-105" 
-                   />
-                   <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all" />
-                   <div className="absolute inset-x-4 bottom-4 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all">
-                      <div className="w-full py-2 bg-white text-black font-black uppercase text-[7px] tracking-[0.3em] rounded text-center">Open Index</div>
-                   </div>
+                  />
+                  <div className="absolute inset-0 bg-black/60 group-hover:bg-black/20 transition-all" />
+                  
+                  <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+                    <span className="text-[8px] sm:text-[10px] font-black text-[#8A1800] tracking-[0.4em] uppercase mb-4 opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0">Log_Entry: MISC</span>
+                    <h3 className="text-2xl sm:text-6xl font-serif-elegant italic text-white mb-6 translate-y-4 group-hover:translate-y-0 transition-all duration-500">{miscProject.title}</h3>
+                    <div className="px-6 py-2 bg-[#8A1800] text-white font-black uppercase text-[8px] sm:text-[10px] tracking-[0.3em] rounded opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0">Open Archive</div>
+                  </div>
                 </div>
-                <div className="flex justify-between items-start px-1">
-                   <div className="space-y-0.5">
-                      <h3 className="text-lg sm:text-2xl font-serif-elegant uppercase tracking-tighter text-white group-hover:text-[#8A1800] transition-colors leading-none">{project.title}</h3>
-                      <p className="text-[7px] sm:text-[9px] font-bold text-[#8A1800] tracking-[0.1em] uppercase opacity-50 mt-1.5">
-                        {project.category}
-                      </p>
-                   </div>
-                   <span className="font-serif-elegant italic text-base sm:text-xl text-[#8A1800]/40 group-hover:text-[#8A1800] transition-colors leading-none">0{idx + 1}</span>
-                </div>
-             </div>
-           ))}
+              )}
+            </div>
+          )}
         </div>
-
-        {/* Miscellaneous Tab */}
-        {miscProject && (
-          <div className="mt-12 sm:mt-20 flex justify-center relative z-10">
-            <button 
-              onClick={() => setActiveProject(miscProject)}
-              className="group relative px-4 py-1.5 border border-red-100/50 hover:border-red-200 transition-all duration-500 rounded-full bg-red-50/50 hover:bg-red-100/60 flex items-center gap-2.5"
-            >
-              <span className="w-1 h-1 rounded-full bg-red-400 animate-pulse" />
-              <span className="text-[8px] font-black text-red-500/80 tracking-[0.2em] uppercase">Miscellaneous</span>
-            </button>
-          </div>
-        )}
       </section>
 
       {/* Footer */}
