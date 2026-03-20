@@ -30,8 +30,9 @@ const ImageWithFallback: React.FC<{ src: string; alt: string; className?: string
       src={error ? placeholder : src} 
       alt={alt} 
       onError={() => setError(true)}
-      className={`${className} transition-opacity duration-500`}
+      className={`${className} block w-full transition-opacity duration-500`}
       referrerPolicy="no-referrer"
+      loading="lazy"
     />
   );
 };
@@ -92,7 +93,8 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
   const categoryLabel = project.category || 'Work';
   const initial = categoryLabel.charAt(0);
 
-  const allImages = [project.image, ...(project.images || [])];
+  const isMisc = project.category === Section.MISCELLANEOUS || project.category === Section.EXPERIMENTAL || project.category === Section.GHOST;
+  const allImages = isMisc ? (project.images || []) : [project.image, ...(project.images || [])];
 
   const nextImage = () => setActiveImageIndex((prev) => (prev + 1) % allImages.length);
   const prevImage = () => setActiveImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
@@ -117,8 +119,6 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
       document.body.removeChild(link);
     }
   };
-
-  const isMisc = project.category === Section.MISCELLANEOUS || project.category === Section.EXPERIMENTAL || project.category === Section.GHOST;
 
   useEffect(() => {
     if (scrollContainerRef.current) {
@@ -196,6 +196,147 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
                  <span className="text-[8px] sm:text-[10px] font-black uppercase tracking-[0.4em] text-[#8A1800]">End of Project Scroll</span>
               </div>
             </div>
+          </div>
+        ) : isMisc ? (
+          <div className="max-w-7xl mx-auto w-full px-5 sm:px-12 py-8 sm:py-16">
+            {viewMode === 'grid' ? (
+              <div className="space-y-12">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                  {allImages.map((img, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.05 }}
+                      onClick={() => {
+                        setActiveImageIndex(i);
+                        setViewMode('carousel');
+                      }}
+                      className="relative aspect-square bg-neutral-900 rounded-lg overflow-hidden border border-white/5 shadow-xl group cursor-pointer"
+                    >
+                      <ImageWithFallback 
+                        src={img} 
+                        alt={`${project.title} grid ${i}`} 
+                        className="w-full h-full object-cover transition-all duration-700 scale-100 group-hover:scale-110" 
+                      />
+                      <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-all duration-500 z-10" />
+                      <div className="absolute bottom-3 right-3 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="bg-black/60 backdrop-blur-md px-2 py-1 rounded text-[8px] font-black uppercase tracking-widest border border-white/10">
+                          View Study
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+
+                <div className="border-t border-white/5 pt-12 sm:pt-24 space-y-8">
+                  <div>
+                    <p className="text-[9px] sm:text-xs font-black text-[#8A1800] tracking-[0.5em] uppercase mb-2">Archive_Ref: MISC_V1</p>
+                    <h3 className="text-xl sm:text-3xl font-serif-elegant italic text-white leading-none">{project.title}</h3>
+                  </div>
+                  <div>
+                    <p className="text-[9px] sm:text-xs font-black text-[#8A1800] tracking-[0.5em] uppercase mb-4">Entry // The Narrative</p>
+                    <h4 className="text-sm sm:text-lg font-sans leading-relaxed text-white/80 max-w-2xl">
+                      {project.longDescription || project.description}
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="min-h-[85vh] flex flex-col items-center justify-center py-8 sm:py-16">
+                <div className="w-full max-w-6xl space-y-12">
+                  <div className="flex justify-between items-center px-4">
+                    <div className="flex items-center gap-4">
+                      <span className="text-[10px] font-black text-[#8A1800] tracking-[0.4em] uppercase">Archive_Ref: 0{activeImageIndex + 1}</span>
+                      <div className="h-[1px] w-8 bg-[#8A1800]/30" />
+                      <span className="text-[10px] font-black text-white/40 tracking-[0.2em] uppercase">{activeImageIndex + 1} / {allImages.length}</span>
+                    </div>
+                    <button 
+                      onClick={() => setViewMode('grid')}
+                      className="text-[8px] sm:text-[10px] font-black uppercase tracking-widest px-5 py-2.5 bg-white/5 hover:bg-white hover:text-black rounded-full transition-all flex items-center gap-2"
+                    >
+                      <span className="text-lg leading-none">×</span> Close Gallery
+                    </button>
+                  </div>
+
+                  <div className="relative group flex flex-col items-center">
+                    <div className="relative w-full flex items-center justify-center">
+                      <button 
+                        onClick={prevImage}
+                        className="absolute left-0 sm:left-4 z-20 p-4 text-white/20 hover:text-[#8A1800] transition-colors bg-black/20 sm:bg-transparent rounded-full"
+                        aria-label="Previous image"
+                      >
+                        <ChevronLeft size={48} strokeWidth={1} />
+                      </button>
+
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key={activeImageIndex}
+                          initial={{ opacity: 0, scale: 0.95 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 1.05 }}
+                          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                          onClick={nextImage}
+                          className="w-full flex justify-center cursor-pointer"
+                        >
+                          <ImageWithFallback 
+                            src={allImages[activeImageIndex]} 
+                            alt={`${project.title} gallery ${activeImageIndex}`} 
+                            className="max-w-full max-h-[70vh] sm:max-h-[80vh] object-contain rounded shadow-[0_40px_120px_rgba(0,0,0,0.9)] border border-white/10"
+                          />
+                        </motion.div>
+                      </AnimatePresence>
+
+                      <button 
+                        onClick={nextImage}
+                        className="absolute right-0 sm:right-4 z-20 p-4 text-white/20 hover:text-[#8A1800] transition-colors bg-black/20 sm:bg-transparent rounded-full"
+                        aria-label="Next image"
+                      >
+                        <ChevronRight size={48} strokeWidth={1} />
+                      </button>
+                    </div>
+
+                    <motion.div 
+                      key={`caption-${activeImageIndex}`}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="w-full max-w-3xl pt-12 text-center space-y-6"
+                    >
+                      <div className="space-y-2">
+                        <h4 className="text-2xl sm:text-5xl font-serif-elegant italic text-white leading-tight">
+                          {project.title} // Study_0{activeImageIndex + 1}
+                        </h4>
+                        <div className="h-[1px] w-16 bg-[#8A1800] mx-auto" />
+                      </div>
+                      
+                      <p className="text-xs sm:text-base text-white/70 leading-relaxed font-sans max-w-2xl mx-auto">
+                        {project.captions && project.captions[activeImageIndex] 
+                          ? project.captions[activeImageIndex]
+                          : `A detailed visual study exploring the intersection of form, texture, and digital abstraction. This entry represents a specific iteration within the ${project.title} experimental series, focusing on the nuanced balance between structure and play.`
+                        }
+                      </p>
+
+                      <div className="pt-8 flex flex-col sm:flex-row justify-center items-center gap-6 sm:gap-12">
+                         <div className="flex items-center gap-3">
+                           <span className="text-[8px] font-black uppercase tracking-widest text-[#8A1800]">Archive_Status</span>
+                           <span className="text-[8px] font-black uppercase tracking-widest text-white/40">Verified</span>
+                         </div>
+                         <div className="flex items-center gap-3">
+                           <span className="text-[8px] font-black uppercase tracking-widest text-[#8A1800]">System_Log</span>
+                           <span className="text-[8px] font-black uppercase tracking-widest text-white/40">2025_V1</span>
+                         </div>
+                         <button 
+                          onClick={nextImage}
+                          className="mt-4 sm:mt-0 px-8 py-3 bg-[#8A1800] text-white text-[10px] font-black uppercase tracking-[0.3em] rounded hover:bg-[#8A1800]/80 transition-all shadow-lg flex items-center gap-3"
+                         >
+                           Next Study <ChevronRight size={16} />
+                         </button>
+                      </div>
+                    </motion.div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         ) : (
           <div className="max-w-7xl mx-auto w-full px-5 sm:px-12 py-8 sm:py-16 flex flex-col gap-12 sm:gap-20">
@@ -296,7 +437,6 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const [activeProject, setActiveProject] = useState<Project | null>(null);
-  const [activeTab, setActiveTab] = useState<'works' | 'misc'>('works');
   const [isFlipped, setIsFlipped] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isStickyColor, setIsStickyColor] = useState(false);
@@ -488,100 +628,100 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Grid Section */}
+      {/* Selected Works Section */}
       <section ref={worksSectionRef} className="max-w-7xl mx-auto px-6 sm:px-12 py-16 sm:py-32 relative">
         <header className="mb-10 sm:mb-20 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 sm:gap-8 relative z-10">
            <div className="space-y-3">
               <div className="flex items-center gap-4">
                 <span className="text-white bg-[#8A1800] font-black tracking-[0.5em] uppercase text-[7px] sm:text-[10px] px-3 py-1 border border-white/5 shadow-lg">ARCHIVE_V1</span>
-                
-                {/* Tab Switcher */}
-                <div className="flex items-center gap-4 ml-2">
-                  <button 
-                    onClick={() => setActiveTab('works')}
-                    className={`text-[8px] sm:text-[10px] font-black uppercase tracking-[0.4em] transition-all relative py-1 ${activeTab === 'works' ? 'text-white' : 'text-white/20 hover:text-white/40'}`}
-                  >
-                    [ 01_WORKS ]
-                    {activeTab === 'works' && (
-                      <motion.div layoutId="tabUnderline" className="absolute -bottom-1 left-0 w-full h-[2px] bg-[#8A1800] shadow-[0_0_10px_#8A1800]" />
-                    )}
-                  </button>
-                  <button 
-                    onClick={() => setActiveTab('misc')}
-                    className={`text-[8px] sm:text-[10px] font-black uppercase tracking-[0.4em] transition-all relative py-1 ${activeTab === 'misc' ? 'text-white' : 'text-white/20 hover:text-white/40'}`}
-                  >
-                    [ 02_MISC ]
-                    {activeTab === 'misc' && (
-                      <motion.div layoutId="tabUnderline" className="absolute -bottom-1 left-0 w-full h-[2px] bg-[#8A1800] shadow-[0_0_10px_#8A1800]" />
-                    )}
-                  </button>
-                </div>
               </div>
               <h2 className="text-3xl sm:text-8xl font-serif-elegant tracking-tighter text-white uppercase leading-none">
-                {activeTab === 'works' ? 'Selected Works' : 'Miscellaneous'}
+                Selected Works
               </h2>
            </div>
            <p className="max-w-[240px] sm:max-w-md text-white font-black text-[8px] sm:text-sm leading-relaxed uppercase tracking-widest opacity-60 border-l border-[#8A1800] pl-5">
-             {activeTab === 'works' 
-               ? 'A rigorous visual study of form, typography, and functional experience within modern digital systems.'
-               : 'Experiments, fine arts, and various medium explorations that push the boundaries of my visual language.'}
+             A rigorous visual study of form, typography, and functional experience within modern digital systems.
            </p>
         </header>
 
         <div className="relative z-10">
-          {activeTab === 'works' ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 sm:gap-20">
-               {regularProjects.map((project, idx) => (
-                 <div 
-                   key={project.title}
-                   onClick={() => setActiveProject(project)}
-                   className="group cursor-pointer space-y-4"
-                 >
-                    <div className="relative aspect-square bg-neutral-900 rounded-lg overflow-hidden shadow-xl border border-[#8A1800]/30 transition-all group-hover:border-[#8A1800] group-hover:shadow-[0_15px_40px_rgba(138,24,0,0.3)]">
-                       <ImageWithFallback 
-                        src={project.image} 
-                        alt={project.title} 
-                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-100 group-hover:scale-105" 
-                       />
-                       <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all" />
-                       <div className="absolute inset-x-4 bottom-4 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all">
-                          <div className="w-full py-2 bg-white text-black font-black uppercase text-[7px] tracking-[0.3em] rounded text-center">Open Index</div>
-                       </div>
-                    </div>
-                    <div className="flex justify-between items-start px-1">
-                       <div className="space-y-0.5">
-                          <h3 className="text-lg sm:text-2xl font-serif-elegant uppercase tracking-tighter text-white group-hover:text-[#8A1800] transition-colors leading-none">{project.title}</h3>
-                          <p className="text-[7px] sm:text-[9px] font-bold text-[#8A1800] tracking-[0.1em] uppercase opacity-50 mt-1.5">
-                            {project.category}
-                          </p>
-                       </div>
-                       <span className="font-serif-elegant italic text-base sm:text-xl text-[#8A1800]/40 group-hover:text-[#8A1800] transition-colors leading-none">0{idx + 1}</span>
-                    </div>
-                 </div>
-               ))}
-            </div>
-          ) : (
-            <div className="max-w-5xl mx-auto">
-              {miscProject && (
-                <div 
-                  onClick={() => setActiveProject(miscProject)}
-                  className="group cursor-pointer relative w-full aspect-[21/9] bg-neutral-900 rounded-xl overflow-hidden border border-[#8A1800]/30 hover:border-[#8A1800] transition-all shadow-2xl"
-                >
-                  <ImageWithFallback 
-                    src={miscProject.image} 
-                    alt={miscProject.title} 
-                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-100 group-hover:scale-105" 
-                  />
-                  <div className="absolute inset-0 bg-black/60 group-hover:bg-black/20 transition-all" />
-                  
-                  <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-                    <span className="text-[8px] sm:text-[10px] font-black text-[#8A1800] tracking-[0.4em] uppercase mb-4 opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0">Log_Entry: MISC</span>
-                    <h3 className="text-2xl sm:text-6xl font-serif-elegant italic text-white mb-6 translate-y-4 group-hover:translate-y-0 transition-all duration-500">{miscProject.title}</h3>
-                    <div className="px-6 py-2 bg-[#8A1800] text-white font-black uppercase text-[8px] sm:text-[10px] tracking-[0.3em] rounded opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0">Open Archive</div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 sm:gap-20">
+             {regularProjects.map((project, idx) => (
+               <div 
+                 key={project.title}
+                 onClick={() => setActiveProject(project)}
+                 className="group cursor-pointer space-y-4"
+               >
+                  <div className="relative aspect-square bg-neutral-900 rounded-lg overflow-hidden shadow-xl border border-[#8A1800]/30 transition-all group-hover:border-[#8A1800] group-hover:shadow-[0_15px_40px_rgba(138,24,0,0.3)]">
+                     <ImageWithFallback 
+                      src={project.image} 
+                      alt={project.title} 
+                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-100 group-hover:scale-105" 
+                     />
+                     <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all" />
+                     <div className="absolute inset-x-4 bottom-4 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all">
+                        <div className="w-full py-2 bg-white text-black font-black uppercase text-[7px] tracking-[0.3em] rounded text-center">Open Index</div>
+                     </div>
+                  </div>
+                  <div className="flex justify-between items-start px-1">
+                     <div className="space-y-0.5">
+                        <h3 className="text-lg sm:text-2xl font-serif-elegant uppercase tracking-tighter text-white group-hover:text-[#8A1800] transition-colors leading-none">{project.title}</h3>
+                        <p className="text-[7px] sm:text-[9px] font-bold text-[#8A1800] tracking-[0.1em] uppercase opacity-50 mt-1.5">
+                          {project.category}
+                        </p>
+                     </div>
+                     <span className="font-serif-elegant italic text-base sm:text-xl text-[#8A1800]/40 group-hover:text-[#8A1800] transition-colors leading-none">0{idx + 1}</span>
+                  </div>
+               </div>
+             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Fine Arts & Explorations Section */}
+      <section className="max-w-7xl mx-auto px-6 sm:px-12 py-16 sm:py-32 relative border-t border-[#8A1800]/10">
+        <div className="relative z-10 space-y-8">
+          {miscProject && (
+            <>
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                onClick={() => setActiveProject(miscProject)}
+                className="group cursor-pointer relative w-full aspect-[21/9] bg-neutral-900 rounded-xl overflow-hidden border border-[#8A1800]/30 hover:border-[#8A1800] transition-all shadow-2xl"
+              >
+                <ImageWithFallback 
+                  src={miscProject.image} 
+                  alt={miscProject.title} 
+                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-100 group-hover:scale-105" 
+                />
+                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all" />
+                
+                <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+                  <h3 className="text-3xl sm:text-7xl font-serif-elegant italic text-white drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)] transition-transform duration-700 group-hover:scale-110">
+                    Fine Arts & Explorations
+                  </h3>
+                  <div className="mt-6 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div className="px-6 py-2 bg-[#8A1800] text-white font-black uppercase text-[8px] sm:text-[10px] tracking-[0.3em] rounded shadow-lg">Open Archive</div>
                   </div>
                 </div>
-              )}
-            </div>
+              </motion.div>
+
+              <div className="flex flex-col md:flex-row justify-between items-start gap-6 px-1">
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <span className="text-[7px] sm:text-[9px] font-black text-[#8A1800] tracking-[0.4em] uppercase">Archive_Ref: MISC_V1</span>
+                    <div className="h-[1px] w-8 bg-[#8A1800]/30" />
+                    <h3 className="text-lg sm:text-2xl font-serif-elegant italic text-white leading-none">
+                      Fine Arts & Explorations
+                    </h3>
+                  </div>
+                  <p className="max-w-2xl text-white/50 font-sans text-[9px] sm:text-sm leading-relaxed">
+                    Experiments, fine arts, and various medium explorations that push the boundaries of my visual language. This collection represents a continuous study of form, texture, and digital abstraction.
+                  </p>
+                </div>
+              </div>
+            </>
           )}
         </div>
       </section>

@@ -66,8 +66,40 @@ export const PROJECTS: Project[] = [
     longDescription: "This section is a dedicated space for my explorations in fine arts and various creative mediums. It represents my interest in stepping away from digital constraints to play with textures, physical forms, and traditional techniques. From charcoal sketches to mixed-media experiments, these works are about the joy of discovery and the tactile process of creation. It's a playground where I test new design styles and push the boundaries of my visual language.",
     image: "https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?auto=format&fit=crop&q=80&w=800",
     images: [
-      "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1460661419201-fd4ce18a802f?auto=format&fit=crop&q=80&w=800"
+      "https://i.ibb.co/0jjKJ7W7/oil-on-canvas.jpg",
+      "https://i.ibb.co/dswMfRY8/art2.jpg",
+      "https://i.ibb.co/N2VryCxP/art3.jpg",
+      "https://i.ibb.co/SX0Vv0Tt/art4.jpg",
+      "https://i.ibb.co/1YZ6wnBb/art5.jpg",
+      "https://i.ibb.co/gZFKycBY/Portrait-in-pencil.jpg",
+       "https://i.ibb.co/TB37MHCq/art7.jpg" ,
+       "https://i.ibb.co/0pp5Cy8M/art8.jpg" ,
+       "https://i.ibb.co/ksmqn8ZX/art9.jpg" ,
+       "https://i.ibb.co/vrFhWkk/art10.jpg" ,
+      "https://i.ibb.co/2H1jkGZ/cynotype.jpg" ,
+       "https://i.ibb.co/BH5m7Gkb/art12.jpg" ,
+       "https://i.ibb.co/XrHgq0zM/acrylic-on-canvas.jpg" ,
+     "https://i.ibb.co/6RtMQHCK/glass-2.jpg" ,
+      "https://i.ibb.co/qFkY331j/glass-1.jpg" ,
+      "https://i.ibb.co/mVvCR5KQ/glass-3.jpg" 
+    ],
+    captions: [
+      "Study 1: Oil on canvas",
+      "Study 2: Portrait in pencil",
+      "Study 3: Portrait in pencil",
+      "Study 4: Portrait in charcoal",
+      "Study 5: Portrait in pencil",
+      "Study 6: Portrait in pencil",
+      "Study 7: Watercolor",
+      "Study 8: Watercolor",
+      "Study 9: Pencilcolor",
+      "Study 10: Watercolor",
+      "Study 11: Cyanotype",
+      "Study 12: Illustration for school art magazine",
+      "Study 13: Acrylic on canvas - Kolkata cityscape",
+      "Study 14: Glass Study - An exploration of transparency and light",
+      "Study 15: Glass Study - Capturing the intricate reflections on a glass surface",
+      "Study 16: Glass Study - A study of form and clarity through the medium of glass"
     ],
     tech: ["Fine Arts", "Mixed Media", "Experimental"]
   }

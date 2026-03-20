@@ -48,6 +48,7 @@ export interface Project {
   longDescription?: string;
   image: string;
   images?: string[];
+  captions?: string[];
   tech: string[];
   link?: string;
   variations?: Variation[];
