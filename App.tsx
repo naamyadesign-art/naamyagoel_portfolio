@@ -143,6 +143,9 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
           </div>
         </div>
         <div className="flex items-center gap-2 sm:gap-4">
+          <div className="hidden sm:block px-2 py-0.5 bg-[#8A1800] text-white text-[8px] font-black tracking-[0.2em] uppercase rounded">
+            Archive V2
+          </div>
           {isMisc && viewMode === 'carousel' && (
             <button 
               onClick={() => setViewMode('grid')}
@@ -231,7 +234,7 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
 
                 <div className="border-t border-white/5 pt-12 sm:pt-24 space-y-8">
                   <div>
-                    <p className="text-[9px] sm:text-xs font-black text-[#8A1800] tracking-[0.5em] uppercase mb-2">Archive_Ref: MISC_V1</p>
+                    <p className="text-[9px] sm:text-xs font-black text-[#8A1800] tracking-[0.5em] uppercase mb-2">Archive_Ref: ARCHIVE_V2</p>
                     <h3 className="text-xl sm:text-3xl font-serif-elegant italic text-white leading-none">{project.title}</h3>
                   </div>
                   <div>
@@ -304,7 +307,7 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
                     >
                       <div className="space-y-2">
                         <h4 className="text-2xl sm:text-5xl font-serif-elegant italic text-white leading-tight">
-                          {project.title} // Study_0{activeImageIndex + 1}
+                          {project.title} // ARCHIVE_V2 // Study_0{activeImageIndex + 1}
                         </h4>
                         <div className="h-[1px] w-16 bg-[#8A1800] mx-auto" />
                       </div>
@@ -323,7 +326,7 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
                          </div>
                          <div className="flex items-center gap-3">
                            <span className="text-[8px] font-black uppercase tracking-widest text-[#8A1800]">System_Log</span>
-                           <span className="text-[8px] font-black uppercase tracking-widest text-white/40">2025_V1</span>
+                           <span className="text-[8px] font-black uppercase tracking-widest text-white/40">ARCHIVE_V2</span>
                          </div>
                          <button 
                           onClick={nextImage}
@@ -681,6 +684,12 @@ const Home: React.FC = () => {
       {/* Fine Arts & Explorations Section */}
       <section className="max-w-7xl mx-auto px-6 sm:px-12 py-16 sm:py-32 relative border-t border-[#8A1800]/10">
         <div className="relative z-10 space-y-8">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="px-2 py-0.5 bg-[#8A1800] text-white text-[8px] font-black tracking-[0.3em] uppercase rounded">
+              Archive V2
+            </div>
+            <div className="h-[1px] flex-grow bg-[#8A1800]/20" />
+          </div>
           {miscProject && (
             <>
               <motion.div 
@@ -698,6 +707,9 @@ const Home: React.FC = () => {
                 <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all" />
                 
                 <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+                  <div className="px-4 py-1.5 bg-[#8A1800] text-white text-[8px] sm:text-[10px] font-black tracking-[0.5em] uppercase rounded shadow-xl mb-4 sm:mb-8">
+                    Archive V2
+                  </div>
                   <h3 className="text-3xl sm:text-7xl font-serif-elegant italic text-white drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)] transition-transform duration-700 group-hover:scale-110">
                     Fine Arts & Explorations
                   </h3>
@@ -710,7 +722,9 @@ const Home: React.FC = () => {
               <div className="flex flex-col md:flex-row justify-between items-start gap-6 px-1">
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
-                    <span className="text-[7px] sm:text-[9px] font-black text-[#8A1800] tracking-[0.4em] uppercase">Archive_Ref: MISC_V1</span>
+                    <div className="px-2 py-0.5 bg-[#8A1800]/10 border border-[#8A1800]/30 rounded">
+                      <span className="text-[7px] sm:text-[9px] font-black text-[#8A1800] tracking-[0.4em] uppercase">Archive_Ref: ARCHIVE_V2</span>
+                    </div>
                     <div className="h-[1px] w-8 bg-[#8A1800]/30" />
                     <h3 className="text-lg sm:text-2xl font-serif-elegant italic text-white leading-none">
                       Fine Arts & Explorations
