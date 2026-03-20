@@ -81,7 +81,10 @@ export const PROJECTS: Project[] = [
        "https://i.ibb.co/XrHgq0zM/acrylic-on-canvas.jpg" ,
      "https://i.ibb.co/6RtMQHCK/glass-2.jpg" ,
       "https://i.ibb.co/qFkY331j/glass-1.jpg" ,
-      "https://i.ibb.co/mVvCR5KQ/glass-3.jpg" 
+      "https://i.ibb.co/mVvCR5KQ/glass-3.jpg" ,
+     "https://i.ibb.co/VcKnDRY9/IMG-5951.jpg" ,
+     "https://i.ibb.co/vxWMNhcV/IMG-5508.jpg" ,
+   "https://i.ibb.co/d02ncvgp/IMG-3337.jpg" 
     ],
     captions: [
       "Study 1: Oil on canvas",
@@ -99,7 +102,10 @@ export const PROJECTS: Project[] = [
       "Study 13: Acrylic on canvas - Kolkata cityscape",
       "Study 14: Glass Study - An exploration of transparency and light",
       "Study 15: Glass Study - Capturing the intricate reflections on a glass surface",
-      "Study 16: Glass Study - A study of form and clarity through the medium of glass"
+      "Study 16: Glass Study - A study of form and clarity through the medium of glass",
+      "Study 17: Leather Bag ",
+      "Study 18: Sodagari block print  ",
+      "Study 19: Resin "
     ],
     tech: ["Fine Arts", "Mixed Media", "Experimental"]
   }
