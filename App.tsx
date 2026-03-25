@@ -10,9 +10,9 @@ const ImageWithFallback: React.FC<{ src: string; alt: string; className?: string
   const [error, setError] = useState(false);
   const placeholder = "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=800";
   
-  const isBehanceEmbed = src.includes('behance.net/embed');
+  const isEmbed = src.includes('behance.net/embed') || src.includes('anyflip.com');
 
-  if (isBehanceEmbed) {
+  if (isEmbed) {
     return (
       <iframe 
         src={src} 
@@ -385,7 +385,18 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-16">
                 <div className="md:col-span-2">
-                   {project.link ? (
+                   {project.headerEmbed ? (
+                     <div className={`relative aspect-[16/10] w-full bg-neutral-100 rounded-xl overflow-hidden border ${theme.stickyBorder} shadow-2xl`}>
+                       <iframe 
+                         src={project.headerEmbed} 
+                         className="w-full h-full border-0"
+                         title={project.title}
+                         allowFullScreen
+                         loading="lazy"
+                         referrerPolicy="strict-origin-when-cross-origin"
+                       />
+                     </div>
+                   ) : project.link ? (
                      <div className="block group/link relative">
                       <StickyImage 
                         src={project.image} 
@@ -397,7 +408,7 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
                         gradientColor={theme.stickyGradient}
                       />
                        <div className={`absolute top-4 right-4 z-50 opacity-0 group-hover:opacity-100 transition-opacity ${theme.buttonBg} text-white px-3 py-1 rounded text-[8px] font-black uppercase tracking-widest flex items-center gap-2 pointer-events-none`}>
-                         View on Behance <span className="text-xs">↗</span>
+                         {project.link?.includes('behance.net') ? 'View on Behance' : 'View Project'} <span className="text-xs">↗</span>
                        </div>
                      </div>
                    ) : (

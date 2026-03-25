@@ -25,8 +25,9 @@ export const PROJECTS: Project[] = [
     tagline: "High-End Editorial Design",
     description: "A sophisticated catalogue design for Tiffany & Co., focusing on elegance and brand heritage.",
     longDescription: "This catalogue design project for Tiffany & Co. explores the intersection of luxury, heritage, and modern editorial aesthetics. The layout emphasizes white space, high-contrast typography, and exquisite product photography to reflect the brand's timeless elegance. Each page is meticulously crafted to guide the reader through a curated selection of jewelry, balancing informational clarity with emotional resonance. The project involved deep research into Tiffany's visual history, resulting in a contemporary interpretation of their iconic brand identity.",
-    image: "https://i.ibb.co/VcKnDRY9/IMG-5951.jpg",
-    link: "https://online.fliphtml5.com/your-link-here",
+    image: "https://i.postimg.cc/3xZwmKcp/front-header.png",
+    headerEmbed: "https://online.anyflip.com/ukyzd/bhpp/index.html",
+    link: "https://online.anyflip.com/ukyzd/bhpp/index.html",
     images: [
       "https://i.ibb.co/vxWMNhcV/IMG-5508.jpg",
       "https://i.ibb.co/d02ncvgp/IMG-3337.jpg"

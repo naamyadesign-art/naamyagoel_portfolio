@@ -55,6 +55,7 @@ export interface Project {
   variations?: Variation[];
   isFullWidthScroll?: boolean;
   scrollImage?: string;
+  headerEmbed?: string;
 }
 
 export interface Landmark {
