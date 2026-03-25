@@ -23,7 +23,7 @@
       overflow-x: hidden;
       background-color: #050505;
       font-family: 'Space Grotesk', sans-serif;
-      color: #FFFFFF;
+      color: white;
       scroll-behavior: smooth;
       width: 100%;
     }
@@ -39,10 +39,30 @@
 
     .game-grid {
       background-image: 
-        linear-gradient(rgba(138, 24, 0, 0.15) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(138, 24, 0, 0.15) 1px, transparent 1px),
-        linear-gradient(rgba(138, 24, 0, 0.05) 0.5px, transparent 0.5px),
-        linear-gradient(90deg, rgba(138, 24, 0, 0.05) 0.5px, transparent 0.5px);
+        linear-gradient(rgba(138, 24, 0, 0.2) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(138, 24, 0, 0.2) 1px, transparent 1px),
+        linear-gradient(rgba(138, 24, 0, 0.1) 0.5px, transparent 0.5px),
+        linear-gradient(90deg, rgba(138, 24, 0, 0.1) 0.5px, transparent 0.5px);
+      background-size: 30px 30px, 30px 30px, 10px 10px, 10px 10px;
+      background-attachment: fixed;
+    }
+
+    .red-grid {
+      background-image: 
+        linear-gradient(rgba(138, 24, 0, 0.2) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(138, 24, 0, 0.2) 1px, transparent 1px),
+        linear-gradient(rgba(138, 24, 0, 0.1) 0.5px, transparent 0.5px),
+        linear-gradient(90deg, rgba(138, 24, 0, 0.1) 0.5px, transparent 0.5px);
+      background-size: 30px 30px, 30px 30px, 10px 10px, 10px 10px;
+      background-attachment: fixed;
+    }
+
+    .catalogue-grid {
+      background-image: 
+        linear-gradient(rgba(0, 71, 79, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 71, 79, 0.1) 1px, transparent 1px),
+        linear-gradient(rgba(0, 71, 79, 0.03) 0.5px, transparent 0.5px),
+        linear-gradient(90deg, rgba(0, 71, 79, 0.03) 0.5px, transparent 0.5px);
       background-size: 30px 30px, 30px 30px, 10px 10px, 10px 10px;
       background-attachment: fixed;
     }
@@ -88,20 +108,10 @@
       scrollbar-width: none;
     }
 
-    @keyframes scan {
-      0% { transform: translateY(-100%); opacity: 0; }
-      10% { opacity: 0.8; }
-      90% { opacity: 0.8; }
-      100% { transform: translateY(300%); opacity: 0; }
-    }
-
-    .scan-line {
-      animation: scan 4s linear infinite;
-    }
   </style>
 </head>
-<body class="bg-[#050505] game-grid">
+<body class="bg-[#050505] red-grid">
   <div id="root"></div>
-  <script type="module" src="/index.tsx"></script>
+  <script type="module" src="./index.tsx"></script>
 </body>
 </html>

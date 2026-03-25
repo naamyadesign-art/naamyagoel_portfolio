@@ -1,6 +1,8 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Mail, Linkedin, MapPin, Cpu, Figma, Palette, Globe, Terminal } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { TOOLS } from '../../constants';
 
 const BehanceIcon = ({ className }: { className?: string }) => (
   <svg 
@@ -15,18 +17,16 @@ const BehanceIcon = ({ className }: { className?: string }) => (
     <path d="M9 12h2"/><path d="M9 16h2"/><path d="M8 20H3a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5a4 4 0 0 1 0 8 4 4 0 0 1 0 8Z"/><path d="M18 20a4 4 0 0 0 4-4 4 4 0 0 0-4-4 4 4 0 0 0-4 4 4 4 0 0 0 4 4Z"/><path d="M15 8h6"/>
   </svg>
 );
-import { Link } from 'react-router-dom';
-import { TOOLS } from '../../constants';
 
 const About: React.FC = () => {
   return (
-    <div className="min-h-screen text-white selection:bg-[#8A1800] selection:text-white overflow-x-hidden bg-transparent">
+    <div className="min-h-screen text-white selection:bg-[#8A1800] selection:text-white overflow-x-hidden bg-[#050505] red-grid">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 px-6 py-8 sm:px-12 flex justify-between items-center bg-gradient-to-b from-[#050505] to-transparent">
-        <Link to="/" className="text-[10px] font-black uppercase tracking-[0.4em] text-[#8A1800] border-b border-[#8A1800]/40 pb-1 hover:text-white transition-colors">
+      <nav className="fixed top-0 w-full z-50 px-6 py-8 sm:px-12 flex justify-between items-center bg-[#050505]/80 backdrop-blur-md border-b border-white/5">
+        <Link to="/" className="text-[10px] font-black uppercase tracking-[0.4em] text-white border-b border-white/40 pb-1 hover:text-[#8A1800] transition-colors">
           NAAMYA GOEL
         </Link>
-        <div className="text-[10px] font-black uppercase tracking-[0.4em] text-[#8A1800] opacity-60">
+        <div className="text-[10px] font-black uppercase tracking-[0.4em] text-white opacity-60">
           Profile_v2.5 // About
         </div>
       </nav>
@@ -41,7 +41,7 @@ const About: React.FC = () => {
             className="space-y-8"
           >
             <div className="space-y-4">
-              <span className="text-[#8A1800] font-black tracking-[0.5em] uppercase text-[10px] px-3 py-1 border border-[#8A1800]/20 inline-block">
+              <span className="text-white font-black tracking-[0.5em] uppercase text-[10px] px-3 py-1 border border-white/20 inline-block bg-[#8A1800]">
                 Identity_Log
               </span>
               <h1 className="text-5xl sm:text-8xl font-serif-elegant tracking-tighter uppercase leading-none">
@@ -60,7 +60,7 @@ const About: React.FC = () => {
               <p>
                 When I’m not designing, I’m usually watching films, getting lost in thriller books, obsessing over visual details like a director, or exploring fine arts and different mediums just to see what sticks. I’d love to explore the film world more seriously in the future and see how storytelling translates beyond design. I love chasing random sparks of inspiration and turning them into full-blown ideas, even if they start as “this could be cool.”
               </p>
-              <p className="text-[#8A1800] font-black uppercase tracking-widest text-xs pt-4">
+              <p className="text-white font-black uppercase tracking-widest text-xs pt-4">
                 For me, design is part storytelling, part experimentation, and part “let’s see how cool I can make this.”
               </p>
             </div>
@@ -72,13 +72,13 @@ const About: React.FC = () => {
             transition={{ duration: 1, delay: 0.2 }}
             className="relative max-w-md mx-auto lg:ml-auto lg:mr-0"
           >
-            <div className="aspect-[4/5] bg-neutral-900 rounded-2xl overflow-hidden border border-[#8A1800]/30 relative group">
+            <div className="aspect-[4/5] bg-neutral-900 rounded-2xl overflow-hidden border border-white/10 relative group">
               <img 
                 src="https://i.ibb.co/5hbtkfX0/Whats-App-Image-2026-01-28-at-11-56-33-AM.jpg" 
                 alt="Naamya Goel" 
                 className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#8A1800]/40 to-transparent opacity-60" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#8A1800]/10 to-transparent opacity-60" />
               <div className="absolute bottom-8 left-8 right-8">
                 <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-white">
                   <MapPin className="w-4 h-4 text-[#8A1800]" />
@@ -98,29 +98,29 @@ const About: React.FC = () => {
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <Cpu className="w-4 h-4 sm:w-6 sm:h-6 text-[#8A1800]" />
-                <span className="text-[7px] sm:text-[10px] font-black text-[#8A1800] tracking-[0.5em] uppercase">Tech_Stack // v2.0</span>
+                <span className="text-[7px] sm:text-[10px] font-black text-white tracking-[0.5em] uppercase">Tech_Stack // v2.0</span>
               </div>
               <h2 className="text-3xl sm:text-6xl font-serif-elegant tracking-tighter text-white uppercase leading-none">The Arsenal</h2>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[#8A1800]/10 border border-[#8A1800]/10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/5 border border-white/10">
             {TOOLS.map((tool, idx) => {
               const Icon = [Figma, Palette, Globe, Terminal][idx % 4];
               return (
-                <div key={tool.name} className="bg-[#050505]/80 backdrop-blur-sm p-8 group hover:bg-[#8A1800]/5 transition-all duration-500 relative overflow-hidden">
-                  <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#8A1800]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div key={tool.name} className="bg-[#050505] p-8 group hover:bg-[#8A1800]/5 transition-all duration-500 relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                   
                   <div className="relative z-10 space-y-6">
                     <div className="flex justify-between items-start">
-                      <div className="w-10 h-10 rounded-lg bg-[#8A1800]/10 flex items-center justify-center group-hover:bg-[#8A1800] group-hover:text-white transition-all duration-500">
+                      <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-[#8A1800] group-hover:text-white transition-all duration-500">
                         <Icon className="w-5 h-5" />
                       </div>
-                      <span className="text-[8px] font-mono text-[#8A1800] opacity-40">0{idx + 1}</span>
+                      <span className="text-[8px] font-mono text-white opacity-40">0{idx + 1}</span>
                     </div>
 
                     <div className="space-y-1">
-                      <p className="text-[7px] font-black text-[#8A1800] tracking-widest uppercase opacity-60">{tool.category}</p>
+                      <p className="text-[7px] font-black text-white tracking-widest uppercase opacity-60">{tool.category}</p>
                       <h3 className="text-xl font-serif-elegant text-white group-hover:translate-x-1 transition-transform duration-500">{tool.name}</h3>
                     </div>
 
@@ -145,7 +145,7 @@ const About: React.FC = () => {
 
         {/* Contact / Footer */}
         <section className="text-center space-y-12">
-          <h2 className="text-4xl sm:text-7xl font-serif-elegant tracking-tighter uppercase">Connect_System</h2>
+          <h2 className="text-4xl sm:text-7xl font-serif-elegant tracking-tighter uppercase text-white">Connect_System</h2>
           <div className="flex flex-wrap justify-center gap-8 sm:gap-16">
             <div className="group flex flex-col items-center gap-4">
               <a 
@@ -161,7 +161,7 @@ const About: React.FC = () => {
                     document.body.removeChild(iframe);
                   }, 1000);
                 }}
-                className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#8A1800] group-hover:border-[#8A1800] transition-all duration-500"
+                className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#8A1800] group-hover:border-[#8A1800] group-hover:text-white transition-all duration-500"
               >
                 <Mail className="w-6 h-6" />
               </a>
@@ -170,22 +170,21 @@ const About: React.FC = () => {
                 <button 
                   onClick={() => {
                     navigator.clipboard.writeText("naamya.design@gmail.com");
-                    alert("Email copied to clipboard: naamya.design@gmail.com");
                   }}
-                  className="text-[6px] font-black uppercase tracking-widest text-[#8A1800]/60 hover:text-white transition-colors"
+                  className="text-[6px] font-black uppercase tracking-widest text-white/60 hover:text-white transition-colors"
                 >
                   (Copy Address)
                 </button>
               </div>
             </div>
             <a href="https://www.behance.net/naamyagoel1" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-4">
-              <div className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#8A1800] group-hover:border-[#8A1800] transition-all duration-500">
+              <div className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#8A1800] group-hover:border-[#8A1800] group-hover:text-white transition-all duration-500">
                 <BehanceIcon className="w-6 h-6" />
               </div>
               <span className="text-[10px] font-black uppercase tracking-[0.4em] opacity-40 group-hover:opacity-100 transition-opacity">Behance</span>
             </a>
             <a href="https://www.linkedin.com/in/naamya-goel-99a5a9257/" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-4">
-              <div className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#8A1800] group-hover:border-[#8A1800] transition-all duration-500">
+              <div className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#8A1800] group-hover:border-[#8A1800] group-hover:text-white transition-all duration-500">
                 <Linkedin className="w-6 h-6" />
               </div>
               <span className="text-[10px] font-black uppercase tracking-[0.4em] opacity-40 group-hover:opacity-100 transition-opacity">LinkedIn</span>
