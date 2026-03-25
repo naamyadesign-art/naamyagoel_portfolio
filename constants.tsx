@@ -29,8 +29,8 @@ export const PROJECTS: Project[] = [
     headerEmbed: "https://online.anyflip.com/ukyzd/bhpp/index.html",
     link: "https://online.anyflip.com/ukyzd/bhpp/index.html",
     images: [
-      "https://i.ibb.co/vxWMNhcV/IMG-5508.jpg",
-      "https://i.ibb.co/d02ncvgp/IMG-3337.jpg"
+      "https://i.postimg.cc/d1fPrXFk/fanf_b.png",
+      "https://i.postimg.cc/nz37k4SL/rings.png"
     ],
     tech: ["Editorial Design", "Typography", "Brand Identity"]
   },
@@ -102,25 +102,25 @@ export const PROJECTS: Project[] = [
    "https://i.ibb.co/d02ncvgp/IMG-3337.jpg" 
     ],
     captions: [
-      "Study 1: Oil on canvas",
-      "Study 2: Portrait in pencil",
-      "Study 3: Portrait in pencil",
-      "Study 4: Portrait in charcoal",
-      "Study 5: Portrait in pencil",
-      "Study 6: Portrait in pencil",
-      "Study 7: Watercolor",
-      "Study 8: Watercolor",
-      "Study 9: Pencilcolor",
-      "Study 10: Watercolor",
-      "Study 11: Cyanotype",
-      "Study 12: Illustration for school art magazine",
-      "Study 13: Acrylic on canvas - Kolkata cityscape",
-      "Study 14: Glass Study - An exploration of transparency and light",
-      "Study 15: Glass Study - Capturing the intricate reflections on a glass surface",
-      "Study 16: Glass Study - A study of form and clarity through the medium of glass",
-      "Study 17: Leather Bag ",
-      "Study 18: Sodagari block print  ",
-      "Study 19: Resin "
+      "Oil on Canvas: Exploration of pigment layering and surface impasto.",
+      "Pencil Portrait: Graphite rendering focusing on anatomical proportions.",
+      "Pencil Study: Line weight and hatching techniques on textured paper.",
+      "Charcoal Study: Value range exploration using vine and compressed charcoal.",
+      "Pencil Portrait: High-contrast tonal study of facial structure.",
+      "Pencil Study: Gestural sketching for rapid form capture.",
+      "Watercolor: Pigment diffusion study using wet-on-wet application.",
+      "Watercolor: Glazing and layering techniques for color saturation.",
+      "Pencilcolor: Wax-based pigment blending and burnishing.",
+      "Watercolor: Controlled wash application for geometric clarity.",
+      "Cyanotype: Photographic printing process using UV-sensitive chemicals.",
+      "Illustration: Editorial composition combining traditional and digital elements.",
+      "Acrylic on Canvas: Impasto urban study using palette knife techniques.",
+      "Glass Study: Analysis of light refraction and caustic patterns.",
+      "Glass Study: Rendering of specular highlights and internal reflections.",
+      "Glass Study: Structural analysis of transparent geometric volumes.",
+      "Leather Bag: Material construction and functional prototyping.",
+      "Sodagari Block Print: Hand-carved block printing with traditional resist-dyeing.",
+      "Resin: Polymer casting process exploring material encapsulation."
     ],
     tech: ["Fine Arts", "Mixed Media", "Experimental"]
   }
