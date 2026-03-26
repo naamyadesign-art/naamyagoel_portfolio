@@ -72,13 +72,12 @@ const About: React.FC = () => {
             transition={{ duration: 1, delay: 0.2 }}
             className="relative max-w-md mx-auto lg:ml-auto lg:mr-0"
           >
-            <div className="aspect-[4/5] bg-neutral-900 rounded-2xl overflow-hidden border border-white/10 relative group">
+            <div className="aspect-[4/5] bg-black rounded-2xl overflow-hidden border border-white/10 relative group">
               <img 
                 src="https://i.ibb.co/5hbtkfX0/Whats-App-Image-2026-01-28-at-11-56-33-AM.jpg" 
                 alt="Naamya Goel" 
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
+                className="w-full h-full object-cover transition-all duration-1000"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#8A1800]/10 to-transparent opacity-60" />
               <div className="absolute bottom-8 left-8 right-8">
                 <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-white">
                   <MapPin className="w-4 h-4 text-[#8A1800]" />

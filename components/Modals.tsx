@@ -17,7 +17,7 @@ const ImageWithFallback: React.FC<{ src: string; alt: string; className?: string
       src={error ? placeholder : src} 
       alt={alt} 
       onError={() => setError(true)}
-      className={`${className} transition-opacity duration-500`}
+      className={`${className}`}
     />
   );
 };
@@ -105,12 +105,12 @@ export const BioModal: React.FC<ModalProps> = ({ onClose }) => {
           <div 
             onMouseEnter={handleProfileEnter}
             onMouseLeave={handleProfileLeave}
-            className="aspect-[3/4] rounded-2xl overflow-hidden border-2 border-[#00474F]/5 shadow-2xl bg-neutral-100 relative cursor-crosshair"
+            className="aspect-[3/4] rounded-2xl overflow-hidden border-2 border-[#00474F]/5 shadow-2xl bg-black relative cursor-crosshair"
           >
             <ImageWithFallback 
               src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=800" 
               alt="Profile" 
-              className={`w-full h-full object-cover object-[center_35%] transition-all duration-1000 ${isStickyColor ? 'grayscale-0 brightness-110' : 'grayscale brightness-90'}`}
+              className={`w-full h-full object-cover object-[center_35%] transition-all duration-1000`}
             />
           </div>
           <div className={`absolute -bottom-8 -left-8 bg-[#00474F] text-white px-6 py-4 rounded-xl shadow-lg border border-white/10 transition-transform duration-500 ${isStickyColor ? 'scale-110 -rotate-12' : 'scale-100 -rotate-6'}`}>

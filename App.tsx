@@ -8,6 +8,7 @@ import About from './src/pages/About';
 
 const ImageWithFallback: React.FC<{ src: string; alt: string; className?: string }> = ({ src, alt, className }) => {
   const [error, setError] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const placeholder = "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=800";
   
   const isEmbed = src.includes('behance.net/embed') || src.includes('anyflip.com');
@@ -29,8 +30,9 @@ const ImageWithFallback: React.FC<{ src: string; alt: string; className?: string
     <img 
       src={error ? placeholder : src} 
       alt={alt} 
+      onLoad={() => setLoaded(true)}
       onError={() => setError(true)}
-      className={`${className} block w-full transition-opacity duration-500`}
+      className={`${className} block w-full ${loaded ? 'opacity-100' : 'opacity-0'}`}
       referrerPolicy="no-referrer"
       loading="lazy"
     />
@@ -54,13 +56,13 @@ const StickyImage: React.FC<{ src: string; alt: string; aspectRatio?: string; on
     <div 
       onMouseEnter={handleEnter} 
       onMouseLeave={handleLeave}
-      className={`relative ${aspectRatio} bg-neutral-100 rounded-xl overflow-hidden border ${borderColor} shadow-2xl group cursor-crosshair ${onClick ? 'cursor-pointer' : ''}`}
+      className={`relative ${aspectRatio} bg-black rounded-xl overflow-hidden border ${borderColor} shadow-2xl group cursor-crosshair ${onClick ? 'cursor-pointer' : ''}`}
     >
       <div className="w-full h-full pointer-events-none">
         <ImageWithFallback 
           src={src} 
           alt={alt} 
-          className={`w-full h-full object-cover transition-all duration-1000 ${noGrayscale ? 'grayscale-0' : (isHovered ? 'grayscale-0 scale-105' : 'grayscale brightness-105 scale-100')}`} 
+          className={`w-full h-full object-cover transition-all duration-1000 ${isHovered ? 'scale-105' : 'scale-100'}`} 
         />
       </div>
       
@@ -78,8 +80,6 @@ const StickyImage: React.FC<{ src: string; alt: string; aspectRatio?: string; on
       ) : (
         <div className="absolute inset-0 z-10 pointer-events-none" />
       )}
-
-      <div className={`absolute inset-0 bg-gradient-to-t ${gradientColor} to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-20 pointer-events-none`} />
     </div>
   );
 };
@@ -163,7 +163,7 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
   return (
     <div 
       ref={scrollContainerRef}
-      className={`fixed inset-0 z-[100] flex flex-col transition-opacity duration-500 overflow-y-auto overflow-x-hidden custom-scrollbar ${theme.bg} ${theme.text} ${theme.grid}`}
+      className={`fixed inset-0 z-[100] flex flex-col overflow-y-auto overflow-x-hidden custom-scrollbar ${theme.bg} ${theme.text} ${theme.grid} opacity-100`}
     >
       {/* Header */}
       <div className={`flex justify-between items-center p-4 sm:p-8 sticky top-0 z-50 border-b ${theme.bg}/95 ${theme.border} ${theme.text} backdrop-blur-md`}>
@@ -198,30 +198,27 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
             {/* Full width images scroll - truly edge to edge */}
             <div className="w-full flex flex-col gap-0">
               {project.scrollImage && (
-                <img 
+                <ImageWithFallback 
                   src={project.scrollImage} 
                   alt={`${project.title} scroll`} 
-                  className="w-full h-auto block"
-                  referrerPolicy="no-referrer"
+                  className="w-full h-auto"
                 />
               )}
               {project.images?.map((img, i) => (
-                <img 
+                <ImageWithFallback 
                   key={`img-${i}`}
                   src={img} 
                   alt={`${project.title} scroll ${i}`} 
-                  className="w-full h-auto block"
-                  referrerPolicy="no-referrer"
+                  className="w-full h-auto"
                 />
               ))}
               {project.variations?.map((v, vIdx) => (
                 v.images.map((img, iIdx) => (
-                  <img 
+                  <ImageWithFallback 
                     key={`var-${vIdx}-${iIdx}`}
                     src={img} 
                     alt={`${v.title} scroll ${iIdx}`} 
-                    className="w-full h-auto block"
-                    referrerPolicy="no-referrer"
+                    className="w-full h-auto"
                   />
                 ))
               ))}
@@ -248,14 +245,14 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
                         setActiveImageIndex(i);
                         setViewMode('carousel');
                       }}
-                      className={`relative aspect-square ${theme.bg === 'bg-white' ? 'bg-neutral-100' : 'bg-neutral-900'} rounded-lg overflow-hidden border ${theme.border} shadow-xl group cursor-pointer`}
+                      className={`relative aspect-square bg-black rounded-lg overflow-hidden border ${theme.border} shadow-xl group cursor-pointer`}
                     >
                       <ImageWithFallback 
                         src={img} 
                         alt={`${project.title} grid ${i}`} 
                         className="w-full h-full object-cover transition-all duration-700 scale-100 group-hover:scale-110" 
                       />
-                      <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-all duration-500 z-10" />
+                      <div className="absolute inset-0 bg-transparent group-hover:bg-transparent transition-all duration-500 z-10" />
                       <div className="absolute bottom-3 right-3 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
                         <div className={`bg-black/60 backdrop-blur-md px-2 py-1 rounded text-[8px] font-black uppercase tracking-widest border ${theme.border}`}>
                           View Study
@@ -298,10 +295,10 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
                     <div className="relative w-full flex items-center justify-center">
                       <button 
                         onClick={prevImage}
-                        className={`absolute left-0 sm:left-4 z-20 p-4 ${theme.text}/20 hover:${theme.accentText} transition-colors ${theme.text}/5 sm:bg-transparent rounded-full`}
+                        className={`absolute left-0 sm:left-4 z-30 w-10 h-16 sm:w-16 sm:h-16 flex items-center justify-center text-white transition-all bg-black/80 hover:bg-[#8A1800] rounded-r-2xl sm:rounded-full backdrop-blur-xl border-y border-r border-white/20 sm:border shadow-2xl active:scale-90`}
                         aria-label="Previous image"
                       >
-                        <ChevronLeft size={48} strokeWidth={1} />
+                        <ChevronLeft className="w-6 h-6 sm:w-10 sm:h-10" strokeWidth={2.5} />
                       </button>
 
                       <AnimatePresence mode="wait">
@@ -312,22 +309,22 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
                           exit={{ opacity: 0, scale: 1.05 }}
                           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                           onClick={nextImage}
-                          className="w-full flex justify-center cursor-pointer"
+                          className="w-full flex justify-center cursor-pointer px-4 sm:px-0"
                         >
                           <ImageWithFallback 
                             src={allImages[activeImageIndex]} 
                             alt={`${project.title} gallery ${activeImageIndex}`} 
-                            className={`max-w-full max-h-[70vh] sm:max-h-[80vh] object-contain rounded ${theme.shadow} border ${theme.border}`}
+                            className={`max-w-full max-h-[60vh] sm:max-h-[80vh] object-contain rounded ${theme.shadow} border ${theme.border}`}
                           />
                         </motion.div>
                       </AnimatePresence>
 
                       <button 
                         onClick={nextImage}
-                        className={`absolute right-0 sm:right-4 z-20 p-4 ${theme.text}/20 hover:${theme.accentText} transition-colors ${theme.text}/5 sm:bg-transparent rounded-full`}
+                        className={`absolute right-0 sm:right-4 z-30 w-10 h-16 sm:w-16 sm:h-16 flex items-center justify-center text-white transition-all bg-black/80 hover:bg-[#8A1800] rounded-l-2xl sm:rounded-full backdrop-blur-xl border-y border-l border-white/20 sm:border shadow-2xl active:scale-90`}
                         aria-label="Next image"
                       >
-                        <ChevronRight size={48} strokeWidth={1} />
+                        <ChevronRight className="w-6 h-6 sm:w-10 sm:h-10" strokeWidth={2.5} />
                       </button>
                     </div>
 
@@ -612,12 +609,12 @@ const Home: React.FC = () => {
                     <div 
                       onMouseEnter={handleProfileEnter}
                       onMouseLeave={handleProfileLeave}
-                      className="aspect-[3/4] w-full overflow-hidden border border-white/10 rounded-sm shadow-xl bg-neutral-900 relative cursor-crosshair"
+                      className="aspect-[3/4] w-full overflow-hidden border border-white/10 rounded-sm shadow-xl bg-black relative cursor-crosshair"
                     >
                        <ImageWithFallback 
                           src="https://i.ibb.co/5hbtkfX0/Whats-App-Image-2026-01-28-at-11-56-33-AM.jpg" 
                           alt="Naamya Goel" 
-                          className={`w-full h-full object-cover transition-all duration-1000 ${isStickyColor ? 'grayscale-0 brightness-105 scale-105' : 'grayscale brightness-100 scale-100'}`}
+                          className={`w-full h-full object-cover transition-all duration-1000 ${isStickyColor ? 'scale-105' : 'scale-100'}`}
                        />
                     </div>
                  </div>
@@ -659,17 +656,19 @@ const Home: React.FC = () => {
         </div>
 
         {/* Explore Archive Footer */}
-        <div 
-          className={`absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 transition-all duration-1000 group/scroll cursor-pointer z-30 ${isFlipped ? 'opacity-0 translate-y-10' : 'opacity-100 translate-y-0'}`}
-          onClick={scrollToWorks}
-        >
-          <div className="relative w-10 h-10 flex items-center justify-center text-[#8A1800]">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8">
-              <path d="M7 13l5 5 5-5M7 6l5 5 5-5" />
-            </svg>
-            <div className="absolute inset-0 bg-[#8A1800] blur-2xl opacity-20 group-hover/scroll:opacity-40 transition-opacity" />
+        <div className="absolute bottom-[0.5%] w-full flex flex-col items-center z-30 pointer-events-none">
+          <div 
+            className={`flex flex-col items-center gap-2 transition-all duration-1000 group/scroll cursor-pointer animate-bounce-subtle pointer-events-auto ${isFlipped ? 'opacity-0 translate-y-10' : 'opacity-100 translate-y-0'}`}
+            onClick={scrollToWorks}
+          >
+            <div className="relative w-10 h-10 sm:w-14 sm:h-14 flex items-center justify-center text-[#8A1800]">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 sm:w-12 sm:h-12">
+                <path d="M7 13l5 5 5-5M7 6l5 5 5-5" />
+              </svg>
+              <div className="absolute inset-0 bg-[#8A1800] blur-3xl opacity-40 group-hover/scroll:opacity-60 transition-opacity" />
+            </div>
+            <span className="text-[9px] sm:text-[11px] font-black uppercase tracking-[0.5em] text-[#8A1800] group-hover:text-white transition-colors drop-shadow-md">EXPLORE ARCHIVE</span>
           </div>
-          <span className="text-[8px] sm:text-[10px] font-black uppercase tracking-[0.5em] text-[#8A1800] group-hover:text-white transition-colors">EXPLORE ARCHIVE</span>
         </div>
       </section>
 
@@ -697,13 +696,13 @@ const Home: React.FC = () => {
                  onClick={() => setActiveProject(project)}
                  className="group cursor-pointer space-y-4"
                >
-                  <div className="relative aspect-square bg-neutral-900 rounded-lg overflow-hidden shadow-xl border border-white/10 transition-all group-hover:border-[#8A1800] group-hover:shadow-[0_15px_40px_rgba(138,24,0,0.1)]">
+                  <div className="relative aspect-square bg-black rounded-lg overflow-hidden shadow-xl border border-white/10 transition-all group-hover:border-[#8A1800] group-hover:shadow-[0_15px_40px_rgba(138,24,0,0.1)]">
                      <ImageWithFallback 
                       src={project.image} 
                       alt={project.title} 
-                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-100 group-hover:scale-105" 
+                      className="w-full h-full object-cover transition-all duration-1000 scale-100 group-hover:scale-105" 
                      />
-                     <div className="absolute inset-0 bg-[#8A1800]/5 group-hover:bg-transparent transition-all" />
+                     <div className="absolute inset-0 bg-transparent group-hover:bg-transparent transition-all" />
                      <div className="absolute inset-x-4 bottom-4 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all">
                         <div className="w-full py-2 bg-[#8A1800] text-white font-black uppercase text-[7px] tracking-[0.3em] rounded text-center">Open Index</div>
                      </div>
@@ -739,14 +738,14 @@ const Home: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 onClick={() => setActiveProject(miscProject)}
-                className="group cursor-pointer relative w-full aspect-[21/9] bg-neutral-900 rounded-xl overflow-hidden border border-white/10 hover:border-[#8A1800] transition-all shadow-2xl"
+                className="group cursor-pointer relative w-full aspect-[21/9] bg-black rounded-xl overflow-hidden border border-white/10 hover:border-[#8A1800] transition-all shadow-2xl"
               >
                 <ImageWithFallback 
                   src={miscProject.image} 
                   alt={miscProject.title} 
-                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-100 group-hover:scale-105" 
+                  className="w-full h-full object-cover transition-all duration-1000 scale-100 group-hover:scale-105" 
                 />
-                <div className="absolute inset-0 bg-[#8A1800]/5 group-hover:bg-transparent transition-all" />
+                <div className="absolute inset-0 bg-transparent group-hover:bg-transparent transition-all" />
                 
                 <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
                   <h3 className="text-3xl sm:text-7xl font-serif-elegant italic text-white drop-shadow-[0_2px_10px_rgba(138,24,0,0.1)] transition-transform duration-700 group-hover:scale-110">

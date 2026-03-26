@@ -74,6 +74,18 @@ export const PROJECTS: Project[] = [
     tech: ["InDesign", "Illustrator", "Layout Design"]
   },
   {
+    title: "Illustration Book 2025",
+    category: Section.ILLUSTRATION_BOOK,
+    tagline: "Visual Narrative & Storytelling",
+    description: "A curated collection of illustrations woven into a cohesive visual narrative.",
+    longDescription: "This illustration book is a deep dive into the art of visual storytelling. Each page is a carefully composed scene that contributes to a larger, wordless narrative. The project explores the use of color, composition, and character design to evoke emotion and guide the viewer through an immersive world. It represents a synthesis of traditional drawing techniques and digital refinement, resulting in a tactile yet polished editorial experience.",
+    image:"https://i.ibb.co/qLk4p6Zm/ill.png",
+    scrollImage:"https://i.ibb.co/FkpLf366/warlock.jpg"  , // Placeholder for the full-width scroll image
+    isFullWidthScroll: true,
+    
+    tech: ["Illustration", "Photoshop", "Fresco"]
+  },
+  {
     title: "Fine Arts & Explorations",
     category: Section.MISCELLANEOUS,
     tagline: "Mediums & Experiments",
