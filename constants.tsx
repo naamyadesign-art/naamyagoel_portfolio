@@ -87,19 +87,21 @@ export const PROJECTS: Project[] = [
       "https://i.ibb.co/SX0Vv0Tt/art4.jpg",
       "https://i.ibb.co/1YZ6wnBb/art5.jpg",
       "https://i.ibb.co/gZFKycBY/Portrait-in-pencil.jpg",
-       "https://i.ibb.co/TB37MHCq/art7.jpg" ,
-       "https://i.ibb.co/0pp5Cy8M/art8.jpg" ,
-       "https://i.ibb.co/ksmqn8ZX/art9.jpg" ,
-       "https://i.ibb.co/vrFhWkk/art10.jpg" ,
-      "https://i.ibb.co/2H1jkGZ/cynotype.jpg" ,
-       "https://i.ibb.co/BH5m7Gkb/art12.jpg" ,
-       "https://i.ibb.co/XrHgq0zM/acrylic-on-canvas.jpg" ,
-     "https://i.ibb.co/6RtMQHCK/glass-2.jpg" ,
-      "https://i.ibb.co/qFkY331j/glass-1.jpg" ,
-      "https://i.ibb.co/mVvCR5KQ/glass-3.jpg" ,
-     "https://i.ibb.co/VcKnDRY9/IMG-5951.jpg" ,
-     "https://i.ibb.co/vxWMNhcV/IMG-5508.jpg" ,
-   "https://i.ibb.co/d02ncvgp/IMG-3337.jpg" 
+      "https://i.ibb.co/TB37MHCq/art7.jpg",
+      "https://i.ibb.co/0pp5Cy8M/art8.jpg",
+      "https://i.ibb.co/ksmqn8ZX/art9.jpg",
+      "https://i.ibb.co/vrFhWkk/art10.jpg",
+      "https://i.ibb.co/2H1jkGZ/cynotype.jpg",
+      "https://i.ibb.co/BH5m7Gkb/art12.jpg",
+      "https://i.ibb.co/XrHgq0zM/acrylic-on-canvas.jpg",
+      "https://i.ibb.co/6RtMQHCK/glass-2.jpg",
+      "https://i.ibb.co/qFkY331j/glass-1.jpg",
+      "https://i.ibb.co/mVvCR5KQ/glass-3.jpg",
+      "https://i.ibb.co/VcKnDRY9/IMG-5951.jpg",
+      "https://i.ibb.co/vxWMNhcV/IMG-5508.jpg",
+      "https://i.ibb.co/d02ncvgp/IMG-3337.jpg",
+      "https://i.ibb.co/RG1hNZY3/screen-printing.jpg",
+      "https://i.ibb.co/fYq9PmwC/lino-and-binding.jpg"
     ],
     captions: [
       "Oil on Canvas: Exploration of pigment layering and surface impasto.",
@@ -120,7 +122,9 @@ export const PROJECTS: Project[] = [
       "Glass Study: Structural analysis of transparent geometric volumes.",
       "Leather Bag: Material construction and functional prototyping.",
       "Sodagari Block Print: Hand-carved block printing with traditional resist-dyeing.",
-      "Resin: Polymer casting process exploring material encapsulation."
+      "Resin: Polymer casting process exploring material encapsulation.",
+      "Screen Printing: Multi-layered stencil application and ink viscosity study.",
+      "Lino & Binding: Relief printing and manual bookbinding techniques."
     ],
     tech: ["Fine Arts", "Mixed Media", "Experimental"]
   }

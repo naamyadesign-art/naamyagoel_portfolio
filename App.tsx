@@ -674,7 +674,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Selected Works Section */}
-      <section ref={worksSectionRef} className="max-w-7xl mx-auto px-6 sm:px-12 pt-16 sm:pt-32 pb-6 sm:pb-12 relative">
+      <section ref={worksSectionRef} className="max-w-7xl mx-auto px-6 sm:px-12 pt-16 sm:pt-32 pb-4 sm:pb-8 relative">
         <header className="mb-10 sm:mb-20 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 sm:gap-8 relative z-10">
            <div className="space-y-3">
               <div className="flex items-center gap-4">
@@ -724,7 +724,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Fine Arts & Explorations Section */}
-      <section className="max-w-7xl mx-auto px-6 sm:px-12 pt-6 sm:pt-12 pb-16 sm:pb-32 relative border-t border-white/10">
+      <section className="max-w-7xl mx-auto px-6 sm:px-12 pt-4 sm:pt-8 pb-16 sm:pb-32 relative border-t border-white/10">
         <div className="relative z-10 space-y-8">
           <div className="flex items-center gap-4 mb-4">
             <div className="px-2 py-0.5 bg-[#8A1800] text-white text-[8px] font-black tracking-[0.3em] uppercase rounded">
