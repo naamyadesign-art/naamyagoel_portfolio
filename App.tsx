@@ -578,7 +578,10 @@ const Home: React.FC = () => {
             }}
           >
             {/* FRONT SIDE - Page 1 */}
-            <div className="absolute inset-0 backface-hidden bg-[#8A1800] text-white p-10 sm:p-20 overflow-hidden border border-white/10 flex flex-col justify-between select-none shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5),inset_0_0_120px_rgba(0,0,0,0.3)] rounded-[40px]">
+            <div 
+              className="absolute inset-0 backface-hidden bg-[#8A1800] text-white p-10 sm:p-20 overflow-hidden border border-white/10 flex flex-col justify-between select-none shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5),inset_0_0_120px_rgba(0,0,0,0.3)] rounded-[40px]"
+              style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
+            >
               <div 
                 className="absolute inset-0 pointer-events-none opacity-20"
                 style={{ background: `radial-gradient(circle at ${glossX}% ${glossY}%, rgba(255,255,255,0.4) 0%, transparent 70%)` }}
@@ -612,12 +615,17 @@ const Home: React.FC = () => {
 
             {/* BACK SIDE - Page 2 */}
             <div 
-              className={`absolute inset-0 backface-hidden bg-[#050505] red-grid text-white p-5 sm:p-12 border border-white/10 flex items-center justify-center rounded-[40px] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] ${isFlipped ? 'pointer-events-auto' : 'pointer-events-none'}`}
-              style={{ transform: 'rotateY(180deg)', transformStyle: 'preserve-3d' }}
+              className={`absolute inset-0 backface-hidden overflow-hidden bg-[#050505] red-grid text-white p-5 sm:p-12 border border-white/10 flex items-center justify-center rounded-[40px] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] ${isFlipped ? 'pointer-events-auto' : 'pointer-events-none'}`}
+              style={{ 
+                transform: 'rotateY(180deg)', 
+                transformStyle: 'preserve-3d',
+                backfaceVisibility: 'hidden',
+                WebkitBackfaceVisibility: 'hidden'
+              }}
             >
               <div 
-                className="flex flex-col md:flex-row gap-6 sm:gap-16 items-center w-full max-w-4xl h-full py-6 md:py-0 relative"
-                style={{ transform: 'translateZ(50px)' }}
+                className="flex flex-col md:flex-row gap-6 sm:gap-16 items-center w-full max-w-4xl h-full py-6 md:py-0 relative backface-hidden"
+                style={{ transform: 'translateZ(50px)', backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
               >
                  <div className="relative shrink-0 w-full max-w-[100px] sm:max-w-[200px]">
                     <div 
