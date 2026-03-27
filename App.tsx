@@ -6,7 +6,7 @@ import { Project, Section } from './types';
 import { PROJECTS } from './constants';
 import About from './src/pages/About';
 
-const ImageWithFallback: React.FC<{ src: string; alt: string; className?: string }> = ({ src, alt, className }) => {
+const ImageWithFallback: React.FC<{ src: string; alt: string; className?: string; fetchPriority?: "high" | "low" | "auto" }> = ({ src, alt, className, fetchPriority }) => {
   const [error, setError] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const placeholder = "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=800";
@@ -35,6 +35,8 @@ const ImageWithFallback: React.FC<{ src: string; alt: string; className?: string
       className={`${className} block w-full transition-opacity duration-700 ${loaded ? 'opacity-100' : 'opacity-0'}`}
       referrerPolicy="no-referrer"
       loading="lazy"
+      decoding="async"
+      {...(fetchPriority ? { fetchPriority: fetchPriority } : {})}
     />
   );
 };
@@ -427,7 +429,7 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
             </div>
 
             {/* BOTTOM: Info & Narrative (Centered and Sidebar-free) */}
-            <div className={`border-t ${theme.border} pt-12 sm:pt-24 flex flex-col gap-16 sm:gap-32`}>
+            <div className={`border-t ${theme.border} ${isCatalogue ? 'pt-2 sm:pt-4' : 'pt-12 sm:pt-24'} flex flex-col gap-16 sm:gap-32`}>
               <div className="max-w-4xl space-y-8 sm:space-y-12">
                 <div>
                   <p className={`text-[9px] sm:text-xs font-black ${theme.text} tracking-[0.5em] uppercase mb-6 sm:mb-10`}>Entry // The Narrative</p>
@@ -594,7 +596,7 @@ const Home: React.FC = () => {
               </div>
 
               <div className="relative z-10 flex flex-col items-center justify-center flex-1">
-                <h1 className="font-serif-elegant text-white leading-none text-center" 
+                <h1 className="font-serif-elegant text-white leading-none text-center italic" 
                     style={{ fontSize: 'clamp(4rem, 18vw, 14rem)', letterSpacing: '-0.03em' }}>
                   portfolio
                 </h1>
@@ -607,7 +609,7 @@ const Home: React.FC = () => {
                   </p>
                   <span className="block font-black text-[#FFD700] uppercase text-[9px] sm:text-[12px] tracking-[0.5em]">TAP TO ACCESS</span>
                 </div>
-                <div className="text-5xl sm:text-9xl font-serif-elegant leading-none opacity-10 italic shrink-0">
+                <div className="text-3xl sm:text-7xl font-serif-elegant leading-none opacity-10 italic shrink-0">
                   NG
                 </div>
               </div>
@@ -637,6 +639,7 @@ const Home: React.FC = () => {
                           src="https://i.ibb.co/5hbtkfX0/Whats-App-Image-2026-01-28-at-11-56-33-AM.jpg" 
                           alt="Naamya Goel" 
                           className={`w-full h-full object-cover transition-all duration-1000 ${isStickyColor ? 'scale-105' : 'scale-100'}`}
+                          fetchPriority="high"
                        />
                     </div>
                  </div>
