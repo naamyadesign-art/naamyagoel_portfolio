@@ -24,13 +24,17 @@ export const PROJECTS: Project[] = [
     category: Section.CATALOGUE,
     tagline: "High-End Editorial Design",
     description: "A sophisticated catalogue design for Tiffany & Co., focusing on elegance and brand heritage.",
-    longDescription: "This catalogue design project for Tiffany & Co. explores the intersection of luxury, heritage, and modern editorial aesthetics. The layout emphasizes white space, high-contrast typography, and exquisite product photography to reflect the brand's timeless elegance. Each page is meticulously crafted to guide the reader through a curated selection of jewelry, balancing informational clarity with emotional resonance. The project involved deep research into Tiffany's visual history, resulting in a contemporary interpretation of their iconic brand identity.",
+    longDescription: `This catalogue was created as part of my Print Design module at the Unitedworld Institute of Design, Ahmedabad. The project focuses on exploring editorial layout systems through the lens of a luxury brand, allowing me to experiment with various grid structures, typographic hierarchies, and image–text compositions. I worked with different layout styles—from structured product grids to expressive, full-bleed editorial spreads—to understand balance, pacing, and visual rhythm in print. This project helped me develop a deeper understanding of layouting, spacing, and consistency while building a cohesive, high-end publication design.`,
     image: "https://i.postimg.cc/3xZwmKcp/front-header.png",
     headerEmbed: "https://online.anyflip.com/ukyzd/bhpp/index.html",
     link: "https://online.anyflip.com/ukyzd/bhpp/index.html",
     images: [
       "https://i.postimg.cc/d1fPrXFk/fanf_b.png",
-      "https://i.postimg.cc/nz37k4SL/rings.png"
+      "https://i.postimg.cc/nz37k4SL/rings.png",
+      "https://i.ibb.co/G3kHqqtP/contentus.png",
+      "https://i.ibb.co/v4w00kBy/earrings.png",
+      "https://i.ibb.co/YFs1k9xN/eatch-page.png",
+      "https://i.ibb.co/gZ8BpG8j/front-header.png"
     ],
     tech: ["Editorial Design", "Typography", "Brand Identity"]
   },

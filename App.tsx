@@ -726,7 +726,7 @@ const Home: React.FC = () => {
                      <ImageWithFallback 
                       src={project.image} 
                       alt={project.title} 
-                      className="w-full h-full object-cover transition-all duration-1000 scale-100 group-hover:scale-105" 
+                      className="w-full h-full object-cover transition-all duration-1000 scale-100 group-hover:scale-105 group-hover:opacity-90" 
                      />
                      <div className="absolute inset-0 bg-transparent group-hover:bg-transparent transition-all" />
                      <div className="absolute inset-x-4 bottom-4 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all hidden sm:block">
@@ -777,16 +777,13 @@ const Home: React.FC = () => {
                   <ImageWithFallback 
                     src={project.image} 
                     alt={project.title} 
-                    className="w-full h-full object-cover transition-all duration-1000 scale-100 group-hover:scale-105" 
+                    className="w-full h-full object-cover transition-all duration-1000 scale-100 group-hover:scale-105 group-hover:opacity-90" 
                   />
                   <div className="absolute inset-0 bg-transparent group-hover:bg-transparent transition-all" />
                   
                   <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
                     <div className="space-y-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700">
-                      <span className="text-[8px] sm:text-[10px] font-black text-[#8A1800] tracking-[0.5em] uppercase bg-black/80 px-4 py-1.5 rounded-full backdrop-blur-md border border-white/10">
-                        {project.category}
-                      </span>
-                      <h3 className="text-2xl sm:text-5xl font-serif-elegant text-white tracking-tighter uppercase">{project.title}</h3>
+                      <h3 className="text-2xl sm:text-5xl font-serif-elegant text-[#5E0B0B] tracking-tighter uppercase drop-shadow-[0_0_15px_rgba(255,255,255,0.15)]">{project.title}</h3>
                       <div className="flex justify-center">
                          <div className="px-6 py-2 bg-[#8A1800] text-white font-black uppercase text-[8px] sm:text-[10px] tracking-[0.3em] rounded-sm">Explore Collection</div>
                       </div>
@@ -801,11 +798,11 @@ const Home: React.FC = () => {
                         <span className="text-[7px] sm:text-[9px] font-black text-white tracking-[0.4em] uppercase">Archive_Ref: 0{PROJECTS.indexOf(project) + 1}</span>
                       </div>
                       <div className="h-[1px] w-8 bg-white/10" />
-                      <h3 className="text-lg sm:text-2xl font-serif-elegant italic text-white leading-none">
+                      <h3 className="text-lg sm:text-2xl font-serif-elegant italic text-[#5E0B0B] leading-none drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">
                         {project.title}
                       </h3>
                     </div>
-                    <p className="max-w-2xl text-white/60 font-sans text-[9px] sm:text-sm leading-relaxed">
+                    <p className="max-w-2xl text-white font-sans text-[9px] sm:text-sm leading-relaxed">
                       {project.description}
                     </p>
                   </div>
