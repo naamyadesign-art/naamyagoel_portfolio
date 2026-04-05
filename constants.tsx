@@ -117,7 +117,10 @@ export const PROJECTS: Project[] = [
       "https://i.ibb.co/vxWMNhcV/IMG-5508.jpg",
       "https://i.ibb.co/d02ncvgp/IMG-3337.jpg",
       "https://i.ibb.co/RG1hNZY3/screen-printing.jpg",
-      "https://i.ibb.co/fYq9PmwC/lino-and-binding.jpg"
+      "https://i.ibb.co/fYq9PmwC/lino-and-binding.jpg",
+      "https://i.ibb.co/212q8hy3/Whats-App-Image-2024-08-01-at-01-54-45-f5983a56.jpg",
+      "https://i.ibb.co/FLxVCvRh/Whats-App-Image-2024-08-01-at-10-36-17-88de040c.jpg",
+      "https://i.ibb.co/yBmx4DVX/IMG-1214.jpg"
     ],
     captions: [
       "Oil on Canvas: Exploration of pigment layering and surface impasto.",
@@ -140,7 +143,10 @@ export const PROJECTS: Project[] = [
       "Sodagari Block Print: Hand-carved block printing with traditional resist-dyeing.",
       "Resin: Polymer casting process exploring material encapsulation.",
       "Screen Printing: Multi-layered stencil application and ink viscosity study.",
-      "Lino & Binding: Relief printing and manual bookbinding techniques."
+      "Lino & Binding: Relief printing and manual bookbinding techniques.",
+      "Oil on Canvas: Exploration of pigment layering and surface impasto.",
+      "Acrylic on Canvas: Impasto urban study using palette knife techniques.",
+      "Tie-dye: Experimental fabric dyeing using traditional resist techniques."
     ],
     tech: ["Fine Arts", "Mixed Media", "Experimental"]
   }
