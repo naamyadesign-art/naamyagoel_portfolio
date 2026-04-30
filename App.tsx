@@ -6,18 +6,18 @@ import { Project, Section } from './types';
 import { PROJECTS } from './constants';
 import About from './src/pages/About';
 
-const ImageWithFallback: React.FC<{ src: string; alt: string; className?: string; fetchPriority?: "high" | "low" | "auto" }> = ({ src, alt, className, fetchPriority }) => {
+const ImageWithFallback: React.FC<{ src: string; alt: string; className?: string; fetchPriority?: "high" | "low" | "auto" }> = ({ src, alt, className = "", fetchPriority }) => {
   const [error, setError] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const placeholder = "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=800";
   
-  const isEmbed = src.includes('behance.net/embed') || src.includes('anyflip.com');
+  const isEmbed = src.includes('behance.net/embed') || src.includes('anyflip.com') || src.includes('heyzine.com');
 
   if (isEmbed) {
     return (
       <iframe 
         src={src} 
-        className={`${className} border-0`}
+        className={`${className} border-0 bg-white`}
         title={alt}
         allowFullScreen
         loading="lazy"
@@ -26,22 +26,34 @@ const ImageWithFallback: React.FC<{ src: string; alt: string; className?: string
     );
   }
 
+  // Extract sizing classes for the container
+  const containerClasses = className.split(' ').filter(c => 
+    c.startsWith('w-') || c.startsWith('h-') || c.startsWith('aspect-') || c.startsWith('rounded') || c.startsWith('max-')
+  ).join(' ');
+
   return (
-    <img 
-      src={error ? placeholder : src} 
-      alt={alt} 
-      onLoad={() => setLoaded(true)}
-      onError={() => setError(true)}
-      className={`${className} block w-full transition-opacity duration-700 ${loaded ? 'opacity-100' : 'opacity-0'}`}
-      referrerPolicy="no-referrer"
-      loading="lazy"
-      decoding="async"
-      {...(fetchPriority ? { fetchPriority: fetchPriority } : {})}
-    />
+    <div className={`relative ${containerClasses} bg-neutral-900/10 overflow-hidden`}>
+      {!loaded && !error && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-10 h-10 border-4 border-[#8A1800]/20 border-t-[#8A1800] rounded-full animate-spin" />
+        </div>
+      )}
+      <img 
+        src={error ? placeholder : src} 
+        alt={alt} 
+        onLoad={() => setLoaded(true)}
+        onError={() => setError(true)}
+        className={`${className} block transition-opacity duration-1000 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+        referrerPolicy="no-referrer"
+        loading="lazy"
+        decoding="async"
+        {...(fetchPriority ? { fetchPriority: fetchPriority } : {})}
+      />
+    </div>
   );
 };
 
-const StickyImage: React.FC<{ src: string; alt: string; aspectRatio?: string; onClick?: () => void; noGrayscale?: boolean; scanColor?: string; borderColor?: string; gradientColor?: string }> = ({ src, alt, aspectRatio = "aspect-[16/10]", onClick, noGrayscale, scanColor = "#81D8D0", borderColor = "border-[#00474F]/10", gradientColor = "from-[#00474F]/10" }) => {
+const StickyImage: React.FC<{ src: string; alt: string; aspectRatio?: string; onClick?: () => void; noGrayscale?: boolean; scanColor?: string; borderColor?: string; gradientColor?: string; fetchPriority?: "high" | "low" | "auto" }> = ({ src, alt, aspectRatio = "aspect-[16/10]", onClick, noGrayscale, scanColor = "#81D8D0", borderColor = "border-[#00474F]/10", gradientColor = "from-[#00474F]/10", fetchPriority }) => {
   const [isHovered, setIsHovered] = useState(false);
   const timeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -64,6 +76,7 @@ const StickyImage: React.FC<{ src: string; alt: string; aspectRatio?: string; on
         <ImageWithFallback 
           src={src} 
           alt={alt} 
+          fetchPriority={fetchPriority}
           className={`w-full h-full object-cover transition-all duration-1000 ${isHovered ? 'scale-105' : 'scale-100'}`} 
         />
       </div>
@@ -204,11 +217,24 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
           <div className="w-full flex flex-col">
             {/* Full width images scroll - truly edge to edge */}
             <div className="w-full flex flex-col gap-0">
+              {project.headerEmbed && (
+                <div className={`relative aspect-[16/10] w-full bg-neutral-100 overflow-hidden border-b ${theme.stickyBorder} shadow-2xl`}>
+                  <iframe 
+                    src={project.headerEmbed} 
+                    className="w-full h-full border-0"
+                    title={project.title}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                  />
+                </div>
+              )}
               {project.scrollImage && (
                 <ImageWithFallback 
                   src={project.scrollImage} 
                   alt={`${project.title} scroll`} 
                   className="w-full h-auto"
+                  fetchPriority="high"
                 />
               )}
               {project.images?.map((img, i) => (
@@ -388,10 +414,9 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
                 <span className={`text-[8px] sm:text-[10px] font-black ${theme.text}/20 uppercase tracking-[0.2em]`}>Archive_State: Full</span>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-16">
-                <div className="md:col-span-2">
-                   {project.headerEmbed ? (
-                     <div className={`relative aspect-[16/10] w-full bg-neutral-100 rounded-xl overflow-hidden border ${theme.stickyBorder} shadow-2xl`}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-16">                 <div className="md:col-span-2 space-y-6">
+                   {project.headerEmbed && (
+                     <div className={`relative aspect-[16/10] w-full bg-neutral-100 rounded-xl overflow-hidden border ${theme.stickyBorder} shadow-2xl mb-8`}>
                        <iframe 
                          src={project.headerEmbed} 
                          className="w-full h-full border-0"
@@ -401,7 +426,9 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
                          referrerPolicy="strict-origin-when-cross-origin"
                        />
                      </div>
-                   ) : project.link ? (
+                   )}
+                   
+                   {project.link ? (
                      <div className="block group/link relative">
                       <StickyImage 
                         src={project.image} 
@@ -411,13 +438,14 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
                         scanColor={theme.stickyScan}
                         borderColor={theme.stickyBorder}
                         gradientColor={theme.stickyGradient}
+                        fetchPriority="high"
                       />
                        <div className={`absolute top-4 right-4 z-50 opacity-0 group-hover:opacity-100 transition-opacity ${theme.buttonBg} text-white px-3 py-1 rounded text-[8px] font-black uppercase tracking-widest flex items-center gap-2 pointer-events-none`}>
                          {project.link?.includes('behance.net') ? 'View on Behance' : 'View Project'} <span className="text-xs">↗</span>
                        </div>
                      </div>
                    ) : (
-                     <StickyImage src={project.image} alt={project.title} noGrayscale={project.title.toLowerCase().includes('perfume')} scanColor={theme.stickyScan} borderColor={theme.stickyBorder} gradientColor={theme.stickyGradient} />
+                     <StickyImage src={project.image} alt={project.title} noGrayscale={project.title.toLowerCase().includes('perfume')} scanColor={theme.stickyScan} borderColor={theme.stickyBorder} gradientColor={theme.stickyGradient} fetchPriority="high" />
                    )}
                 </div>
                 {project.images?.map((img, i) => (
@@ -730,6 +758,7 @@ const Home: React.FC = () => {
                       src={project.image} 
                       alt={project.title} 
                       className="w-full h-full object-cover transition-all duration-1000 scale-100 group-hover:scale-105 group-hover:opacity-90" 
+                      fetchPriority={idx < 3 ? "high" : "auto"}
                      />
                      <div className="absolute inset-0 bg-transparent group-hover:bg-transparent transition-all" />
                      <div className="absolute inset-x-4 bottom-4 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all hidden sm:block">

@@ -50,6 +50,18 @@ export const PROJECTS: Project[] = [
     tech: ["Packaging Design", "Illustration", "Brand Study"],
   },
   {
+    title: "Brand Identity System 2025",
+    category: Section.BRANDING,
+    tagline: "A public library system",
+    description: "A complete brand identity development including flipbook presentation and digital scroll.",
+    longDescription: "This project showcases a holistic approach to branding, moving from initial conceptual sketches to a fully realized visual system. The presentation begins with an interactive flipbook detailing the brand strategy, followed by a continuous visual scroll that explores the application of the identity across various touchpoints—from stationery and digital interfaces to environmental graphics.",
+    image: "https://i.ibb.co/wF2NmKQt/stamp.png" ,
+    headerEmbed: "https://heyzine.com/flip-book/c220ddd4c5.html", 
+    scrollImage: "https://i.ibb.co/3YstpTFR/scroll.jpg",
+    isFullWidthScroll: true,
+    tech: ["Brand Identity", "Visual Systems", "Strategic Design"]
+  },
+  {
     title: "Conceptual Perfume Design 2025",
     category: Section.BRANDING,
     tagline: "Olfactory Architecture",
