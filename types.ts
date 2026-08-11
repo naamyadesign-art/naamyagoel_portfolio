@@ -57,6 +57,7 @@ export interface Project {
   isFullWidthScroll?: boolean;
   scrollImage?: string;
   headerEmbed?: string;
+  hidden?: boolean;
 }
 
 export interface Landmark {

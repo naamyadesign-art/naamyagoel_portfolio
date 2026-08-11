@@ -4,7 +4,7 @@ import { Section, Project, Landmark } from './types';
 export const WORLD_WIDTH = 4000;
 export const WORLD_HEIGHT = 3000;
 
-export const PROJECTS: Project[] = [
+export const ALL_PROJECTS: Project[] = [
   {
     title: "Photobooth Website 2025",
     category: Section.WEB,
@@ -76,7 +76,8 @@ export const PROJECTS: Project[] = [
      "https://www.behance.net/embed/project/243751353?ilo0=1",
       "https://www.behance.net/embed/project/243715405?ilo0=1"
     ],
-    tech: ["Parametric Design", "3D Rendering", "Visual Identity"]
+    tech: ["Parametric Design", "3D Rendering", "Visual Identity"],
+    hidden: true
   },
   {
     title: "Typography",
@@ -163,6 +164,8 @@ export const PROJECTS: Project[] = [
     tech: ["Fine Arts", "Mixed Media", "Experimental"]
   }
 ];
+
+export const PROJECTS: Project[] = ALL_PROJECTS.filter(p => !p.hidden);
 
 // Added Landmark import to fix the 'Cannot find name Landmark' error
 export const LANDMARKS: Landmark[] = [];
