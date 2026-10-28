@@ -1,17 +1,51 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, ArrowRight } from 'lucide-react';
 import { Project, Section } from './types';
 import { PROJECTS } from './constants';
 import About from './src/pages/About';
 
-const ImageWithFallback: React.FC<{ src: string; alt: string; className?: string; fetchPriority?: "high" | "low" | "auto" }> = ({ src, alt, className = "", fetchPriority }) => {
-  const [error, setError] = useState(false);
+interface ImageWithFallbackProps {
+  src: string;
+  alt: string;
+  className?: string;
+  fetchPriority?: "high" | "low" | "auto";
+  loading?: "eager" | "lazy";
+  inModal?: boolean;
+}
+
+const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({ 
+  src, 
+  alt, 
+  className = "", 
+  fetchPriority, 
+  loading,
+  inModal = false 
+}) => {
   const [loaded, setLoaded] = useState(false);
-  const placeholder = "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=800";
-  
+  const [retryCount, setRetryCount] = useState(0);
+  const [hasError, setHasError] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+
   const isEmbed = src.includes('behance.net/embed') || src.includes('anyflip.com') || src.includes('heyzine.com');
+
+  useEffect(() => {
+    // If browser already has image completed (cache or fast load)
+    if (imgRef.current && imgRef.current.complete && imgRef.current.naturalWidth > 0) {
+      setLoaded(true);
+      return;
+    }
+
+    // Safety fallback: ensure loading spinner doesn't get stuck indefinitely
+    const safetyTimer = setTimeout(() => {
+      if (imgRef.current && imgRef.current.naturalWidth > 0) {
+        setLoaded(true);
+      }
+    }, 1500);
+
+    return () => clearTimeout(safetyTimer);
+  }, [src, retryCount]);
 
   if (isEmbed) {
     return (
@@ -20,40 +54,101 @@ const ImageWithFallback: React.FC<{ src: string; alt: string; className?: string
         className={`${className} border-0 bg-white`}
         title={alt}
         allowFullScreen
-        loading="lazy"
+        loading="eager"
         referrerPolicy="strict-origin-when-cross-origin"
       />
     );
   }
 
-  // Extract sizing classes for the container
+  const handleImgLoad = () => {
+    setLoaded(true);
+    setHasError(false);
+  };
+
+  const handleImgError = () => {
+    if (retryCount < 2) {
+      // Auto-retry transient CDN / network issues
+      setTimeout(() => {
+        setRetryCount(prev => prev + 1);
+      }, 800);
+    } else {
+      setHasError(true);
+      setLoaded(true);
+    }
+  };
+
+  // Extract layout/sizing classes for container
   const containerClasses = className.split(' ').filter(c => 
-    c.startsWith('w-') || c.startsWith('h-') || c.startsWith('aspect-') || c.startsWith('rounded') || c.startsWith('max-')
+    c.startsWith('w-') || c.startsWith('h-') || c.startsWith('aspect-') || c.startsWith('rounded') || c.startsWith('max-') || c.startsWith('min-')
   ).join(' ');
 
+  const hasSpecificHeight = className.includes('aspect-') || className.includes('h-') || className.includes('max-h');
+  const displaySrc = retryCount > 0 ? `${src}${src.includes('?') ? '&' : '?'}retry=${retryCount}` : src;
+
   return (
-    <div className={`relative ${containerClasses} bg-neutral-900/10 overflow-hidden`}>
-      {!loaded && !error && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-10 h-10 border-4 border-[#8A1800]/20 border-t-[#8A1800] rounded-full animate-spin" />
+    <div className={`relative ${containerClasses} ${!hasSpecificHeight ? 'min-h-[240px]' : ''} bg-neutral-900/20 overflow-hidden`}>
+      {!loaded && !hasError && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/20 pointer-events-none z-10">
+          <div className="w-8 h-8 border-2 border-[#8A1800]/30 border-t-[#8A1800] rounded-full animate-spin" />
         </div>
       )}
-      <img 
-        src={error ? placeholder : src} 
-        alt={alt} 
-        onLoad={() => setLoaded(true)}
-        onError={() => setError(true)}
-        className={`${className} block transition-opacity duration-1000 ${loaded ? 'opacity-100' : 'opacity-0'}`}
-        referrerPolicy="no-referrer"
-        loading="lazy"
-        decoding="async"
-        {...(fetchPriority ? { fetchPriority: fetchPriority } : {})}
-      />
+
+      {hasError ? (
+        <div className="w-full h-full min-h-[220px] flex flex-col items-center justify-center p-6 bg-neutral-900/60 text-center border border-white/10 rounded">
+          <p className="text-[9px] font-black tracking-[0.3em] uppercase text-white/50 mb-1">Archive Entry</p>
+          <p className="text-xs text-white/70 font-serif-elegant italic mb-3">{alt || "Visual Documentation"}</p>
+          <button 
+            type="button"
+            onClick={() => {
+              setHasError(false);
+              setLoaded(false);
+              setRetryCount(0);
+            }}
+            className="px-4 py-1.5 bg-[#8A1800] text-white text-[8px] font-black tracking-widest uppercase rounded hover:bg-white hover:text-black transition-colors"
+          >
+            Reload Asset
+          </button>
+        </div>
+      ) : (
+        <img 
+          ref={imgRef}
+          src={displaySrc} 
+          alt={alt} 
+          onLoad={handleImgLoad}
+          onError={handleImgError}
+          className={`${className} block transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-80'}`}
+          loading={loading || (inModal ? "eager" : "lazy")}
+          decoding="async"
+          {...(fetchPriority ? { fetchPriority } : {})}
+        />
+      )}
     </div>
   );
 };
 
-const StickyImage: React.FC<{ src: string; alt: string; aspectRatio?: string; onClick?: () => void; noGrayscale?: boolean; scanColor?: string; borderColor?: string; gradientColor?: string; fetchPriority?: "high" | "low" | "auto" }> = ({ src, alt, aspectRatio = "aspect-[16/10]", onClick, noGrayscale, scanColor = "#81D8D0", borderColor = "border-[#00474F]/10", gradientColor = "from-[#00474F]/10", fetchPriority }) => {
+const StickyImage: React.FC<{ 
+  src: string; 
+  alt: string; 
+  aspectRatio?: string; 
+  onClick?: () => void; 
+  noGrayscale?: boolean; 
+  scanColor?: string; 
+  borderColor?: string; 
+  gradientColor?: string; 
+  fetchPriority?: "high" | "low" | "auto";
+  inModal?: boolean;
+}> = ({ 
+  src, 
+  alt, 
+  aspectRatio = "aspect-[16/10]", 
+  onClick, 
+  noGrayscale, 
+  scanColor = "#81D8D0", 
+  borderColor = "border-[#00474F]/10", 
+  gradientColor = "from-[#00474F]/10", 
+  fetchPriority,
+  inModal = false
+}) => {
   const [isHovered, setIsHovered] = useState(false);
   const timeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -77,7 +172,8 @@ const StickyImage: React.FC<{ src: string; alt: string; aspectRatio?: string; on
           src={src} 
           alt={alt} 
           fetchPriority={fetchPriority}
-          className={`w-full h-full object-cover transition-all duration-1000 ${isHovered ? 'scale-105' : 'scale-100'}`} 
+          inModal={inModal}
+          className={`w-full h-full object-cover transition-all duration-700 ${isHovered ? 'scale-105' : 'scale-100'}`} 
         />
       </div>
       
@@ -224,7 +320,7 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
                     className="w-full h-full border-0"
                     title={project.title}
                     allowFullScreen
-                    loading="lazy"
+                    loading="eager"
                     referrerPolicy="strict-origin-when-cross-origin"
                   />
                 </div>
@@ -233,8 +329,10 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
                 <ImageWithFallback 
                   src={project.scrollImage} 
                   alt={`${project.title} scroll`} 
-                  className="w-full h-auto"
+                  className="w-full h-auto min-h-[350px]"
                   fetchPriority="high"
+                  loading="eager"
+                  inModal={true}
                 />
               )}
               {project.images?.map((img, i) => (
@@ -242,7 +340,9 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
                   key={`img-${i}`}
                   src={img} 
                   alt={`${project.title} scroll ${i}`} 
-                  className="w-full h-auto"
+                  className="w-full h-auto min-h-[300px]"
+                  loading={i < 2 ? "eager" : "lazy"}
+                  inModal={true}
                 />
               ))}
               {project.variations?.map((v, vIdx) => (
@@ -251,7 +351,8 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
                     key={`var-${vIdx}-${iIdx}`}
                     src={img} 
                     alt={`${v.title} scroll ${iIdx}`} 
-                    className="w-full h-auto"
+                    className="w-full h-auto min-h-[300px]"
+                    inModal={true}
                   />
                 ))
               ))}
@@ -285,6 +386,8 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
                         src={img} 
                         alt={`${project.title} grid ${i}`} 
                         className="w-full h-full object-cover transition-all duration-700 scale-100 group-hover:scale-110" 
+                        loading={i < 8 ? "eager" : "lazy"}
+                        inModal={true}
                       />
                       <div className="absolute inset-0 bg-transparent group-hover:bg-transparent transition-all duration-500 z-10" />
                       <div className="absolute bottom-3 right-3 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -349,6 +452,8 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
                             src={allImages[activeImageIndex]} 
                             alt={`${project.title} gallery ${activeImageIndex}`} 
                             className={`max-w-full max-h-[60vh] sm:max-h-[80vh] object-contain rounded ${theme.shadow} border ${theme.border}`}
+                            loading="eager"
+                            inModal={true}
                           />
                         </motion.div>
                       </AnimatePresence>
@@ -414,7 +519,8 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
                 <span className={`text-[8px] sm:text-[10px] font-black ${theme.text}/20 uppercase tracking-[0.2em]`}>Archive_State: Full</span>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-16">                 <div className="md:col-span-2 space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-16">
+                 <div className="md:col-span-2 space-y-6">
                    {project.headerEmbed && (
                      <div className={`relative aspect-[16/10] w-full bg-neutral-100 rounded-xl overflow-hidden border ${theme.stickyBorder} shadow-2xl mb-8`}>
                        <iframe 
@@ -422,7 +528,7 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
                          className="w-full h-full border-0"
                          title={project.title}
                          allowFullScreen
-                         loading="lazy"
+                         loading="eager"
                          referrerPolicy="strict-origin-when-cross-origin"
                        />
                      </div>
@@ -439,18 +545,19 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
                         borderColor={theme.stickyBorder}
                         gradientColor={theme.stickyGradient}
                         fetchPriority="high"
+                        inModal={true}
                       />
                        <div className={`absolute top-4 right-4 z-50 opacity-0 group-hover:opacity-100 transition-opacity ${theme.buttonBg} text-white px-3 py-1 rounded text-[8px] font-black uppercase tracking-widest flex items-center gap-2 pointer-events-none`}>
                          {project.link?.includes('behance.net') ? 'View on Behance' : 'View Project'} <span className="text-xs">↗</span>
                        </div>
                      </div>
                    ) : (
-                     <StickyImage src={project.image} alt={project.title} noGrayscale={project.title.toLowerCase().includes('perfume')} scanColor={theme.stickyScan} borderColor={theme.stickyBorder} gradientColor={theme.stickyGradient} fetchPriority="high" />
+                     <StickyImage src={project.image} alt={project.title} noGrayscale={project.title.toLowerCase().includes('perfume')} scanColor={theme.stickyScan} borderColor={theme.stickyBorder} gradientColor={theme.stickyGradient} fetchPriority="high" inModal={true} />
                    )}
                 </div>
                 {project.images?.map((img, i) => (
                   <div key={i} className={i === (project.images?.length || 0) - 1 && (project.images?.length || 0) % 2 !== 0 ? "md:col-span-2" : "md:col-span-1"}>
-                    <StickyImage src={img} alt={`${project.title} archive ${i}`} onClick={() => handleOpenLink(img)} scanColor={theme.stickyScan} borderColor={theme.stickyBorder} gradientColor={theme.stickyGradient} />
+                    <StickyImage src={img} alt={`${project.title} archive ${i}`} onClick={() => handleOpenLink(img)} scanColor={theme.stickyScan} borderColor={theme.stickyBorder} gradientColor={theme.stickyGradient} inModal={true} />
                   </div>
                 ))}
               </div>
@@ -566,6 +673,7 @@ const Home: React.FC = () => {
     p.category === Section.EXPERIMENTAL || 
     p.category === Section.GHOST
   );
+  const fineArtsProject = PROJECTS.find(p => p.category === Section.MISCELLANEOUS) || miscProjects[0];
 
   return (
     <div className={`selection:bg-[#8A1800] selection:text-white min-h-[100dvh] w-full overflow-x-hidden transition-colors duration-1000 relative bg-[#050505] red-grid`}>
@@ -726,7 +834,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Selected Works Section */}
-      <section ref={worksSectionRef} className="max-w-7xl mx-auto px-6 sm:px-12 pt-16 sm:pt-32 pb-4 sm:pb-8 relative">
+      <section ref={worksSectionRef} className="max-w-7xl mx-auto px-6 sm:px-12 pt-16 sm:pt-32 pb-16 sm:pb-32 relative">
         <header className="mb-10 sm:mb-20 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 sm:gap-8 relative z-10">
            <div className="space-y-3">
               <div className="flex items-center gap-4">
@@ -736,111 +844,122 @@ const Home: React.FC = () => {
                 Selected Works
               </h2>
            </div>
-           <p className="max-w-[240px] sm:max-w-md text-white font-black text-[8px] sm:text-sm leading-relaxed uppercase tracking-widest opacity-60 border-l border-white/20 pl-5">
-             A rigorous visual study of form, typography, and functional experience within modern digital systems.
-           </p>
+           
+           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-8 lg:gap-12">
+             <p className="max-w-[240px] sm:max-w-xs text-white font-black text-[8px] sm:text-sm leading-relaxed uppercase tracking-widest opacity-60 border-l border-white/20 pl-5">
+               A rigorous visual study of form, typography, and functional experience within modern digital systems.
+             </p>
+
+             {/* Explore Archive Circular Button */}
+             {fineArtsProject && (
+               <div 
+                 onClick={() => setActiveProject(fineArtsProject)}
+                 role="button"
+                 tabIndex={0}
+                 onKeyDown={(e) => {
+                   if (e.key === 'Enter' || e.key === ' ') {
+                     e.preventDefault();
+                     setActiveProject(fineArtsProject);
+                   }
+                 }}
+                 className="flex flex-col items-center gap-2 group cursor-pointer select-none shrink-0"
+                 aria-label="Explore Fine Arts and Explorations Archive"
+               >
+                 <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-black border border-white/25 flex items-center justify-center text-white shadow-2xl transition-all duration-300 group-hover:scale-110 group-hover:bg-[#8A1800] group-hover:border-[#8A1800] group-hover:shadow-[0_0_35px_rgba(138,24,0,0.6)] active:scale-95">
+                   <ArrowRight className="w-6 h-6 sm:w-7 sm:h-7 transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] transform origin-center group-hover:-rotate-45 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={2.2} />
+                 </div>
+                 <div className="flex flex-col items-center text-center">
+                   <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.25em] text-white/60 group-hover:text-white transition-colors">
+                     EXPLORE
+                   </span>
+                   <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.25em] text-white/60 group-hover:text-white transition-colors -mt-0.5">
+                     ARCHIVE
+                   </span>
+                 </div>
+               </div>
+             )}
+           </div>
         </header>
 
         <div className="relative z-10">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-20">
-             {regularProjects.map((project, idx) => (
-               <motion.div 
-                 key={project.title}
-                 initial={{ opacity: 0, y: 20 }}
-                 whileInView={{ opacity: 1, y: 0 }}
-                 viewport={{ once: true }}
-                 transition={{ delay: idx * 0.1 }}
-                 onClick={() => setActiveProject(project)}
-                 className="group cursor-pointer space-y-4"
-               >
-                  <div className="relative aspect-[4/3] sm:aspect-square bg-black rounded-lg overflow-hidden shadow-xl border border-white/10 transition-all group-hover:border-[#8A1800] group-hover:shadow-[0_15px_40px_rgba(138,24,0,0.1)]">
-                     <ImageWithFallback 
-                      src={project.image} 
-                      alt={project.title} 
-                      className="w-full h-full object-cover transition-all duration-1000 scale-100 group-hover:scale-105 group-hover:opacity-90" 
-                      fetchPriority={idx < 3 ? "high" : "auto"}
-                     />
-                     <div className="absolute inset-0 bg-transparent group-hover:bg-transparent transition-all" />
-                     <div className="absolute inset-x-4 bottom-4 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all hidden sm:block">
-                        <div className="w-full py-2 bg-[#8A1800] text-white font-black uppercase text-[7px] tracking-[0.3em] rounded text-center">Open Index</div>
-                     </div>
-                     {/* Mobile indicator */}
-                     <div className="absolute top-3 right-3 sm:hidden">
-                        <div className="bg-[#8A1800] text-white p-1.5 rounded-full shadow-lg">
-                           <ChevronRight size={12} />
-                        </div>
-                     </div>
-                  </div>
-                  <div className="flex justify-between items-start px-1">
-                     <div className="space-y-1">
-                        <h3 className="text-xl sm:text-2xl font-serif-elegant uppercase tracking-tighter text-white group-hover:text-[#8A1800] transition-colors leading-none">{project.title}</h3>
-                        <p className="text-[8px] sm:text-[9px] font-bold text-white/40 tracking-[0.1em] uppercase mt-1.5">
-                          {project.category}
-                        </p>
-                     </div>
-                     <span className="font-serif-elegant italic text-lg sm:text-xl text-white/10 group-hover:text-white transition-colors leading-none">0{idx + 1}</span>
-                  </div>
-               </motion.div>
-             ))}
-          </div>
-        </div>
-      </section>
+             {regularProjects.map((project, idx) => {
+               const isExternal = Boolean(project.openInNewTab || project.externalUrl);
+               const targetUrl = project.externalUrl || project.link;
 
-      {/* Fine Arts & Explorations Section */}
-      <section className="max-w-7xl mx-auto px-6 sm:px-12 pt-4 sm:pt-8 pb-16 sm:pb-32 relative border-t border-white/10">
-        <div className="relative z-10 space-y-8">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="px-2 py-0.5 bg-[#8A1800] text-white text-[8px] font-black tracking-[0.3em] uppercase rounded">
-              Archive V2
-            </div>
-            <div className="h-[1px] flex-grow bg-white/10" />
-          </div>
-          <div className="grid grid-cols-1 gap-12">
-            {miscProjects.map((project, idx) => (
-              <div key={project.title} className="space-y-8">
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                  onClick={() => setActiveProject(project)}
-                  className="group cursor-pointer relative w-full aspect-[16/9] sm:aspect-[21/9] bg-black rounded-xl overflow-hidden border border-white/10 hover:border-[#8A1800] transition-all shadow-2xl"
-                >
-                  <ImageWithFallback 
-                    src={project.image} 
-                    alt={project.title} 
-                    className="w-full h-full object-cover transition-all duration-1000 scale-100 group-hover:scale-105 group-hover:opacity-90" 
-                  />
-                  <div className="absolute inset-0 bg-transparent group-hover:bg-transparent transition-all" />
-                  
-                  <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-                    <div className="space-y-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700">
-                      <h3 className="text-2xl sm:text-5xl font-serif-elegant text-[#5E0B0B] tracking-tighter uppercase drop-shadow-[0_0_15px_rgba(255,255,255,0.15)]">{project.title}</h3>
-                      <div className="flex justify-center">
-                         <div className="px-6 py-2 bg-[#8A1800] text-white font-black uppercase text-[8px] sm:text-[10px] tracking-[0.3em] rounded-sm">Explore Collection</div>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
+               const handleProjectClick = () => {
+                 if (isExternal && targetUrl) {
+                   window.open(targetUrl, '_blank', 'noopener,noreferrer');
+                   return;
+                 }
+                 setActiveProject(project);
+               };
 
-                <div className="flex flex-col md:flex-row justify-between items-start gap-6 px-1 pb-8 border-b border-white/5 last:border-0">
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3">
-                      <div className="px-2 py-0.5 bg-white/5 border border-white/10 rounded">
-                        <span className="text-[7px] sm:text-[9px] font-black text-white tracking-[0.4em] uppercase">Archive_Ref: 0{PROJECTS.indexOf(project) + 1}</span>
-                      </div>
-                      <div className="h-[1px] w-8 bg-white/10" />
-                      <h3 className="text-lg sm:text-2xl font-serif-elegant italic text-[#5E0B0B] leading-none drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">
-                        {project.title}
-                      </h3>
+               return (
+                 <motion.div 
+                   key={project.title}
+                   initial={{ opacity: 0, y: 15 }}
+                   whileInView={{ opacity: 1, y: 0 }}
+                   viewport={{ once: true, amount: 0.05 }}
+                   transition={{ delay: Math.min(idx * 0.04, 0.2), duration: 0.35 }}
+                   onClick={handleProjectClick}
+                   className="group cursor-pointer space-y-4 relative"
+                 >
+                    {isExternal && targetUrl && (
+                      <a 
+                        href={targetUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="absolute inset-0 z-30 cursor-pointer rounded-lg"
+                        aria-label={`Open ${project.title} on Behance in a new tab`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                      />
+                    )}
+                    <div className="relative aspect-[4/3] sm:aspect-square bg-black rounded-lg overflow-hidden shadow-xl border border-white/10 transition-all group-hover:border-[#8A1800] group-hover:shadow-[0_15px_40px_rgba(138,24,0,0.1)]">
+                       <ImageWithFallback 
+                        src={project.image} 
+                        alt={project.title} 
+                        className="w-full h-full object-cover transition-all duration-700 scale-100 group-hover:scale-105 group-hover:opacity-90" 
+                        fetchPriority={idx < 4 ? "high" : "auto"}
+                        loading={idx < 4 ? "eager" : "lazy"}
+                       />
+                       <div className="absolute inset-0 bg-transparent group-hover:bg-transparent transition-all" />
+                       <div className="absolute inset-x-4 bottom-4 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all hidden sm:block">
+                          <div className="w-full py-2 bg-[#8A1800] text-white font-black uppercase text-[7px] tracking-[0.3em] rounded text-center flex items-center justify-center gap-1.5 shadow-lg">
+                            {isExternal ? (
+                              <>
+                                <span>View Behance Scroll</span>
+                                <span className="text-[9px]">↗</span>
+                              </>
+                            ) : (
+                              'Open Index'
+                            )}
+                          </div>
+                       </div>
+                       {/* Mobile indicator */}
+                       <div className="absolute top-3 right-3 sm:hidden">
+                          <div className="bg-[#8A1800] text-white p-1.5 rounded-full shadow-lg">
+                             {isExternal ? <span className="text-[10px] leading-none font-black px-0.5">↗</span> : <ChevronRight size={12} />}
+                          </div>
+                       </div>
                     </div>
-                    <p className="max-w-2xl text-white font-sans text-[9px] sm:text-sm leading-relaxed">
-                      {project.description}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
+                    <div className="flex justify-between items-start px-1">
+                       <div className="space-y-1">
+                          <h3 className="text-xl sm:text-2xl font-serif-elegant uppercase tracking-tighter text-white group-hover:text-[#8A1800] transition-colors leading-none flex items-center gap-2">
+                            <span>{project.title}</span>
+                            {isExternal && <span className="text-xs opacity-50 group-hover:opacity-100 group-hover:text-[#8A1800] transition-all">↗</span>}
+                          </h3>
+                          <p className="text-[8px] sm:text-[9px] font-bold text-white/40 tracking-[0.1em] uppercase mt-1.5">
+                            {project.category}
+                          </p>
+                       </div>
+                       <span className="font-serif-elegant italic text-lg sm:text-xl text-white/10 group-hover:text-white transition-colors leading-none">0{idx + 1}</span>
+                    </div>
+                 </motion.div>
+               );
+             })}
           </div>
         </div>
       </section>

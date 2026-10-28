@@ -53,6 +53,8 @@ export interface Project {
   captions?: string[];
   tech: string[];
   link?: string;
+  externalUrl?: string;
+  openInNewTab?: boolean;
   variations?: Variation[];
   isFullWidthScroll?: boolean;
   scrollImage?: string;

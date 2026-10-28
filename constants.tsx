@@ -6,28 +6,16 @@ export const WORLD_HEIGHT = 3000;
 
 export const ALL_PROJECTS: Project[] = [
   {
-    title: "Photobooth Website 2025",
-    category: Section.WEB,
-    tagline: "Interactive Digital Experience",
-    description: "A high-end interactive platform for a modern photobooth service.",
-    longDescription: "Vintage Photobooth Web Experience is an interactive web design project that explores nostalgia, immersion, and playful storytelling through a digital interface. Inspired by classic carnival photobooths and old cinema aesthetics, the website transforms a simple camera interaction into a full experiential journey. Users step into a virtual booth, choose from multiple photostrip presets — including cinematic film rolls, retro strips, ticket frames, and postcard-inspired layouts — capture photos through a guided booth flow, and download stylized outputs. The project combines UI/UX design, visual identity, and creative coding to recreate the emotional charm of analog photobooths within a contemporary web environment. Through warm textures, grain overlays, and theatrical visuals, the goal was to design an experience that feels tactile, nostalgic, and memorable rather than purely functional.",
-    image: "https://i.ibb.co/JjbnNJTL/photoboothbynaamya-vercel-app.png",
-    link: "https://photoboothbynaamya.vercel.app/",
-    images: [
-      "https://i.ibb.co/qFkpzkfL/photoboothbynaamya-vercel-app-1.png",
-      "https://i.ibb.co/LDF0KHWj/photoboothbynaamya-vercel-app-2.png"
-    ],
-    tech: ["React", "WebGL", "UI/UX Design"]
-  },
-  {
     title: "Tiffany & Co. Catalogue Design 2025",
     category: Section.CATALOGUE,
     tagline: "High-End Editorial Design",
     description: "A sophisticated catalogue design for Tiffany & Co., focusing on elegance and brand heritage.",
     longDescription: `This catalogue was created as part of my Print Design module at the Unitedworld Institute of Design, Ahmedabad. The project focuses on exploring editorial layout systems through the lens of a luxury brand, allowing me to experiment with various grid structures, typographic hierarchies, and image–text compositions. I worked with different layout styles—from structured product grids to expressive, full-bleed editorial spreads—to understand balance, pacing, and visual rhythm in print. This project helped me develop a deeper understanding of layouting, spacing, and consistency while building a cohesive, high-end publication design.`,
     image: "https://i.postimg.cc/3xZwmKcp/front-header.png",
-    headerEmbed: "https://online.anyflip.com/ukyzd/bhpp/index.html",
-    link: "https://online.anyflip.com/ukyzd/bhpp/index.html",
+    headerEmbed: "https://www.behance.net/embed/project/254223013?ilo0=1",
+    link: "https://www.behance.net/gallery/254223013/Tiffany-and-Co-catalogue",
+    externalUrl: "https://www.behance.net/gallery/254223013/Tiffany-and-Co-catalogue",
+    openInNewTab: true,
     images: [
       "https://i.postimg.cc/d1fPrXFk/fanf_b.png",
       "https://i.postimg.cc/nz37k4SL/rings.png",
@@ -72,8 +60,8 @@ export const ALL_PROJECTS: Project[] = [
     images: [
       "https://www.behance.net/embed/project/243469599?ilo0=1",
       "https://www.behance.net/embed/project/243728099?ilo0=1",
-     "https://www.behance.net/embed/project/243761961?ilo0=1" ,
-     "https://www.behance.net/embed/project/243751353?ilo0=1",
+      "https://www.behance.net/embed/project/243761961?ilo0=1" ,
+      "https://www.behance.net/embed/project/243751353?ilo0=1",
       "https://www.behance.net/embed/project/243715405?ilo0=1"
     ],
     tech: ["Parametric Design", "3D Rendering", "Visual Identity"],
@@ -88,7 +76,8 @@ export const ALL_PROJECTS: Project[] = [
     image: "https://i.ibb.co/35sfw4mV/ty.png" ,
     scrollImage: "https://i.ibb.co/KJ5BqY9/POSTER.png", // Placeholder: Replace with your 4923x12856px image URL
     isFullWidthScroll: true,
-    tech: ["InDesign", "Illustrator", "Layout Design"]
+    tech: ["InDesign", "Illustrator", "Layout Design"],
+    hidden: true
   },
   {
     title: "Illustration Book 2025",
@@ -99,8 +88,22 @@ export const ALL_PROJECTS: Project[] = [
     image:"https://i.ibb.co/qLk4p6Zm/ill.png",
     scrollImage:"https://i.ibb.co/FkpLf366/warlock.jpg"  , // Placeholder for the full-width scroll image
     isFullWidthScroll: true,
-    
-    tech: ["Illustration", "Photoshop", "Fresco"]
+    tech: ["Illustration", "Photoshop", "Fresco"],
+    hidden: true
+  },
+  {
+    title: "Photobooth Website 2025",
+    category: Section.WEB,
+    tagline: "Interactive Digital Experience",
+    description: "A high-end interactive platform for a modern photobooth service.",
+    longDescription: "Vintage Photobooth Web Experience is an interactive web design project that explores nostalgia, immersion, and playful storytelling through a digital interface. Inspired by classic carnival photobooths and old cinema aesthetics, the website transforms a simple camera interaction into a full experiential journey. Users step into a virtual booth, choose from multiple photostrip presets — including cinematic film rolls, retro strips, ticket frames, and postcard-inspired layouts — capture photos through a guided booth flow, and download stylized outputs. The project combines UI/UX design, visual identity, and creative coding to recreate the emotional charm of analog photobooths within a contemporary web environment. Through warm textures, grain overlays, and theatrical visuals, the goal was to design an experience that feels tactile, nostalgic, and memorable rather than purely functional.",
+    image: "https://i.ibb.co/JjbnNJTL/photoboothbynaamya-vercel-app.png",
+    link: "https://photoboothbynaamya.vercel.app/",
+    images: [
+      "https://i.ibb.co/qFkpzkfL/photoboothbynaamya-vercel-app-1.png",
+      "https://i.ibb.co/LDF0KHWj/photoboothbynaamya-vercel-app-2.png"
+    ],
+    tech: ["React", "WebGL", "UI/UX Design"]
   },
   {
     title: "Fine Arts & Explorations",
