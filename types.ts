@@ -16,7 +16,8 @@ export const Section = {
   ILLUSTRATION_BOOK: 'ILLUSTRATION BOOK',
   EXPERIMENTAL: 'EXPERIMENTAL',
   MISCELLANEOUS: 'MISCELLANEOUS',
-  GHOST: 'GHOST'
+  GHOST: 'GHOST',
+  PACKAGING: 'PACKAGING'
 } as const;
 
 export type SectionType = typeof Section[keyof typeof Section];
@@ -60,6 +61,8 @@ export interface Project {
   scrollImage?: string;
   headerEmbed?: string;
   hidden?: boolean;
+  year?: string;
+  imagePosition?: string;
 }
 
 export interface Landmark {

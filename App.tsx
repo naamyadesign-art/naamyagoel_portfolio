@@ -248,13 +248,6 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
     let targetUrl = typeof url === 'string' ? url.trim() : project.link?.trim();
     
     if (targetUrl) {
-      // If it's a Behance embed URL, transform it to a gallery URL
-      if (targetUrl.includes('behance.net/embed/project/')) {
-        const projectId = targetUrl.split('/project/')[1].split('?')[0];
-        targetUrl = `https://www.behance.net/gallery/${projectId}/_`;
-      }
-      
-      // Use a more standard way to open links that might be more reliable
       const link = document.createElement('a');
       link.href = targetUrl;
       link.target = '_blank';
@@ -284,7 +277,9 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
           </div>
           <div className="min-w-0 flex-1">
             <h2 className={`text-sm sm:text-xl font-black uppercase tracking-tighter truncate leading-none ${!isCatalogue ? 'text-[#8A1800]' : theme.text}`}>{project.title}</h2>
-            <p className={`text-[7px] sm:text-[10px] font-bold tracking-[0.2em] uppercase mt-1 ${theme.textMutedExtra}`}>{categoryLabel}</p>
+            <p className={`text-[7px] sm:text-[10px] font-bold tracking-[0.2em] uppercase mt-1 ${theme.textMutedExtra}`}>
+              {project.year ? `${project.year} • ${categoryLabel}` : categoryLabel}
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-2 sm:gap-4">
@@ -522,15 +517,35 @@ const ProjectDetail: React.FC<{ project: Project; onClose: () => void }> = ({ pr
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-16">
                  <div className="md:col-span-2 space-y-6">
                    {project.headerEmbed && (
-                     <div className={`relative aspect-[16/10] w-full bg-neutral-100 rounded-xl overflow-hidden border ${theme.stickyBorder} shadow-2xl mb-8`}>
-                       <iframe 
-                         src={project.headerEmbed} 
-                         className="w-full h-full border-0"
-                         title={project.title}
-                         allowFullScreen
-                         loading="eager"
-                         referrerPolicy="strict-origin-when-cross-origin"
-                       />
+                     <div className="space-y-3 mb-8">
+                       <div className="flex flex-wrap items-center justify-between gap-3 px-1">
+                         <div className="flex items-center gap-2">
+                           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                           <span className={`text-[9px] sm:text-[11px] font-black uppercase tracking-[0.25em] ${theme.text}`}>
+                             Interactive Case Study • Public View (No Sign-In Required)
+                           </span>
+                         </div>
+                         <a 
+                           href={project.headerEmbed}
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           className={`px-3 py-1.5 rounded text-[8px] sm:text-[9px] font-black uppercase tracking-[0.2em] transition-all flex items-center gap-1.5 ${theme.buttonBg} text-white hover:opacity-80 shadow-md`}
+                         >
+                           <span>Open Fullscreen</span>
+                           <span className="text-xs">↗</span>
+                         </a>
+                       </div>
+                       <div className={`relative w-full h-[620px] sm:h-[820px] bg-neutral-950 rounded-2xl overflow-hidden border ${theme.stickyBorder} shadow-2xl`}>
+                         <iframe 
+                           src={project.headerEmbed} 
+                           className="w-full h-full border-0"
+                           title={project.title}
+                           allowFullScreen
+                           loading="eager"
+                           allow="clipboard-write; fullscreen"
+                           referrerPolicy="strict-origin-when-cross-origin"
+                         />
+                       </div>
                      </div>
                    )}
                    
@@ -921,16 +936,36 @@ const Home: React.FC = () => {
                        <ImageWithFallback 
                         src={project.image} 
                         alt={project.title} 
-                        className="w-full h-full object-cover transition-all duration-700 scale-100 group-hover:scale-105 group-hover:opacity-90" 
+                        className={`w-full h-full object-cover ${project.imagePosition || 'object-center'} transition-all duration-700 scale-100 group-hover:scale-105 group-hover:opacity-90`} 
                         fetchPriority={idx < 4 ? "high" : "auto"}
                         loading={idx < 4 ? "eager" : "lazy"}
                        />
                        <div className="absolute inset-0 bg-transparent group-hover:bg-transparent transition-all" />
+                       
+                       {/* Direct new-tab button for projects with Behance embed */}
+                       {project.headerEmbed && !isExternal && (
+                         <a
+                           href={project.headerEmbed}
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           aria-label={`Open ${project.title} presentation in new tab (no sign-in required)`}
+                           onClick={(e) => e.stopPropagation()}
+                           className="absolute top-3 right-3 z-30 opacity-0 group-hover:opacity-100 transition-all bg-black/80 hover:bg-[#8A1800] text-white p-2 rounded-full backdrop-blur-md border border-white/20 shadow-xl hover:scale-110 active:scale-95 hidden sm:flex items-center justify-center"
+                           title="Open presentation in new tab (no sign-in required)"
+                         >
+                           <span className="text-[11px] leading-none font-black">↗</span>
+                         </a>
+                       )}
+
                        <div className="absolute inset-x-4 bottom-4 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all hidden sm:block">
                           <div className="w-full py-2 bg-[#8A1800] text-white font-black uppercase text-[7px] tracking-[0.3em] rounded text-center flex items-center justify-center gap-1.5 shadow-lg">
-                            {isExternal ? (
+                            {project.headerEmbed ? (
                               <>
-                                <span>View Behance Scroll</span>
+                                <span>Open Case Study • Live Embed</span>
+                              </>
+                            ) : isExternal ? (
+                              <>
+                                <span>{targetUrl && targetUrl.includes('behance.net') ? 'Open on Behance' : 'View Project'}</span>
                                 <span className="text-[9px]">↗</span>
                               </>
                             ) : (
@@ -939,7 +974,7 @@ const Home: React.FC = () => {
                           </div>
                        </div>
                        {/* Mobile indicator */}
-                       <div className="absolute top-3 right-3 sm:hidden">
+                       <div className="absolute top-3 right-3 sm:hidden z-20">
                           <div className="bg-[#8A1800] text-white p-1.5 rounded-full shadow-lg">
                              {isExternal ? <span className="text-[10px] leading-none font-black px-0.5">↗</span> : <ChevronRight size={12} />}
                           </div>
@@ -951,9 +986,15 @@ const Home: React.FC = () => {
                             <span>{project.title}</span>
                             {isExternal && <span className="text-xs opacity-50 group-hover:opacity-100 group-hover:text-[#8A1800] transition-all">↗</span>}
                           </h3>
-                          <p className="text-[8px] sm:text-[9px] font-bold text-white/40 tracking-[0.1em] uppercase mt-1.5">
-                            {project.category}
-                          </p>
+                          <div className="flex items-center gap-1.5 text-[8px] sm:text-[9px] font-bold uppercase mt-1.5">
+                            {project.year && (
+                              <>
+                                <span className="text-white/80 font-mono tracking-wider">{project.year}</span>
+                                <span className="text-white/20">•</span>
+                              </>
+                            )}
+                            <span className="text-white/40 tracking-[0.1em]">{project.category}</span>
+                          </div>
                        </div>
                        <span className="font-serif-elegant italic text-lg sm:text-xl text-white/10 group-hover:text-white transition-colors leading-none">0{idx + 1}</span>
                     </div>

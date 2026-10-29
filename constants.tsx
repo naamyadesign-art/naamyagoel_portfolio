@@ -6,6 +6,22 @@ export const WORLD_HEIGHT = 3000;
 
 export const ALL_PROJECTS: Project[] = [
   {
+    title: "First Aid Kit Packaging 2026",
+    category: Section.PACKAGING,
+    tagline: "Decathlon Hiking & Camping First Aid Kit",
+    description: "Alpine safety equipment packaging engineered for high visibility, durability, and rapid emergency accessibility.",
+    longDescription: "An ergonomic and durable packaging design system engineered for the Decathlon Hiking and Camping First Aid Kit. Designed to withstand demanding alpine weather and rough backcountry conditions, the packaging architecture balances high-visibility emergency signaling, rapid-access compartmentalization, and rugged water-resistant containment. The visual hierarchy utilizes bold, legible typography and universal international safety iconography, allowing mountaineers and outdoor enthusiasts to swiftly identify essential medical supplies during high-stress trail scenarios while maintaining a compact form factor that integrates seamlessly into alpine backpacks.",
+    image: "/assets/aistudio/First_Aid_Kit_in_Alpine_Backpack_776e8fa3.png",
+    imagePosition: "object-top",
+    link: "https://www.behance.net/gallery/257604621/First-aid-kit-A-structural-packaging-project",
+    externalUrl: "https://www.behance.net/gallery/257604621/First-aid-kit-A-structural-packaging-project",
+    openInNewTab: true,
+    images: [
+      "/assets/aistudio/First_Aid_Kit_in_Alpine_Backpack_776e8fa3.png"
+    ],
+    tech: ["Packaging Design", "Information Architecture", "Structural Prototyping", "Brand Identity"]
+  },
+  {
     title: "Tiffany & Co. Catalogue Design 2025",
     category: Section.CATALOGUE,
     tagline: "High-End Editorial Design",
@@ -13,9 +29,7 @@ export const ALL_PROJECTS: Project[] = [
     longDescription: `This catalogue was created as part of my Print Design module at the Unitedworld Institute of Design, Ahmedabad. The project focuses on exploring editorial layout systems through the lens of a luxury brand, allowing me to experiment with various grid structures, typographic hierarchies, and image–text compositions. I worked with different layout styles—from structured product grids to expressive, full-bleed editorial spreads—to understand balance, pacing, and visual rhythm in print. This project helped me develop a deeper understanding of layouting, spacing, and consistency while building a cohesive, high-end publication design.`,
     image: "https://i.postimg.cc/3xZwmKcp/front-header.png",
     headerEmbed: "https://www.behance.net/embed/project/254223013?ilo0=1",
-    link: "https://www.behance.net/gallery/254223013/Tiffany-and-Co-catalogue",
-    externalUrl: "https://www.behance.net/gallery/254223013/Tiffany-and-Co-catalogue",
-    openInNewTab: true,
+    link: "https://www.behance.net/embed/project/254223013?ilo0=1",
     images: [
       "https://i.postimg.cc/d1fPrXFk/fanf_b.png",
       "https://i.postimg.cc/nz37k4SL/rings.png",
