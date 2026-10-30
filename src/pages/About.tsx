@@ -22,12 +22,17 @@ const About: React.FC = () => {
   return (
     <div className="min-h-screen text-white selection:bg-[#8A1800] selection:text-white overflow-x-hidden bg-[#050505] red-grid">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 px-6 py-8 sm:px-12 flex justify-between items-center bg-[#050505]/80 backdrop-blur-md border-b border-white/5">
+      <nav className="fixed top-0 w-full z-50 px-6 py-6 sm:px-12 flex justify-between items-center bg-[#050505]/85 backdrop-blur-md border-b border-white/10">
         <Link to="/" className="text-[10px] font-black uppercase tracking-[0.4em] text-white border-b border-white/40 pb-1 hover:text-[#8A1800] transition-colors">
           NAAMYA GOEL
         </Link>
-        <div className="text-[10px] font-black uppercase tracking-[0.4em] text-white opacity-60">
-          Profile_v2.5 // About
+        <div className="flex items-center gap-6 sm:gap-8 text-[10px] font-black uppercase tracking-[0.4em]">
+          <Link to="/" className="text-white/60 hover:text-[#8A1800] transition-colors">HOME</Link>
+          <div className="text-white border-b border-[#8A1800] pb-0.5">ABOUT_ME</div>
+          <Link to="/play" className="flex items-center gap-2 group hover:text-[#8A1800] transition-colors">
+            <img src="/assets/aistudio/red_dino.png" alt="Play" className="w-3.5 h-3.5 object-contain transition-transform group-hover:scale-125 filter drop-shadow-[0_0_6px_rgba(138,24,0,0.8)]" />
+            <span className="font-black text-white group-hover:text-[#8A1800] transition-colors">PLAY</span>
+          </Link>
         </div>
       </nav>
 

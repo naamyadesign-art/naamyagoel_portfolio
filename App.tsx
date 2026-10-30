@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight, X, ArrowRight } from 'lucide-react';
 import { Project, Section } from './types';
 import { PROJECTS } from './constants';
 import About from './src/pages/About';
+import Play from './src/pages/Play';
 
 interface ImageWithFallbackProps {
   src: string;
@@ -707,9 +708,20 @@ const Home: React.FC = () => {
         {/* Header */}
         <div className="absolute top-6 w-full flex justify-between px-6 sm:px-12 text-[7px] sm:text-[10px] font-black uppercase tracking-[0.4em] text-white z-30">
           <span className="border-b border-white/20 pb-1 pointer-events-none">NAAMYA GOEL</span>
-          <div className="flex gap-8">
+          <div className="flex items-center gap-6 sm:gap-8">
             <Link to="/about" className="hover:text-[#8A1800] transition-colors pointer-events-auto">ABOUT_ME</Link>
-            <span className="opacity-60 pointer-events-none">SYSTEM_v2.5</span>
+            <Link 
+              to="/play" 
+              className="flex items-center gap-2 group hover:text-[#8A1800] transition-colors pointer-events-auto"
+              title="Play // Interactive Lab & Photobooth"
+            >
+              <img 
+                src="/assets/aistudio/red_dino.png" 
+                alt="Play" 
+                className="w-3.5 h-3.5 sm:w-4 sm:h-4 object-contain transition-transform group-hover:scale-125 filter drop-shadow-[0_0_6px_rgba(138,24,0,0.8)]" 
+              />
+              <span className="font-black text-white group-hover:text-[#8A1800] transition-colors">PLAY</span>
+            </Link>
           </div>
         </div>
 
@@ -1065,6 +1077,7 @@ const App: React.FC = () => {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
+      <Route path="/play" element={<Play />} />
     </Routes>
   );
 };

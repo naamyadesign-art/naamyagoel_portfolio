@@ -28,8 +28,9 @@ export const ALL_PROJECTS: Project[] = [
     description: "A sophisticated catalogue design for Tiffany & Co., focusing on elegance and brand heritage.",
     longDescription: `This catalogue was created as part of my Print Design module at the Unitedworld Institute of Design, Ahmedabad. The project focuses on exploring editorial layout systems through the lens of a luxury brand, allowing me to experiment with various grid structures, typographic hierarchies, and image–text compositions. I worked with different layout styles—from structured product grids to expressive, full-bleed editorial spreads—to understand balance, pacing, and visual rhythm in print. This project helped me develop a deeper understanding of layouting, spacing, and consistency while building a cohesive, high-end publication design.`,
     image: "https://i.postimg.cc/3xZwmKcp/front-header.png",
-    headerEmbed: "https://www.behance.net/embed/project/254223013?ilo0=1",
-    link: "https://www.behance.net/embed/project/254223013?ilo0=1",
+    link: "https://www.behance.net/gallery/254223013/Tiffany-and-Co-catalogue",
+    externalUrl: "https://www.behance.net/gallery/254223013/Tiffany-and-Co-catalogue",
+    openInNewTab: true,
     images: [
       "https://i.postimg.cc/d1fPrXFk/fanf_b.png",
       "https://i.postimg.cc/nz37k4SL/rings.png",
@@ -117,7 +118,8 @@ export const ALL_PROJECTS: Project[] = [
       "https://i.ibb.co/qFkpzkfL/photoboothbynaamya-vercel-app-1.png",
       "https://i.ibb.co/LDF0KHWj/photoboothbynaamya-vercel-app-2.png"
     ],
-    tech: ["React", "WebGL", "UI/UX Design"]
+    tech: ["React", "WebGL", "UI/UX Design"],
+    hidden: true
   },
   {
     title: "Fine Arts & Explorations",
@@ -183,6 +185,8 @@ export const ALL_PROJECTS: Project[] = [
 ];
 
 export const PROJECTS: Project[] = ALL_PROJECTS.filter(p => !p.hidden);
+
+export const PHOTOBOOTH_PROJECT: Project = ALL_PROJECTS.find(p => p.title.toLowerCase().includes('photobooth')) || ALL_PROJECTS[0];
 
 // Added Landmark import to fix the 'Cannot find name Landmark' error
 export const LANDMARKS: Landmark[] = [];
