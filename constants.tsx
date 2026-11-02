@@ -42,27 +42,32 @@ export const ALL_PROJECTS: Project[] = [
     tech: ["Editorial Design", "Typography", "Brand Identity"]
   },
   {
+    title: "Brand Identity System 2025",
+    category: Section.BRANDING,
+    tagline: "A public library system",
+    description: "A complete brand identity development including flipbook presentation and digital scroll.",
+    longDescription: "This project showcases a holistic approach to branding, moving from initial conceptual sketches to a fully realized visual system. The presentation begins with an interactive flipbook detailing the brand strategy, followed by a continuous visual scroll that explores the application of the identity across various touchpoints—from stationery and digital interfaces to environmental graphics.",
+    image: "https://i.ibb.co/wF2NmKQt/stamp.png",
+    link: "https://www.behance.net/gallery/254265421/Library-Branding",
+    externalUrl: "https://www.behance.net/gallery/254265421/Library-Branding",
+    openInNewTab: true,
+    scrollImage: "https://i.ibb.co/3YstpTFR/scroll.jpg",
+    isFullWidthScroll: true,
+    tech: ["Brand Identity", "Visual Systems", "Strategic Design"]
+  },
+  {
     title: "Clive Road No. 3 Packaging 2025",
     category: Section.BRANDING,
     tagline: "Clive Road No. 3",
     description: "Bespoke packaging design for an artisanal product line.",
     longDescription: "This project focuses on developing a cohesive packaging system for No.3 Clive Road tea blends through the use of contemporary surface illustrations. Drawing inspiration from Indian decorative motifs and bazaar culture, I created repeat patterns that balance heritage aesthetics with a modern retail presence. Each blend was treated as part of a larger visual family, ensuring consistency in layout, hierarchy, and brand recognition while allowing individual identities to emerge through colour and pattern.",
     image: "https://i.ibb.co/zh862kzc/hero-image.png", // This remains the thumbnail/cover
-    scrollImage: "https://i.ibb.co/N6JGDSqQ/clive-road-full.jpg" , // Replace with your 4961x23027px image
+    link: "https://www.behance.net/gallery/246049131/Clive-road-no3-packaging-design",
+    externalUrl: "https://www.behance.net/gallery/246049131/Clive-road-no3-packaging-design",
+    openInNewTab: true,
+    scrollImage: "https://i.ibb.co/N6JGDSqQ/clive-road-full.jpg", // Replace with your 4961x23027px image
     isFullWidthScroll: true,
     tech: ["Packaging Design", "Illustration", "Brand Study"],
-  },
-  {
-    title: "Brand Identity System 2025",
-    category: Section.BRANDING,
-    tagline: "A public library system",
-    description: "A complete brand identity development including flipbook presentation and digital scroll.",
-    longDescription: "This project showcases a holistic approach to branding, moving from initial conceptual sketches to a fully realized visual system. The presentation begins with an interactive flipbook detailing the brand strategy, followed by a continuous visual scroll that explores the application of the identity across various touchpoints—from stationery and digital interfaces to environmental graphics.",
-    image: "https://i.ibb.co/wF2NmKQt/stamp.png" ,
-    headerEmbed: "https://heyzine.com/flip-book/c220ddd4c5.html", 
-    scrollImage: "https://i.ibb.co/3YstpTFR/scroll.jpg",
-    isFullWidthScroll: true,
-    tech: ["Brand Identity", "Visual Systems", "Strategic Design"]
   },
   {
     title: "Conceptual Perfume Design 2025",
